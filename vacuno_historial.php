@@ -1251,12 +1251,17 @@ $concentradoPercentage = ($totalInvestment > 0) ? round(($totalConcentradoInvest
 
 <!-- Peso Table Section -->
 <?php
-// Build the base query for Peso
+// First, update the query to include the JOIN
 if (isset($_GET['search']) && !empty($_GET['search'])) {
     $tagid = $conn->real_escape_string($_GET['search']);
-    $baseQuery_peso = "SELECT * FROM vh_peso WHERE vh_peso_tagid = '$tagid'";
+    $baseQuery_peso = "SELECT p.*, v.nombre 
+                      FROM vh_peso p 
+                      LEFT JOIN vacuno v ON p.vh_peso_tagid = v.tagid 
+                      WHERE p.vh_peso_tagid = '$tagid'";
 } else {
-    $baseQuery_peso = "SELECT * FROM vh_peso";
+    $baseQuery_peso = "SELECT p.*, v.nombre 
+                      FROM vh_peso p 
+                      LEFT JOIN vacuno v ON p.vh_peso_tagid = v.tagid";
 }
 $result_peso = $conn->query($baseQuery_peso);
 ?>
@@ -1312,11 +1317,13 @@ $result_peso = $conn->query($baseQuery_peso);
         <table id="pesoTable" class="table table-striped table-bordered">
             <thead>
                 <tr>
+                    <th>Tag ID</th>
+                    <th>Nombre</th>
                     <th>Peso Animal (kg)</th>
                     <th>Precio ($/kg)</th>
                     <th>Valor Total ($)</th>
                     <th>Fecha</th>
-                    <th></th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -1326,15 +1333,29 @@ $result_peso = $conn->query($baseQuery_peso);
                         $valor_total = floatval($row['vh_peso_animal']) * floatval($row['vh_peso_precio']);
                         
                         echo "<tr>";
+                        echo "<td>" . htmlspecialchars($row['vh_peso_tagid']) . "</td>";
+                        echo "<td>" . htmlspecialchars($row['nombre'] ?? 'N/A') . "</td>";
                         echo "<td>" . htmlspecialchars($row['vh_peso_animal']) . "</td>";
                         echo "<td>" . htmlspecialchars($row['vh_peso_precio']) . "</td>";
                         echo "<td>" . number_format($valor_total, 2) . "</td>";
                         echo "<td>" . htmlspecialchars($row['vh_peso_fecha']) . "</td>";
                         echo "<td>
-                                <button class='btn btn-danger btn-sm delete-peso' 
-                                        data-id='" . $row['id'] . "'>
-                                    <i class='fas fa-trash'></i>
-                                </button>
+                                <div class='btn-group' role='group'>
+                                    <button class='btn btn-primary btn-sm edit-peso' 
+                                            data-bs-toggle='modal'
+                                            data-bs-target='#editPesoModal'
+                                            data-id='" . htmlspecialchars($row['id']) . "'
+                                            data-tagid='" . htmlspecialchars($row['vh_peso_tagid']) . "'
+                                            data-peso='" . htmlspecialchars($row['vh_peso_animal']) . "'
+                                            data-precio='" . htmlspecialchars($row['vh_peso_precio']) . "'
+                                            data-fecha='" . htmlspecialchars($row['vh_peso_fecha']) . "'>
+                                        <i class='fas fa-edit'></i>
+                                    </button>
+                                    <button class='btn btn-danger btn-sm delete-peso' 
+                                            data-id='" . htmlspecialchars($row['id']) . "'>
+                                        <i class='fas fa-trash'></i>
+                                    </button>
+                                </div>
                             </td>";
                         echo "</tr>";
                     }
@@ -1384,6 +1405,114 @@ $(document).ready(function() {
                 }
             });
         }
+    });
+});
+</script>
+
+
+<!-- Add this modal after your peso table -->
+<div class="modal fade" id="editPesoModal" tabindex="-1" aria-labelledby="editPesoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Editar Peso</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editPesoForm">
+                    <input type="hidden" name="action" value="update">
+                    <input type="hidden" name="id" id="edit_peso_id">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label for="edit_peso_animal" class="form-label">Peso Animal (kg)</label>
+                            <input type="number" step="0.01" class="form-control" id="edit_peso_animal" name="peso" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="edit_peso_precio" class="form-label">Precio por kg ($)</label>
+                            <input type="number" step="0.01" class="form-control" id="edit_peso_precio" name="precio" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="edit_peso_fecha" class="form-label">Fecha</label>
+                            <input type="date" class="form-control" id="edit_peso_fecha" name="fecha" required>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="saveEditPeso">Guardar Cambios</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Update your JavaScript -->
+<script>
+$(document).ready(function() {
+    // Existing delete handler...
+
+    // Handle edit button click
+    $('.edit-peso').click(function() {
+        const button = $(this);
+        
+        // Get data from data attributes
+        const id = button.data('id');
+        const peso = button.data('peso');
+        const precio = button.data('precio');
+        const fecha = button.data('fecha');
+
+        // Populate modal fields
+        $('#edit_peso_id').val(id);
+        $('#edit_peso_animal').val(peso);
+        $('#edit_peso_precio').val(precio);
+        $('#edit_peso_fecha').val(fecha);
+    });
+
+    // Handle save changes
+    $('#saveEditPeso').click(function() {
+        const form = $('#editPesoForm');
+        
+        // Validate form
+        if (!form[0].checkValidity()) {
+            form[0].reportValidity();
+            return;
+        }
+
+        // Show loading state
+        const saveButton = $(this);
+        const originalText = saveButton.text();
+        saveButton.prop('disabled', true).text('Guardando...');
+
+        // Send AJAX request
+        $.ajax({
+            url: 'process_peso.php',
+            type: 'POST',
+            data: form.serialize(),
+            action: 'update',
+            dataType: 'json',
+            success: function(response) {
+                console.log('Response received:', response);
+                try {
+                    if (response.success) {
+                        $('#editPesoModal').modal('hide');
+                        location.reload();
+                    } else {
+                        alert('Error al actualizar: ' + (response.error || 'Error desconocido'));
+                    }
+                } catch (e) {
+                    console.error('Error parsing response:', e);
+                    alert('Error al procesar la respuesta del servidor');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX Error:', {xhr, status, error});
+                alert('Error al procesar la solicitud: ' + error);
+            },
+            complete: function() {
+                // Reset button state
+                saveButton.prop('disabled', false).text(originalText);
+            }
+        });
     });
 });
 </script>
@@ -1571,93 +1700,117 @@ $(document).ready(function() {
 <!-- Add this JavaScript after your existing chart scripts -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Format dates for display
-    const formatDates = dates => dates.map(date => {
-        const [year, month, day] = date.split('-');
-        return `${month}/${year}`;  // Changed to show only month/year
-    });
+    try {
+        // Get the chart element
+        const lecheRevenueChart = document.getElementById('lecheRevenueChart');
+        
+        // Verify chart element exists
+        if (!lecheRevenueChart) {
+            console.error('Chart element not found: lecheRevenueChart');
+            return;
+        }
 
-    // Create the cumulative revenue chart
-    const lecheRevenueCtx = document.getElementById('lecheRevenueChart').getContext('2d');
-    new Chart(lecheRevenueCtx, {
-        type: 'line',
-        data: {
-            labels: formatDates(<?php echo json_encode($lecheFechaLabels); ?>),
-            datasets: [{
-                label: 'Ingresos Acumulados ($)',
-                data: <?php echo json_encode($cumulativeRevenueData); ?>,
-                borderColor: '#83956e',
-                backgroundColor: 'rgba(131, 149, 110, 0.1)',
-                borderWidth: 2,
-                fill: true,
-                tension: 0.4,
-                pointRadius: 4,
-                pointBackgroundColor: '#83956e'
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: true,
-            aspectRatio: 3, // Made wider
-            plugins: {
-                title: {
-                    display: false // Removed since we now use section-title
-                },
-                legend: {
-                    display: true,
-                    position: 'top'
-                },
-                tooltip: {
-                    mode: 'index',
-                    intersect: false,
-                    callbacks: {
-                        label: function(context) {
-                            let label = context.dataset.label || '';
-                            if (label) {
-                                label += ': ';
+        // Format dates for display
+        const formatDates = dates => dates.map(date => {
+            if (!date) return '';
+            const [year, month, day] = date.split('-');
+            return `${month}/${year}`;
+        });
+
+        // Get the context
+        const lecheRevenueCtx = lecheRevenueChart.getContext('2d');
+        
+        // Verify data exists
+        const fechaLabels = <?php echo json_encode($lecheFechaLabels ?? []); ?>;
+        const revenueData = <?php echo json_encode($cumulativeRevenueData ?? []); ?>;
+        
+        if (!fechaLabels.length || !revenueData.length) {
+            console.warn('No data available for chart');
+        }
+
+        // Create the chart
+        new Chart(lecheRevenueCtx, {
+            type: 'line',
+            data: {
+                labels: formatDates(fechaLabels),
+                datasets: [{
+                    label: 'Ingresos Acumulados ($)',
+                    data: revenueData,
+                    borderColor: '#83956e',
+                    backgroundColor: 'rgba(131, 149, 110, 0.1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 4,
+                    pointBackgroundColor: '#83956e'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                aspectRatio: 3,
+                plugins: {
+                    title: {
+                        display: false
+                    },
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    label += new Intl.NumberFormat('es-AR', {
+                                        style: 'currency',
+                                        currency: 'ARS'
+                                    }).format(context.parsed.y);
+                                }
+                                return label;
                             }
-                            if (context.parsed.y !== null) {
-                                label += new Intl.NumberFormat('es-AR', {
-                                    style: 'currency',
-                                    currency: 'ARS'
-                                }).format(context.parsed.y);
-                            }
-                            return label;
                         }
                     }
-                }
-            },
-            scales: {
-                x: {
-                    display: true,
-                    title: {
-                        display: true,
-                        text: 'Mes'
-                    },
-                    ticks: {
-                        maxRotation: 45,
-                        minRotation: 45
-                    }
                 },
-                y: {
-                    display: true,
-                    title: {
+                scales: {
+                    x: {
                         display: true,
-                        text: 'Ingresos Estimados ($)'
+                        title: {
+                            display: true,
+                            text: 'Mes'
+                        },
+                        ticks: {
+                            maxRotation: 45,
+                            minRotation: 45
+                        }
                     },
-                    beginAtZero: true,
-                    ticks: {
-                        callback: function(value) {
-                            return new Intl.NumberFormat('es-AR', {
-                                style: 'currency',
-                                currency: 'ARS'
-                            }).format(value);
+                    y: {
+                        display: true,
+                        title: {
+                            display: true,
+                            text: 'Ingresos Estimados ($)'
+                        },
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return new Intl.NumberFormat('es-AR', {
+                                    style: 'currency',
+                                    currency: 'ARS'
+                                }).format(value);
+                            }
                         }
                     }
                 }
             }
-        }
-    });
+        });
+    } catch (error) {
+        console.error('Error creating chart:', error);
+    }
 });
 </script>
 
@@ -4691,15 +4844,19 @@ $(document).ready(function() {
     });
 });
 </script>
-
 <!-- Descarte Table Section -->
 <?php
-// Build the base query for Descarte
+// Build the base query for Descarte with JOIN
 if (isset($_GET['search']) && !empty($_GET['search'])) {
     $tagid = $conn->real_escape_string($_GET['search']);
-    $baseQuery_descarte = "SELECT * FROM vh_descarte WHERE vh_descarte_tagid = '$tagid'";
+    $baseQuery_descarte = "SELECT d.id, d.vh_descarte_peso, d.vh_descarte_fecha, v.nombre, v.tagid 
+                          FROM vh_descarte d 
+                          JOIN vacuno v ON d.vh_descarte_tagid = v.tagid 
+                          WHERE v.tagid = '$tagid'";
 } else {
-    $baseQuery_descarte = "SELECT * FROM vh_descarte";
+    $baseQuery_descarte = "SELECT d.id, d.vh_descarte_peso, d.vh_descarte_fecha, v.nombre, v.tagid 
+                          FROM vh_descarte d 
+                          JOIN vacuno v ON d.vh_descarte_tagid = v.tagid";
 }
 $result_descarte = $conn->query($baseQuery_descarte);
 ?>
@@ -4708,53 +4865,47 @@ $result_descarte = $conn->query($baseQuery_descarte);
 <div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
     <h4 class="sub-section-title">Descarte</h4>
     
-    <!-- Add New Descarte Form -->
-    <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addDescarteForm">
+    <!-- Add New Descarte Button -->
+    <button class="btn btn-primary mb-3" type="button" data-bs-toggle="modal" data-bs-target="#descarteModal">
         <i class="fas fa-plus"></i> Agregar Descarte
     </button>
     
-    <div class="collapse mb-3" id="addDescarteForm">
-        <div class="card card-body">
-            <form id="descarteForm" action="process_descarte.php" method="POST">
-                <input type="hidden" name="tagid" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <label class="form-label">Peso (kg)</label>
-                        <input type="number" step="0.01" class="form-control" name="peso" required>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Fecha</label>
-                        <input type="date" class="form-control" name="fecha" required>
-                    </div>
-                    <div class="col-12">
-                        <button type="submit" class="btn btn-success">Guardar</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-
     <div class="table-responsive">
         <table id="descarteTable" class="table table-striped table-bordered">
             <thead>
                 <tr>
+                    <th>Tag ID</th>
+                    <th>Nombre</th>
                     <th>Peso (kg)</th>
                     <th>Fecha</th>
-                    <th></th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
-                if ($result_descarte->num_rows > 0) {
+                if ($result_descarte && $result_descarte->num_rows > 0) {
                     while($row = $result_descarte->fetch_assoc()) {
                         echo "<tr>";
+                        echo "<td>" . htmlspecialchars($row['tagid']) . "</td>";
+                        echo "<td>" . htmlspecialchars($row['nombre']) . "</td>";
                         echo "<td>" . htmlspecialchars($row['vh_descarte_peso']) . "</td>";
                         echo "<td>" . htmlspecialchars($row['vh_descarte_fecha']) . "</td>";
                         echo "<td>
-                                <button class='btn btn-danger btn-sm delete-descarte' 
-                                        data-id='" . $row['id'] . "'>
-                                    <i class='fas fa-trash'></i>
-                                </button>
+                                <div class='btn-group' role='group'>
+                                    <button type='button' class='btn btn-primary btn-sm edit-descarte' 
+                                            data-id='" . htmlspecialchars($row['id']) . "'
+                                            data-tagid='" . htmlspecialchars($row['tagid']) . "'
+                                            data-peso='" . htmlspecialchars($row['vh_descarte_peso']) . "'
+                                            data-fecha='" . htmlspecialchars($row['vh_descarte_fecha']) . "'
+                                            data-bs-toggle='modal' 
+                                            data-bs-target='#descarteModal'>
+                                        <i class='fas fa-edit'></i>
+                                    </button>
+                                    <button type='button' class='btn btn-danger btn-sm delete-descarte' 
+                                            data-id='" . htmlspecialchars($row['id']) . "'>
+                                        <i class='fas fa-trash'></i>
+                                    </button>
+                                </div>
                             </td>";
                         echo "</tr>";
                     }
@@ -4765,17 +4916,143 @@ $result_descarte = $conn->query($baseQuery_descarte);
     </div>
 </div>
 
-<!-- Add this JavaScript for Descarte table -->
+<!-- Descarte Modal -->
+<div class="modal fade" id="descarteModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="descarteModalTitle">Agregar Descarte</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="descarteForm">
+                    <input type="hidden" name="action" value="create">
+                    <input type="hidden" name="id" id="descarte_id">
+                    <input type="hidden" name="tagid" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
+                    
+                    <div class="mb-3">
+                        <label for="descarte_peso" class="form-label">Peso (kg)</label>
+                        <input type="number" step="0.01" class="form-control" id="descarte_peso" name="peso" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="descarte_fecha" class="form-label">Fecha</label>
+                        <input type="date" class="form-control" id="descarte_fecha" name="fecha" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="saveDescarte">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Descarte JavaScript -->
 <script>
 $(document).ready(function() {
-    $('.delete-descarte').click(function(e) {
-        e.preventDefault();
-        console.log('Delete Descarte button clicked');
+    // Initialize DataTable with Spanish language
+    $('#descarteTable').DataTable({
+        language: {
+            "sProcessing":     "Procesando...",
+            "sLengthMenu":     "Mostrar _MENU_ registros",
+            "sZeroRecords":    "No se encontraron resultados",
+            "sEmptyTable":     "Ningún dato disponible en esta tabla",
+            "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+            "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+            "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+            "sInfoPostFix":    "",
+            "sSearch":         "Buscar:",
+            "sUrl":           "",
+            "sInfoThousands":  ",",
+            "sLoadingRecords": "Cargando...",
+            "oPaginate": {
+                "sFirst":    "Primero",
+                "sLast":     "Último",
+                "sNext":     "Siguiente",
+                "sPrevious": "Anterior"
+            },
+            "oAria": {
+                "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+            },
+            "buttons": {
+                "copy": "Copiar",
+                "colvis": "Visibilidad"
+            }
+        }
+    });
+
+    // Handle modal open for new record
+    $('#descarteModal').on('show.bs.modal', function(e) {
+        const button = $(e.relatedTarget);
+        const isEdit = button.hasClass('edit-descarte');
+        const modal = $(this);
         
-        const id = $(this).data('id');
-        console.log('ID to delete:', id);
+        // Reset form
+        $('#descarteForm')[0].reset();
         
-        if (confirm('¿Está seguro de que desea eliminar esta entrada?')) {
+        if (isEdit) {
+            modal.find('.modal-title').text('Editar Descarte');
+            modal.find('[name="action"]').val('update');
+            modal.find('#descarte_id').val(button.data('id'));
+            modal.find('#descarte_peso').val(button.data('peso'));
+            modal.find('#descarte_fecha').val(button.data('fecha'));
+        } else {
+            modal.find('.modal-title').text('Agregar Descarte');
+            modal.find('[name="action"]').val('create');
+            modal.find('#descarte_id').val('');
+        }
+    });
+
+    // Handle save
+    $('#saveDescarte').click(function() {
+        const form = $('#descarteForm');
+        if (!form[0].checkValidity()) {
+            form[0].reportValidity();
+            return;
+        }
+
+        // Log form data
+        console.log('Form data:', form.serialize());
+
+        $.ajax({
+            url: 'process_descarte.php',
+            type: 'POST',
+            data: form.serialize(),
+            dataType: 'json',
+            beforeSend: function() {
+                console.log('Sending request...');
+            },
+            success: function(response) {
+                console.log('Response received:', response);
+                if (response && response.success) {
+                    location.reload();
+                } else {
+                    console.error('Error details:', response);
+                    alert('Error: ' + (response.error || 'Unknown error'));
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Full error details:', {
+                    status: status,
+                    error: error,
+                    response: xhr.responseText,
+                    statusCode: xhr.status
+                });
+                alert('Error processing request. Check console for details.');
+            }
+        });
+    });
+
+    // Handle delete
+    $('.delete-descarte').click(function() {
+        if (confirm('¿Está seguro de que desea eliminar este registro?')) {
+            const id = $(this).data('id');
+            
+            // Log delete request
+            console.log('Deleting record:', id);
+
             $.ajax({
                 url: 'process_descarte.php',
                 type: 'POST',
@@ -4783,23 +5060,27 @@ $(document).ready(function() {
                     action: 'delete',
                     id: id
                 },
+                dataType: 'json',
+                beforeSend: function() {
+                    console.log('Sending delete request...');
+                },
                 success: function(response) {
-                    console.log('Response received:', response);
-                    try {
-                        const result = typeof response === 'string' ? JSON.parse(response) : response;
-                        if (result.success) {
-                            window.location.reload(true);
-                        } else {
-                            alert('Error al eliminar la entrada: ' + (result.error || 'Error desconocido'));
-                        }
-                    } catch (e) {
-                        console.error('Error parsing response:', e);
-                        alert('Error al procesar la respuesta del servidor');
+                    console.log('Delete response:', response);
+                    if (response && response.success) {
+                        location.reload();
+                    } else {
+                        console.error('Delete error:', response);
+                        alert('Error: ' + (response.error || 'Unknown error'));
                     }
                 },
                 error: function(xhr, status, error) {
-                    console.error('AJAX Error:', {xhr, status, error});
-                    alert('Error al procesar la solicitud: ' + error);
+                    console.error('Delete request failed:', {
+                        status: status,
+                        error: error,
+                        response: xhr.responseText,
+                        statusCode: xhr.status
+                    });
+                    alert('Error processing delete request. Check console for details.');
                 }
             });
         }
@@ -4852,101 +5133,6 @@ if ($result_leche && $result_leche->num_rows > 0) {
     }
 }
 ?>
-
-
-
-<!-- Add this JavaScript after your existing chart scripts -->
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Format dates for display
-    const formatDates = dates => dates.map(date => {
-        const [year, month, day] = date.split('-');
-        return `${month}/${year}`;  // Changed to show only month/year
-    });
-
-    // Create the cumulative revenue chart
-    const lecheRevenueCtx = document.getElementById('lecheRevenueChart').getContext('2d');
-    new Chart(lecheRevenueCtx, {
-        type: 'line',
-        data: {
-            labels: formatDates(<?php echo json_encode($lecheFechaLabels); ?>),
-            datasets: [{
-                label: 'Ingresos Acumulados ($)',
-                data: <?php echo json_encode($cumulativeRevenueData); ?>,
-                borderColor: '#83956e',
-                backgroundColor: 'rgba(131, 149, 110, 0.1)',
-                borderWidth: 2,
-                fill: true,
-                tension: 0.4,
-                pointRadius: 4,
-                pointBackgroundColor: '#83956e'
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: true,
-            aspectRatio: 3, // Made wider
-            plugins: {
-                title: {
-                    display: false // Removed since we now use section-title
-                },
-                legend: {
-                    display: true,
-                    position: 'top'
-                },
-                tooltip: {
-                    mode: 'index',
-                    intersect: false,
-                    callbacks: {
-                        label: function(context) {
-                            let label = context.dataset.label || '';
-                            if (label) {
-                                label += ': ';
-                            }
-                            if (context.parsed.y !== null) {
-                                label += new Intl.NumberFormat('es-AR', {
-                                    style: 'currency',
-                                    currency: 'ARS'
-                                }).format(context.parsed.y);
-                            }
-                            return label;
-                        }
-                    }
-                }
-            },
-            scales: {
-                x: {
-                    display: true,
-                    title: {
-                        display: true,
-                        text: 'Mes'
-                    },
-                    ticks: {
-                        maxRotation: 45,
-                        minRotation: 45
-                    }
-                },
-                y: {
-                    display: true,
-                    title: {
-                        display: true,
-                        text: 'Ingresos Estimados ($)'
-                    },
-                    beginAtZero: true,
-                    ticks: {
-                        callback: function(value) {
-                            return new Intl.NumberFormat('es-AR', {
-                                style: 'currency',
-                                currency: 'ARS'
-                            }).format(value);
-                        }
-                    }
-                }
-            }
-        }
-    });
-});
-</script>
 <script>
         // Initialize all tooltips
         document.addEventListener('DOMContentLoaded', function() {

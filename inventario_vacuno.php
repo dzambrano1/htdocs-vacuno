@@ -293,7 +293,7 @@ if ($avgLecheResult && $avgLecheResult->num_rows > 0) {
     $avgLecheData = [0];
 }
 
-// Fetch average monthly vh_concentrado_peso * vh_concentrado_costo from vh_concentrado table
+// Fetch average monthly vh_concentrado_racion * vh_concentrado_costo from vh_concentrado table
 $avgRacionQuery = "
     SELECT 
         DATE_FORMAT(vh_concentrado_fecha, '%Y-%m') AS racion_month,
@@ -548,7 +548,7 @@ $partoDatasetsJson = json_encode($datasets);
           border-radius: 8px;
           padding: 10px;
           cursor: pointer;
-          color: white;
+          color: black;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -1632,6 +1632,51 @@ $partoDatasetsJson = json_encode($datasets);
             </div>
         </form>            
     </div>
+    <!-- Hamburger Button -->
+    <button class="hamburger" id="vacunoMenuToggle" aria-label="Toggle menu">
+    <i class="bi bi-list" style="font-size: 1.5rem;"></i>
+    </button>
+    <!-- Vertical Dropdown Menu -->
+    <div class="vertical-menu" id="verticalMenu">
+        <!-- Agregar Animal Dropdown -->
+        <div class="dropdown mb-2">
+            <a href="#" class="dropdown-toggle" id="reportsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="tooltip-text">Agregar Animal</span>
+            <button class="new-entry-btn" title="Agregar Nuevo Animal" onclick="openModal()">
+                <i class="bi bi-plus-circle-fill"></i>
+            </button>
+            </a>              
+            </ul>
+        </div>
+        <!-- Indicators Dropdown -->
+        <div class="dropdown mb-2">
+            <a href="#" class="dropdown-toggle" id="indicatorsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-graph-up"></i>
+                <span class="tooltip-text">Indicadores</span>
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="indicatorsDropdown">
+                <li class="dropdown-item-margin"><a class="dropdown-item" href="./vacuno_indices_reproduccion.php">Reproduccion</a></li>
+                <li class="dropdown-item-margin"><a class="dropdown-item" href="./vacuno_indices_alimentacion.php">Alimentacion</a></li>
+                <li class="dropdown-item-margin"><a class="dropdown-item" href="./vacuno_indices_produccion.php">Produccion</a></li>
+                <li class="dropdown-item-margin"><a class="dropdown-item" href="./vacuno_indices_salud.php">Salud</a></li>
+            </ul>
+        </div>
+        <!-- Configuration Dropdown -->
+        <div class="dropdown">
+            <a href="#" class="dropdown-toggle" id="configDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-gear"></i>
+            <span class="tooltip-text">Configuracion</span>
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="configDropdown">
+            <li class="dropdown-item-margin"><a class="dropdown-item" href="./vacuno_configuracion_alimentacion.php">Alimentos</a></li>
+            <li class="dropdown-item-margin"><a class="dropdown-item" href="./vacuno_configuracion_vacunas.php">Vacunas</a></li>
+            <li class="dropdown-item-margin"><a class="dropdown-item" href="./vacuno_configuracion_razas.php">Razas</a></li>
+            <li class="dropdown-item-margin"><a class="dropdown-item" href="./vacuno_configuracion_grupos.php">Grupos</a></li>
+            <li class="dropdown-item-margin"><a class="dropdown-item" href="./vacuno_configuracion_estatus.php">Estatus</a></li>
+            </ul>
+        </div>  
+    </div>
+
 </div>
 
 <?php
@@ -3534,21 +3579,22 @@ $(document).ready(function() {
 
 <!-- VH_Peso Table -->
 <div class="container table-container mt-4">
-    <h3 style="text-align: center;">Historial de Produccion Carnica</h3>
+    <h3 style="text-align: center;">Historial Produccion Carnica</h3>
     <table id="pesosTable" class="table table-striped table-bordered" style="width:100%">
         <thead>
             <tr>
-                <th>Tag ID</th>
-                <th>Peso (kg)</th>
-                <th>Fecha</th>
-                <th>Precio/kg</th>
-                <th>Total</th>
+                <th class="text-center">Tag ID</th>
+                <th class="text-center">Nombre</th>                
+                <th class="text-center">Fecha</th>
+                <th class="text-center">Peso (kg)</th>
+                <th class="text-center">Precio/kg</th>
+                <th class="text-center">Total</th>
             </tr>
         </thead>
         <tbody>
 <?php
 // Query for vh_peso table with the same filters as vacuno
-$peso_sql = "SELECT vh_peso.*, tagid 
+$peso_sql = "SELECT vh_peso.*, vacuno.tagid, vacuno.nombre 
             FROM vh_peso 
             JOIN vacuno ON vh_peso_tagid = tagid";
 
@@ -3556,26 +3602,35 @@ if (!empty($where_conditions)) {
     $peso_sql .= " WHERE " . implode(" AND ", $where_conditions);
 }
 
-$peso_sql .= " ORDER BY vh_peso_fecha DESC";
+$peso_sql .= " ORDER BY vh_peso_tagid";
 
 $peso_result = $conn->query($peso_sql);
+$total_sum = 0; // Initialize sum variable
 
 if ($peso_result && $peso_result->num_rows > 0) {
     while($row = $peso_result->fetch_assoc()) {
         // Calculate total
         $total = $row['vh_peso_animal'] * $row['vh_peso_precio'];
+        $total_sum += $total; // Add to running sum
         
         echo "<tr>";
-        echo "<td>" . htmlspecialchars($row['vh_peso_tagid']) . "</td>";
-        echo "<td>" . htmlspecialchars($row['vh_peso_animal']) . "</td>";
-        echo "<td>" . htmlspecialchars($row['vh_peso_fecha']) . "</td>";
-        echo "<td>$" . htmlspecialchars(number_format($row['vh_peso_precio'], 2)) . "</td>";
-        echo "<td>$" . htmlspecialchars(number_format($total, 2)) . "</td>";
+        echo "<td class='text-center'>" . htmlspecialchars($row['vh_peso_tagid']) . "</td>";
+        echo "<td class='text-center'>" . htmlspecialchars($row['nombre']) . "</td>";        
+        echo "<td class='text-center'>" . htmlspecialchars($row['vh_peso_fecha']) . "</td>";
+        echo "<td class='text-center'>" . htmlspecialchars($row['vh_peso_animal']) . "</td>";
+        echo "<td class='text-center'>$" . htmlspecialchars(number_format($row['vh_peso_precio'], 2)) . "</td>";
+        echo "<td class='text-center'>$" . htmlspecialchars(number_format($total, 2)) . "</td>";
         echo "</tr>";
     }
 }
 ?>
         </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="5" class="text-end">Total General:</th>
+                <th class="text-center">$<?php echo number_format($total_sum, 2); ?></th>
+            </tr>
+        </tfoot>
     </table>
 </div>
 
@@ -3601,65 +3656,123 @@ $(document).ready(function() {
         pageLength: 10,
         lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
         responsive: true,
-        order: [[2, 'desc']], // Order by date descending
+        order: [[0, 'desc']], // Order by date descending
         columnDefs: [
             {
                 targets: '_all',
-                className: 'align-middle'
+                className: 'align-middle text-center'
             },
             {
-                targets: [3, 4], // Price and Total columns
-                className: 'text-end' // Right align numbers
+                targets: [4, 5],
+                className: 'align-middle text-center'
             }
-        ]
+        ],
+        footerCallback: function(row, data, start, end, display) {
+            var api = this.api();
+
+            // Remove the formatting to get integer data for summation
+            var intVal = function(i) {
+                return typeof i === 'string' ?
+                    i.replace(/[\$,]/g, '') * 1 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
+
+            // Total over all pages
+            total = api
+                .column(5)
+                .data()
+                .reduce(function(a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0);
+
+            // Total over this page
+            pageTotal = api
+                .column(5, {page: 'current'})
+                .data()
+                .reduce(function(a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0);
+
+            // Update footer
+            $(api.column(5).footer()).html('$' + number_format(pageTotal, 2));
+        }
     });
 });
+
+// Helper function to format numbers
+function number_format(number, decimals) {
+    return number.toFixed(decimals).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
 </script>
 
 <!-- VH_Leche Table -->
 <div class="container table-container mt-4">
-    <h3 style="text-align: center;">Historial de Producción Lechera</h3>
+    <h3 style="text-align: center;">Historial Producción Lechera</h3>
     <table id="lecheTable" class="table table-striped table-bordered" style="width:100%">
         <thead>
             <tr>
-                <th>Tag ID</th>
-                <th>Peso</th>
-                <th>Fecha</th>
-                <th>Precio $/L</th>
-                <th>Total</th>
+                <th class="text-center">Tag ID</th>
+                <th class="text-center">Nombre</th>
+                <th class="text-center">Fecha</th>
+                <th class="text-center">Peso</th>                
+                <th class="text-center">Precio $/L</th>
+                <th class="text-center">Total Periodo</th>
             </tr>
         </thead>
         <tbody>
             <?php
             // Query for vh_leche table with the same filters as vacuno
-            $leche_sql = "SELECT vh_leche.*, tagid 
-                         FROM vh_leche 
-                         JOIN vacuno ON vh_leche_tagid = tagid";
+            $leche_sql = "SELECT l.*, v.nombre,
+                          LEAD(vh_leche_fecha) OVER (PARTITION BY vh_leche_tagid ORDER BY vh_leche_fecha) as next_fecha
+                          FROM vh_leche l
+                          LEFT JOIN vacuno v ON l.vh_leche_tagid = v.tagid";
             
             if (!empty($where_conditions)) {
                 $leche_sql .= " WHERE " . implode(" AND ", $where_conditions);
             }
             
-            $leche_sql .= " ORDER BY vh_leche_fecha DESC";
+            $leche_sql .= " ORDER BY vh_leche_tagid ASC, vh_leche_fecha DESC";
             
             $leche_result = $conn->query($leche_sql);
+            $total_sum_leche = 0; // Initialize sum variable
 
             if ($leche_result && $leche_result->num_rows > 0) {
                 while($row = $leche_result->fetch_assoc()) {
-                    // Calculate total
-                    $total = $row['vh_leche_peso'] * $row['vh_leche_precio'];
+                    // Get the date difference
+                    $current_date = new DateTime($row['vh_leche_fecha']);
+                    
+                    if ($row['next_fecha']) {
+                        $next_date = new DateTime($row['next_fecha']);
+                    } else {
+                        $next_date = new DateTime(); // Current system date
+                    }
+                    
+                    $date_diff = $current_date->diff($next_date);
+                    $days_diff = $date_diff->days;
+                    
+                    // Calculate total including the days difference
+                    $total_leche = $row['vh_leche_peso'] * $row['vh_leche_precio'] * $days_diff;
+                    $total_sum_leche += $total_leche; // Add to running sum
                     
                     echo "<tr>";
-                    echo "<td>" . htmlspecialchars($row['vh_leche_tagid']) . "</td>";
-                    echo "<td>" . htmlspecialchars($row['vh_leche_peso']) . "</td>";
-                    echo "<td>" . htmlspecialchars($row['vh_leche_fecha']) . "</td>";
-                    echo "<td>$" . htmlspecialchars(number_format($row['vh_leche_precio'], 2)) . "</td>";
-                    echo "<td>$" . htmlspecialchars(number_format($total, 2)) . "</td>";
+                    echo "<td class='text-center'>" . htmlspecialchars($row['vh_leche_tagid']) . "</td>";
+                    echo "<td class='text-center'>" . htmlspecialchars($row['nombre']) . "</td>";
+                    echo "<td class='text-center'>" . htmlspecialchars($row['vh_leche_fecha']) . "</td>";
+                    echo "<td class='text-center'>" . htmlspecialchars($row['vh_leche_peso']) . "</td>";
+                    echo "<td class='text-center'>$" . htmlspecialchars(number_format($row['vh_leche_precio'], 2)) . "</td>";
+                    echo "<td class='text-center'>$" . htmlspecialchars(number_format($total_leche, 2)) . "</td>";
                     echo "</tr>";
                 }
             }
             ?>
         </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="5" class="text-end">Total Acumulado:</th>
+                <th class="text-center">$<?php echo number_format($total_sum_leche, 2); ?></th>
+            </tr>
+        </tfoot>
     </table>
 </div>
 
@@ -3685,11 +3798,15 @@ $(document).ready(function() {
         pageLength: 10,
         lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
         responsive: true,
-        order: [[2, 'desc']], // Order by date descending
+        order: [[0, 'desc']], // Order by date descending
         columnDefs: [
             {
                 targets: '_all',
-                className: 'align-middle'
+                className: 'align-middle text-center'
+            },
+            {
+                targets: '_all',
+                className: 'align-middle text-center' // Added text-center for all columns
             },
             {
                 targets: [3, 4], // Price and Total columns
@@ -3706,48 +3823,73 @@ $(document).ready(function() {
 
 <!-- VH_Concentrado Table -->
 <div class="container table-container mt-4">
-    <h3 style="text-align: center;">Historial Inversion en Concentrado</h3>
+    <h3 style="text-align: center;">Historial Inversion Concentrado</h3>
     <table id="concentradoTable" class="table table-striped table-bordered" style="width:100%">
         <thead>
             <tr>
-                <th>Tag ID</th>
-                <th>Cantidad (kg)</th>
-                <th>Fecha</th>
-                <th>Precio/kg</th>
-                <th>Total</th>
+                <th class="text-center">Tag ID</th>                
+                <th class="text-center">Nombre</th>
+                <th class="text-center">Fecha</th>
+                <th class="test-center">Producto</th>             
+                <th class="text-center">Racion (kg)</th>                
+                <th class="text-center">Costo $/kg</th>
+                <th class="text-center">Total Periodo</th>
             </tr>
         </thead>
         <tbody>
             <?php
-            // Query for vh_concentrado table with the same filters as vacuno
-            $concentrado_sql = "SELECT vh_concentrado.*, tagid 
-                              FROM vh_concentrado 
-                              JOIN vacuno ON vh_concentrado_tagid = tagid";
-            
-            if (!empty($where_conditions)) {
-                $concentrado_sql .= " WHERE " . implode(" AND ", $where_conditions);
-            }
-            
-            $concentrado_sql .= " ORDER BY vh_concentrado_fecha DESC";
-            
-            $concentrado_result = $conn->query($concentrado_sql);
+            // Modify the query to include lead function for getting next date
+            $concentrado_sql = "SELECT vh_concentrado_tagid, vh_concentrado_costo, vh_concentrado_fecha, vh_concentrado_racion, vh_concentrado_producto, v.nombre,
+              LEAD(vh_concentrado_fecha) OVER (PARTITION BY vh_concentrado_tagid ORDER BY vh_concentrado_fecha) as next_fecha
+              FROM vh_concentrado l
+              LEFT JOIN vacuno v ON l.vh_concentrado_tagid = v.tagid";
 
-            if ($concentrado_result && $concentrado_result->num_rows > 0) {
-                while($row = $concentrado_result->fetch_assoc()) {
-                    // Calculate total
-                    $total = $row['vh_concentrado_racion'] * $row['vh_concentrado_costo'];
-                    
-                    echo "<tr>";
-                    echo "<td>" . htmlspecialchars($row['vh_concentrado_tagid']) . "</td>";
-                    echo "<td>" . htmlspecialchars($row['vh_concentrado_racion']) . "</td>";
-                    echo "<td>" . htmlspecialchars($row['vh_concentrado_fecha']) . "</td>";
-                    echo "<td>$" . htmlspecialchars(number_format($row['vh_concentrado_costo'], 2)) . "</td>";
-                    echo "<td>$" . htmlspecialchars(number_format($total, 2)) . "</td>";
-                    echo "</tr>";
-                }
-            }
+if (!empty($where_conditions)) {
+    $concentrado_sql .= " WHERE " . implode(" AND ", $where_conditions);
+}
+
+$concentrado_sql .= " ORDER BY vh_concentrado_tagid ASC";
+
+$concentrado_result = $conn->query($concentrado_sql);
+$total_sum_concentrado = 0; // Initialize sum variable
+
+if ($concentrado_result && $concentrado_result->num_rows > 0) {
+    while($row = $concentrado_result->fetch_assoc()) {
+        // Get the date difference
+        $current_date = new DateTime($row['vh_concentrado_fecha']);
+        
+        if ($row['next_fecha']) {
+            $next_date = new DateTime($row['next_fecha']);
+        } else {
+            $next_date = new DateTime(); // Current system date
+        }
+        
+        $date_diff = $current_date->diff($next_date);
+        $days_diff = $date_diff->days;
+        
+        // Calculate total including the days difference
+        $total_concentrado = $row['vh_concentrado_racion'] * $row['vh_concentrado_costo'] * $days_diff;
+        $total_sum_concentrado += $total_concentrado; // Add to running sum
+        
+        echo "<tr>";
+        echo "<td class='text-center'>" . htmlspecialchars($row['vh_concentrado_tagid']) . "</td>";
+        echo "<td class='text-center'>" . htmlspecialchars($row['nombre']) . "</td>";
+        echo "<td class='text-center'>" . htmlspecialchars($row['vh_concentrado_fecha']) . "</td>";
+        echo "<td class='text-center'>" . htmlspecialchars($row['vh_concentrado_producto']) . "</td>";
+        echo "<td class='text-center'>" . htmlspecialchars($row['vh_concentrado_racion']) . "</td>";
+        echo "<td class='text-center'>$" . htmlspecialchars(number_format($row['vh_concentrado_costo'], 2)) . "</td>";
+        echo "<td class='text-center'>$" . htmlspecialchars(number_format($total_concentrado, 2)) . "</td>";
+        echo "</tr>";
+    }
+}
             ?>
         </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="6" class="text-end">Total Acumulado:</th>
+                <th class="text-center">$<?php echo number_format($total_sum_concentrado, 2); ?></th>
+            </tr>
+        </tfoot>
     </table>
 </div>
 
@@ -3773,11 +3915,11 @@ $(document).ready(function() {
         pageLength: 10,
         lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
         responsive: true,
-        order: [[2, 'desc']], // Order by date descending
+        order: [[0, 'desc']], // Order by date descending
         columnDefs: [
             {
                 targets: '_all',
-                className: 'align-middle'
+                className: 'align-middle text-center' // Added text-center for all columns
             },
             {
                 targets: [1, 3, 4], // Quantity, Price and Total columns
@@ -3790,23 +3932,26 @@ $(document).ready(function() {
 
 <!-- VH_Melaza Table -->
 <div class="container table-container mt-4">
-    <h3 style="text-align: center;">Historial de Consumo de Melaza</h3>
+    <h3 style="text-align: center;">Historial Inversion Melaza</h3>
     <table id="melazaTable" class="table table-striped table-bordered" style="width:100%">
         <thead>
             <tr>
-                <th>Tag ID</th>
-                <th>Cantidad (kg)</th>
-                <th>Fecha</th>
-                <th>Precio/kg</th>
-                <th>Total</th>
+                <th class="text-center">Tag ID</th>                
+                <th class="text-center">Nombre</th>
+                <th class="text-center">Fecha</th>
+                <th class="test-center">Producto</th>             
+                <th class="text-center">Racion (kg)</th>                
+                <th class="text-center">Costo $/kg</th>
+                <th class="text-center">Total Periodo</th>
             </tr>
         </thead>
         <tbody>
             <?php
-            // Query for vh_melaza table with the same filters as vacuno
-            $melaza_sql = "SELECT vh_melaza.*, tagid 
-                          FROM vh_melaza 
-                          JOIN vacuno ON vh_melaza_tagid = tagid";
+             // Modify the query to include lead function for getting next date
+             $melaza_sql = "SELECT vh_melaza_tagid, vh_melaza_costo, vh_melaza_fecha, vh_melaza_racion, vh_melaza_producto, v.nombre,
+             LEAD(vh_melaza_fecha) OVER (PARTITION BY vh_melaza_tagid ORDER BY vh_melaza_fecha) as next_fecha
+             FROM vh_melaza m
+             LEFT JOIN vacuno v ON m.vh_melaza_tagid = v.tagid";
             
             if (!empty($where_conditions)) {
                 $melaza_sql .= " WHERE " . implode(" AND ", $where_conditions);
@@ -3815,24 +3960,46 @@ $(document).ready(function() {
             $melaza_sql .= " ORDER BY vh_melaza_fecha DESC";
             
             $melaza_result = $conn->query($melaza_sql);
+            $total_sum_melaza = 0; // Initialize sum variable
 
             if ($melaza_result && $melaza_result->num_rows > 0) {
                 while($row = $melaza_result->fetch_assoc()) {
-                    // Calculate total
-                    $total = $row['vh_melaza_racion'] * $row['vh_melaza_costo'];
+                    // Get the date difference
+                    $current_date = new DateTime($row['vh_melaza_fecha']);
                     
+                    if ($row['next_fecha']) {
+                        $next_date = new DateTime($row['next_fecha']);
+                    } else {
+                        $next_date = new DateTime(); // Current system date
+                    }
+                    
+                    $date_diff = $current_date->diff($next_date);
+                    $days_diff = $date_diff->days;
+                    
+                    // Calculate total
+                    $total = $row['vh_melaza_racion'] * $row['vh_melaza_costo']* $days_diff;
+                    $total_sum_melaza += $total; // Add to running sum
+
                     echo "<tr>";
-                    echo "<td>" . htmlspecialchars($row['vh_melaza_tagid']) . "</td>";
-                    echo "<td>" . htmlspecialchars($row['vh_melaza_racion']) . "</td>";
-                    echo "<td>" . htmlspecialchars($row['vh_melaza_fecha']) . "</td>";
-                    echo "<td>$" . htmlspecialchars(number_format($row['vh_melaza_costo'], 2)) . "</td>";
+                    echo "<td class='text-center'>" . htmlspecialchars($row['vh_melaza_tagid']) . "</td>";
+                    echo "<td class='text-center'>" . htmlspecialchars($row['nombre']) . "</td>";
+                    echo "<td class='text-center'>" . htmlspecialchars($row['vh_melaza_fecha']) . "</td>";
+                    echo "<td class='text-center'>" . htmlspecialchars($row['vh_melaza_producto']) . "</td>";
+                    echo "<td class='text-center'>" . htmlspecialchars($row['vh_melaza_racion']) . "</td>";
+                    echo "<td class='text-center'>$" . htmlspecialchars(number_format($row['vh_melaza_costo'], 2)) . "</td>";
                     echo "<td>$" . htmlspecialchars(number_format($total, 2)) . "</td>";
                     echo "</tr>";
                 }
             }
             ?>
         </tbody>
-    </table>
+        <tfoot>
+            <tr>
+                <th colspan="6" class="text-end">Total Acumulado:</th>
+                <th class="text-center">$<?php echo number_format($total_sum_melaza, 2); ?></th>
+            </tr>
+        </tfoot>
+       </table>
 </div>
 
 <script>
@@ -3857,11 +4024,11 @@ $(document).ready(function() {
         pageLength: 10,
         lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
         responsive: true,
-        order: [[2, 'desc']], // Order by date descending
+        order: [[0, 'desc']], // Order by date descending
         columnDefs: [
             {
                 targets: '_all',
-                className: 'align-middle'
+                className: 'align-middle text-center' // Added text-center for all columns
             },
             {
                 targets: [1, 3, 4], // Quantity, Price and Total columns
@@ -3874,23 +4041,26 @@ $(document).ready(function() {
 
 <!-- VH_Sal Table -->
 <div class="container table-container mt-4">
-    <h3 style="text-align: center;">Historial de Consumo de Sal</h3>
+    <h3 style="text-align: center;">Historial Inversion Sal</h3>
     <table id="salTable" class="table table-striped table-bordered" style="width:100%">
         <thead>
             <tr>
-                <th>Tag ID</th>
-                <th>Cantidad (kg)</th>
-                <th>Fecha</th>
-                <th>Precio/kg</th>
-                <th>Total</th>
+                <th class="text-center">Tag ID</th>                
+                <th class="text-center">Nombre</th>
+                <th class="text-center">Fecha</th>
+                <th class="test-center">Producto</th>             
+                <th class="text-center">Racion (kg)</th>                
+                <th class="text-center">Costo $/kg</th>
+                <th class="text-center">Total Periodo</th>
             </tr>
         </thead>
         <tbody>
-            <?php
-            // Query for vh_sal table with the same filters as vacuno
-            $sal_sql = "SELECT vh_sal.*, tagid 
-                       FROM vh_sal 
-                       JOIN vacuno ON vh_sal_tagid = tagid";
+        <?php
+             // Modify the query to include lead function for getting next date
+             $sal_sql = "SELECT vh_sal_tagid, vh_sal_costo, vh_sal_fecha, vh_sal_racion, vh_sal_producto, v.nombre,
+             LEAD(vh_sal_fecha) OVER (PARTITION BY vh_sal_tagid ORDER BY vh_sal_fecha) as next_fecha
+             FROM vh_sal m
+             LEFT JOIN vacuno v ON m.vh_sal_tagid = v.tagid";
             
             if (!empty($where_conditions)) {
                 $sal_sql .= " WHERE " . implode(" AND ", $where_conditions);
@@ -3899,23 +4069,45 @@ $(document).ready(function() {
             $sal_sql .= " ORDER BY vh_sal_fecha DESC";
             
             $sal_result = $conn->query($sal_sql);
+            $total_sum_sal = 0; // Initialize sum variable
 
             if ($sal_result && $sal_result->num_rows > 0) {
                 while($row = $sal_result->fetch_assoc()) {
-                    // Calculate total
-                    $total = $row['vh_sal_racion'] * $row['vh_sal_costo'];
+                    // Get the date difference
+                    $current_date = new DateTime($row['vh_sal_fecha']);
                     
+                    if ($row['next_fecha']) {
+                        $next_date = new DateTime($row['next_fecha']);
+                    } else {
+                        $next_date = new DateTime(); // Current system date
+                    }
+                    
+                    $date_diff = $current_date->diff($next_date);
+                    $days_diff = $date_diff->days;
+                    
+                    // Calculate total
+                    $total = $row['vh_sal_racion'] * $row['vh_sal_costo']* $days_diff;
+                    $total_sum_sal += $total; // Add to running sum
+
                     echo "<tr>";
-                    echo "<td>" . htmlspecialchars($row['vh_sal_tagid']) . "</td>";
-                    echo "<td>" . htmlspecialchars($row['vh_sal_racion']) . "</td>";
-                    echo "<td>" . htmlspecialchars($row['vh_sal_fecha']) . "</td>";
-                    echo "<td>$" . htmlspecialchars(number_format($row['vh_sal_costo'], 2)) . "</td>";
+                    echo "<td class='text-center'>" . htmlspecialchars($row['vh_sal_tagid']) . "</td>";
+                    echo "<td class='text-center'>" . htmlspecialchars($row['nombre']) . "</td>";
+                    echo "<td class='text-center'>" . htmlspecialchars($row['vh_sal_fecha']) . "</td>";
+                    echo "<td class='text-center'>" . htmlspecialchars($row['vh_sal_producto']) . "</td>";
+                    echo "<td class='text-center'>" . htmlspecialchars($row['vh_sal_racion']) . "</td>";
+                    echo "<td class='text-center'>$" . htmlspecialchars(number_format($row['vh_sal_costo'], 2)) . "</td>";
                     echo "<td>$" . htmlspecialchars(number_format($total, 2)) . "</td>";
                     echo "</tr>";
                 }
             }
             ?>
         </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="6" class="text-end">Total General:</th>
+                <th class="text-center">$<?php echo number_format($total_sum_sal, 2); ?></th>
+            </tr>
+        </tfoot>
     </table>
 </div>
 
@@ -3941,11 +4133,11 @@ $(document).ready(function() {
         pageLength: 10,
         lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
         responsive: true,
-        order: [[2, 'desc']], // Order by date descending
+        order: [[0, 'desc']], // Order by date descending
         columnDefs: [
             {
                 targets: '_all',
-                className: 'align-middle'
+                className: 'align-middle text-center' // Added text-center for all columns
             },
             {
                 targets: [1, 3, 4], // Quantity, Price and Total columns
@@ -3958,14 +4150,16 @@ $(document).ready(function() {
 
 <!-- VH_Aftosa Table -->
 <div class="container table-container mt-4">
-    <h3 style="text-align: center;">Historial de Vacunación Aftosa</h3>
+    <h3 style="text-align: center;">Historial Vacunación Aftosa</h3>
     <table id="aftosaTable" class="table table-striped table-bordered" style="width:100%">
         <thead>
             <tr>
                 <th>Tag ID</th>
                 <th>Fecha</th>
+                <th>Nombre</th>
+                <th>Producto</th>
                 <th>Dosis</th>
-                <th>Precio/Dosis</th>
+                <th>Costo $/Dosis</th>
                 <th>Total</th>
                 <th>Próxima Dosis</th>
             </tr>
@@ -3973,9 +4167,9 @@ $(document).ready(function() {
         <tbody>
             <?php
             // Query for vh_aftosa table with the same filters as vacuno
-            $aftosa_sql = "SELECT vh_aftosa.*, tagid 
+            $aftosa_sql = "SELECT vh_aftosa_tagid, vh_aftosa_fecha, vh_aftosa_producto, vh_aftosa_dosis, vh_aftosa_costo, tagid, v.nombre
                           FROM vh_aftosa 
-                          JOIN vacuno ON vh_aftosa_tagid = tagid";
+                          JOIN vacuno v ON vh_aftosa_tagid = v.tagid";
             
             if (!empty($where_conditions)) {
                 $aftosa_sql .= " WHERE " . implode(" AND ", $where_conditions);
@@ -3984,18 +4178,22 @@ $(document).ready(function() {
             $aftosa_sql .= " ORDER BY vh_aftosa_fecha DESC";
             
             $aftosa_result = $conn->query($aftosa_sql);
+            $total_sum_aftosa = 0; // Initialize sum variable
 
             if ($aftosa_result && $aftosa_result->num_rows > 0) {
                 while($row = $aftosa_result->fetch_assoc()) {
                     // Calculate total
                     $total = $row['vh_aftosa_dosis'] * $row['vh_aftosa_costo'];
-                    
+                    $total_sum_aftosa += $total; // Add to running sum
+
                     // Calculate next dose date (6 months from application)
                     $next_dose = date('Y-m-d', strtotime($row['vh_aftosa_fecha'] . ' + 6 months'));
                     
                     echo "<tr>";
                     echo "<td>" . htmlspecialchars($row['vh_aftosa_tagid']) . "</td>";
                     echo "<td>" . htmlspecialchars($row['vh_aftosa_fecha']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['nombre']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['vh_aftosa_producto']) . "</td>";
                     echo "<td class='text-end'>" . htmlspecialchars($row['vh_aftosa_dosis']) . "</td>";
                     echo "<td class='text-end'>$" . htmlspecialchars(number_format($row['vh_aftosa_costo'], 2)) . "</td>";
                     echo "<td class='text-end'>$" . htmlspecialchars(number_format($total, 2)) . "</td>";
@@ -4005,6 +4203,12 @@ $(document).ready(function() {
             }
             ?>
         </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="6" class="text-end">Total General:</th>
+                <th class="text-center">$<?php echo number_format($total_sum_aftosa, 2); ?></th>
+            </tr>
+        </tfoot>
     </table>
 </div>
 
@@ -4030,11 +4234,11 @@ $(document).ready(function() {
         pageLength: 10,
         lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
         responsive: true,
-        order: [[1, 'desc']], // Order by date descending
+        order: [[0, 'desc']], // Order by date descending
         columnDefs: [
             {
                 targets: '_all',
-                className: 'align-middle'
+                className: 'align-middle text-center' // Added text-center for all columns
             },
             {
                 targets: [2, 3, 4], // Dosis, Price and Total columns
@@ -4077,18 +4281,20 @@ $(document).ready(function() {
             <tr>
                 <th>Tag ID</th>
                 <th>Fecha</th>
+                <th>Nombre</th>
+                <th>Producto</th>
                 <th>Dosis</th>
-                <th>Precio/Dosis</th>
+                <th>Costo $/Dosis</th>
                 <th>Total</th>
                 <th>Próxima Dosis</th>
             </tr>
         </thead>
         <tbody>
-            <?php
+        <?php
             // Query for vh_ibr table with the same filters as vacuno
-            $ibr_sql = "SELECT vh_ibr.*, tagid 
-                       FROM vh_ibr 
-                       JOIN vacuno ON vh_ibr_tagid = tagid";
+            $ibr_sql = "SELECT vh_ibr_tagid, vh_ibr_fecha, vh_ibr_producto, vh_ibr_dosis, vh_ibr_costo, tagid, v.nombre
+                          FROM vh_ibr 
+                          JOIN vacuno v ON vh_ibr_tagid = v.tagid";
             
             if (!empty($where_conditions)) {
                 $ibr_sql .= " WHERE " . implode(" AND ", $where_conditions);
@@ -4097,18 +4303,22 @@ $(document).ready(function() {
             $ibr_sql .= " ORDER BY vh_ibr_fecha DESC";
             
             $ibr_result = $conn->query($ibr_sql);
+            $total_sum_ibr = 0; // Initialize sum variable
 
             if ($ibr_result && $ibr_result->num_rows > 0) {
                 while($row = $ibr_result->fetch_assoc()) {
                     // Calculate total
                     $total = $row['vh_ibr_dosis'] * $row['vh_ibr_costo'];
-                    
+                    $total_sum_ibr += $total; // Add to running sum
+
                     // Calculate next dose date (6 months from application)
                     $next_dose = date('Y-m-d', strtotime($row['vh_ibr_fecha'] . ' + 6 months'));
                     
                     echo "<tr>";
                     echo "<td>" . htmlspecialchars($row['vh_ibr_tagid']) . "</td>";
                     echo "<td>" . htmlspecialchars($row['vh_ibr_fecha']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['nombre']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['vh_ibr_producto']) . "</td>";
                     echo "<td class='text-end'>" . htmlspecialchars($row['vh_ibr_dosis']) . "</td>";
                     echo "<td class='text-end'>$" . htmlspecialchars(number_format($row['vh_ibr_costo'], 2)) . "</td>";
                     echo "<td class='text-end'>$" . htmlspecialchars(number_format($total, 2)) . "</td>";
@@ -4118,6 +4328,12 @@ $(document).ready(function() {
             }
             ?>
         </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="6" class="text-end">Total General:</th>
+                <th class="text-center">$<?php echo number_format($total_sum_ibr, 2); ?></th>
+            </tr>
+        </tfoot>
     </table>
 </div>
 
@@ -4143,11 +4359,11 @@ $(document).ready(function() {
         pageLength: 10,
         lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
         responsive: true,
-        order: [[1, 'desc']], // Order by date descending
+        order: [[0, 'desc']], // Order by date descending
         columnDefs: [
             {
                 targets: '_all',
-                className: 'align-middle'
+                className: 'align-middle text-center' // Added text-center for all columns
             },
             {
                 targets: [2, 3, 4], // Dosis, Price and Total columns
@@ -4174,24 +4390,26 @@ $(document).ready(function() {
 
 <!-- VH_CBR Table -->
 <div class="container table-container mt-4">
-    <h3 style="text-align: center;">Historial de Vacunación CBR</h3>
+    <h3 style="text-align: center;">Historial Vacunación CBR</h3>
     <table id="cbrTable" class="table table-striped table-bordered" style="width:100%">
         <thead>
             <tr>
                 <th>Tag ID</th>
                 <th>Fecha</th>
+                <th>Nombre</th>
+                <th>Producto</th>
                 <th>Dosis</th>
-                <th>Precio/Dosis</th>
+                <th>Costo $/Dosis</th>
                 <th>Total</th>
                 <th>Próxima Dosis</th>
             </tr>
         </thead>
         <tbody>
-            <?php
+        <?php
             // Query for vh_ibr table with the same filters as vacuno
-            $cbr_sql = "SELECT vh_cbr.*, tagid 
-                       FROM vh_cbr 
-                       JOIN vacuno ON vh_cbr_tagid = tagid";
+            $cbr_sql = "SELECT vh_cbr_tagid, vh_cbr_fecha, vh_cbr_producto, vh_cbr_dosis, vh_cbr_costo, tagid, v.nombre
+                          FROM vh_cbr 
+                          JOIN vacuno v ON vh_cbr_tagid = v.tagid";
             
             if (!empty($where_conditions)) {
                 $cbr_sql .= " WHERE " . implode(" AND ", $where_conditions);
@@ -4200,18 +4418,22 @@ $(document).ready(function() {
             $cbr_sql .= " ORDER BY vh_cbr_fecha DESC";
             
             $cbr_result = $conn->query($cbr_sql);
+            $total_sum_cbr = 0; // Initialize sum variable
 
             if ($cbr_result && $cbr_result->num_rows > 0) {
                 while($row = $cbr_result->fetch_assoc()) {
                     // Calculate total
                     $total = $row['vh_cbr_dosis'] * $row['vh_cbr_costo'];
-                    
+                    $total_sum_cbr += $total; // Add to running sum
+
                     // Calculate next dose date (6 months from application)
                     $next_dose = date('Y-m-d', strtotime($row['vh_cbr_fecha'] . ' + 6 months'));
                     
                     echo "<tr>";
                     echo "<td>" . htmlspecialchars($row['vh_cbr_tagid']) . "</td>";
                     echo "<td>" . htmlspecialchars($row['vh_cbr_fecha']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['nombre']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['vh_cbr_producto']) . "</td>";
                     echo "<td class='text-end'>" . htmlspecialchars($row['vh_cbr_dosis']) . "</td>";
                     echo "<td class='text-end'>$" . htmlspecialchars(number_format($row['vh_cbr_costo'], 2)) . "</td>";
                     echo "<td class='text-end'>$" . htmlspecialchars(number_format($total, 2)) . "</td>";
@@ -4221,6 +4443,12 @@ $(document).ready(function() {
             }
             ?>
         </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="6" class="text-end">Total General:</th>
+                <th class="text-center">$<?php echo number_format($total_sum_cbr, 2); ?></th>
+            </tr>
+        </tfoot>
     </table>
 </div>
 
@@ -4246,11 +4474,11 @@ $(document).ready(function() {
         pageLength: 10,
         lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
         responsive: true,
-        order: [[1, 'desc']], // Order by date descending
+        order: [[0, 'desc']], // Order by date descending
         columnDefs: [
             {
                 targets: '_all',
-                className: 'align-middle'
+                className: 'align-middle text-center' // Added text-center for all columns
             },
             {
                 targets: [2, 3, 4], // Dosis, Price and Total columns
@@ -4285,24 +4513,26 @@ $(document).ready(function() {
 </style>
 <!-- VH_brucelosis Table -->
 <div class="container table-container mt-4">
-    <h3 style="text-align: center;">Historial de Vacunación Brucelosis</h3>
+    <h3 style="text-align: center;">Historial Vacunación Brucelosis</h3>
     <table id="brucelosisTable" class="table table-striped table-bordered" style="width:100%">
         <thead>
             <tr>
                 <th>Tag ID</th>
                 <th>Fecha</th>
+                <th>Nombre</th>
+                <th>Producto</th>
                 <th>Dosis</th>
-                <th>Precio/Dosis</th>
+                <th>Costo $/Dosis</th>
                 <th>Total</th>
                 <th>Próxima Dosis</th>
             </tr>
         </thead>
         <tbody>
-            <?php
+        <?php
             // Query for vh_brucelosis table with the same filters as vacuno
-            $brucelosis_sql = "SELECT vh_brucelosis.*, tagid 
-                       FROM vh_brucelosis 
-                       JOIN vacuno ON vh_brucelosis_tagid = tagid";
+            $brucelosis_sql = "SELECT vh_brucelosis_tagid, vh_brucelosis_fecha, vh_brucelosis_producto, 		vh_brucelosis_dosis, vh_brucelosis_costo, tagid, v.nombre
+                          FROM vh_brucelosis 
+                          JOIN vacuno v ON vh_brucelosis_tagid = v.tagid";
             
             if (!empty($where_conditions)) {
                 $brucelosis_sql .= " WHERE " . implode(" AND ", $where_conditions);
@@ -4311,18 +4541,22 @@ $(document).ready(function() {
             $brucelosis_sql .= " ORDER BY vh_brucelosis_fecha DESC";
             
             $brucelosis_result = $conn->query($brucelosis_sql);
+            $total_sum_brucelosis = 0; // Initialize sum variable
 
             if ($brucelosis_result && $brucelosis_result->num_rows > 0) {
                 while($row = $brucelosis_result->fetch_assoc()) {
                     // Calculate total
                     $total = $row['vh_brucelosis_dosis'] * $row['vh_brucelosis_costo'];
-                    
+                    $total_sum_brucelosis += $total; // Add to running sum
+
                     // Calculate next dose date (6 months from application)
                     $next_dose = date('Y-m-d', strtotime($row['vh_brucelosis_fecha'] . ' + 6 months'));
                     
                     echo "<tr>";
                     echo "<td>" . htmlspecialchars($row['vh_brucelosis_tagid']) . "</td>";
                     echo "<td>" . htmlspecialchars($row['vh_brucelosis_fecha']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['nombre']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['vh_brucelosis_producto']) . "</td>";
                     echo "<td class='text-end'>" . htmlspecialchars($row['vh_brucelosis_dosis']) . "</td>";
                     echo "<td class='text-end'>$" . htmlspecialchars(number_format($row['vh_brucelosis_costo'], 2)) . "</td>";
                     echo "<td class='text-end'>$" . htmlspecialchars(number_format($total, 2)) . "</td>";
@@ -4332,6 +4566,12 @@ $(document).ready(function() {
             }
             ?>
         </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="6" class="text-end">Total General:</th>
+                <th class="text-center">$<?php echo number_format($total_sum_brucelosis, 2); ?></th>
+            </tr>
+        </tfoot>
     </table>
 </div>
 
@@ -4357,11 +4597,11 @@ $(document).ready(function() {
         pageLength: 10,
         lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
         responsive: true,
-        order: [[1, 'desc']], // Order by date descending
+        order: [[0, 'desc']], // Order by date descending
         columnDefs: [
             {
                 targets: '_all',
-                className: 'align-middle'
+                className: 'align-middle text-center' // Added text-center for all columns
             },
             {
                 targets: [2, 3, 4], // Dosis, Price and Total columns
@@ -4396,24 +4636,26 @@ $(document).ready(function() {
 </style>
 <!-- VH_carbunco Table -->
 <div class="container table-container mt-4">
-    <h3 style="text-align: center;">Historial de Vacunación Carbunco</h3>
+    <h3 style="text-align: center;">Historial Vacunación Carbunco</h3>
     <table id="carbuncoTable" class="table table-striped table-bordered" style="width:100%">
         <thead>
             <tr>
                 <th>Tag ID</th>
                 <th>Fecha</th>
+                <th>Nombre</th>
+                <th>Producto</th>
                 <th>Dosis</th>
-                <th>Precio/Dosis</th>
+                <th>Costo $/Dosis</th>
                 <th>Total</th>
                 <th>Próxima Dosis</th>
             </tr>
         </thead>
         <tbody>
-            <?php
+        <?php
             // Query for vh_carbunco table with the same filters as vacuno
-            $carbunco_sql = "SELECT vh_carbunco.*, tagid 
-                       FROM vh_carbunco 
-                       JOIN vacuno ON vh_carbunco_tagid = tagid";
+            $carbunco_sql = "SELECT vh_carbunco_tagid, vh_carbunco_fecha, vh_carbunco_producto, 		vh_carbunco_dosis, vh_carbunco_costo, tagid, v.nombre
+                          FROM vh_carbunco 
+                          JOIN vacuno v ON vh_carbunco_tagid = v.tagid";
             
             if (!empty($where_conditions)) {
                 $carbunco_sql .= " WHERE " . implode(" AND ", $where_conditions);
@@ -4422,18 +4664,22 @@ $(document).ready(function() {
             $carbunco_sql .= " ORDER BY vh_carbunco_fecha DESC";
             
             $carbunco_result = $conn->query($carbunco_sql);
+            $total_sum_carbunco = 0; // Initialize sum variable
 
             if ($carbunco_result && $carbunco_result->num_rows > 0) {
                 while($row = $carbunco_result->fetch_assoc()) {
                     // Calculate total
                     $total = $row['vh_carbunco_dosis'] * $row['vh_carbunco_costo'];
-                    
+                    $total_sum_carbunco += $total; // Add to running sum
+
                     // Calculate next dose date (6 months from application)
                     $next_dose = date('Y-m-d', strtotime($row['vh_carbunco_fecha'] . ' + 6 months'));
                     
                     echo "<tr>";
                     echo "<td>" . htmlspecialchars($row['vh_carbunco_tagid']) . "</td>";
                     echo "<td>" . htmlspecialchars($row['vh_carbunco_fecha']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['nombre']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['vh_carbunco_producto']) . "</td>";
                     echo "<td class='text-end'>" . htmlspecialchars($row['vh_carbunco_dosis']) . "</td>";
                     echo "<td class='text-end'>$" . htmlspecialchars(number_format($row['vh_carbunco_costo'], 2)) . "</td>";
                     echo "<td class='text-end'>$" . htmlspecialchars(number_format($total, 2)) . "</td>";
@@ -4443,6 +4689,12 @@ $(document).ready(function() {
             }
             ?>
         </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="6" class="text-end">Total General:</th>
+                <th class="text-center">$<?php echo number_format($total_sum_carbunco, 2); ?></th>
+            </tr>
+        </tfoot>
     </table>
 </div>
 
@@ -4468,11 +4720,11 @@ $(document).ready(function() {
         pageLength: 10,
         lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
         responsive: true,
-        order: [[1, 'desc']], // Order by date descending
+        order: [[0, 'desc']], // Order by date descending
         columnDefs: [
             {
                 targets: '_all',
-                className: 'align-middle'
+                className: 'align-middle text-center' // Added text-center for all columns
             },
             {
                 targets: [2, 3, 4], // Dosis, Price and Total columns
@@ -4508,24 +4760,26 @@ $(document).ready(function() {
 
 <!-- VH_garrapatas Table -->
 <div class="container table-container mt-4">
-    <h3 style="text-align: center;">Historial de Vacunación Garrapatas</h3>
+    <h3 style="text-align: center;">Historial Tratamiento Garrapatas</h3>
     <table id="garrapatasTable" class="table table-striped table-bordered" style="width:100%">
         <thead>
             <tr>
                 <th>Tag ID</th>
                 <th>Fecha</th>
+                <th>Nombre</th>
+                <th>Producto</th>
                 <th>Dosis</th>
-                <th>Precio/Dosis</th>
+                <th>Costo $/Dosis</th>
                 <th>Total</th>
                 <th>Próxima Dosis</th>
             </tr>
         </thead>
         <tbody>
-            <?php
+        <?php
             // Query for vh_garrapatas table with the same filters as vacuno
-            $garrapatas_sql = "SELECT vh_garrapatas.*, tagid 
-                       FROM vh_garrapatas 
-                       JOIN vacuno ON vh_garrapatas_tagid = tagid";
+            $garrapatas_sql = "SELECT vh_garrapatas_tagid, vh_garrapatas_fecha, vh_garrapatas_producto, 		vh_garrapatas_dosis, vh_garrapatas_costo, tagid, v.nombre
+                          FROM vh_garrapatas 
+                          JOIN vacuno v ON vh_garrapatas_tagid = v.tagid";
             
             if (!empty($where_conditions)) {
                 $garrapatas_sql .= " WHERE " . implode(" AND ", $where_conditions);
@@ -4534,18 +4788,22 @@ $(document).ready(function() {
             $garrapatas_sql .= " ORDER BY vh_garrapatas_fecha DESC";
             
             $garrapatas_result = $conn->query($garrapatas_sql);
+            $total_sum_garrapatas = 0; // Initialize sum variable
 
             if ($garrapatas_result && $garrapatas_result->num_rows > 0) {
                 while($row = $garrapatas_result->fetch_assoc()) {
                     // Calculate total
                     $total = $row['vh_garrapatas_dosis'] * $row['vh_garrapatas_costo'];
-                    
+                    $total_sum_garrapatas += $total; // Add to running sum
+
                     // Calculate next dose date (6 months from application)
                     $next_dose = date('Y-m-d', strtotime($row['vh_garrapatas_fecha'] . ' + 6 months'));
                     
                     echo "<tr>";
                     echo "<td>" . htmlspecialchars($row['vh_garrapatas_tagid']) . "</td>";
                     echo "<td>" . htmlspecialchars($row['vh_garrapatas_fecha']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['nombre']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['vh_garrapatas_producto']) . "</td>";
                     echo "<td class='text-end'>" . htmlspecialchars($row['vh_garrapatas_dosis']) . "</td>";
                     echo "<td class='text-end'>$" . htmlspecialchars(number_format($row['vh_garrapatas_costo'], 2)) . "</td>";
                     echo "<td class='text-end'>$" . htmlspecialchars(number_format($total, 2)) . "</td>";
@@ -4555,6 +4813,12 @@ $(document).ready(function() {
             }
             ?>
         </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="6" class="text-end">Total General:</th>
+                <th class="text-center">$<?php echo number_format($total_sum_garrapatas, 2); ?></th>
+            </tr>
+        </tfoot>
     </table>
 </div>
 
@@ -4580,11 +4844,11 @@ $(document).ready(function() {
         pageLength: 10,
         lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
         responsive: true,
-        order: [[1, 'desc']], // Order by date descending
+        order: [[0, 'desc']], // Order by date descending
         columnDefs: [
             {
                 targets: '_all',
-                className: 'align-middle'
+                className: 'align-middle text-center' // Added text-center for all columns
             },
             {
                 targets: [2, 3, 4], // Dosis, Price and Total columns
@@ -4620,24 +4884,26 @@ $(document).ready(function() {
 
 <!-- VH_mastitis Table -->
 <div class="container table-container mt-4">
-    <h3 style="text-align: center;">Historial de Vacunación mastitis</h3>
+    <h3 style="text-align: center;">Historial Tratamiento Mastitis</h3>
     <table id="mastitisTable" class="table table-striped table-bordered" style="width:100%">
         <thead>
             <tr>
                 <th>Tag ID</th>
                 <th>Fecha</th>
+                <th>Nombre</th>
+                <th>Producto</th>
                 <th>Dosis</th>
-                <th>Precio/Dosis</th>
+                <th>Costo $/Dosis</th>
                 <th>Total</th>
                 <th>Próxima Dosis</th>
             </tr>
         </thead>
         <tbody>
-            <?php
+        <?php
             // Query for vh_mastitis table with the same filters as vacuno
-            $mastitis_sql = "SELECT vh_mastitis.*, tagid 
-                       FROM vh_mastitis 
-                       JOIN vacuno ON vh_mastitis_tagid = tagid";
+            $mastitis_sql = "SELECT vh_mastitis_tagid, vh_mastitis_fecha, vh_mastitis_producto, 		vh_mastitis_dosis, vh_mastitis_costo, tagid, v.nombre
+                          FROM vh_mastitis 
+                          JOIN vacuno v ON vh_mastitis_tagid = v.tagid";
             
             if (!empty($where_conditions)) {
                 $mastitis_sql .= " WHERE " . implode(" AND ", $where_conditions);
@@ -4646,18 +4912,22 @@ $(document).ready(function() {
             $mastitis_sql .= " ORDER BY vh_mastitis_fecha DESC";
             
             $mastitis_result = $conn->query($mastitis_sql);
+            $total_sum_mastitis = 0; // Initialize sum variable
 
             if ($mastitis_result && $mastitis_result->num_rows > 0) {
                 while($row = $mastitis_result->fetch_assoc()) {
                     // Calculate total
                     $total = $row['vh_mastitis_dosis'] * $row['vh_mastitis_costo'];
-                    
+                    $total_sum_mastitis += $total; // Add to running sum
+
                     // Calculate next dose date (6 months from application)
                     $next_dose = date('Y-m-d', strtotime($row['vh_mastitis_fecha'] . ' + 6 months'));
                     
                     echo "<tr>";
                     echo "<td>" . htmlspecialchars($row['vh_mastitis_tagid']) . "</td>";
                     echo "<td>" . htmlspecialchars($row['vh_mastitis_fecha']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['nombre']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['vh_mastitis_producto']) . "</td>";
                     echo "<td class='text-end'>" . htmlspecialchars($row['vh_mastitis_dosis']) . "</td>";
                     echo "<td class='text-end'>$" . htmlspecialchars(number_format($row['vh_mastitis_costo'], 2)) . "</td>";
                     echo "<td class='text-end'>$" . htmlspecialchars(number_format($total, 2)) . "</td>";
@@ -4667,6 +4937,12 @@ $(document).ready(function() {
             }
             ?>
         </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="6" class="text-end">Total General:</th>
+                <th class="text-center">$<?php echo number_format($total_sum_mastitis, 2); ?></th>
+            </tr>
+        </tfoot>
     </table>
 </div>
 
@@ -4692,11 +4968,11 @@ $(document).ready(function() {
         pageLength: 10,
         lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
         responsive: true,
-        order: [[1, 'desc']], // Order by date descending
+        order: [[0, 'desc']], // Order by date descending
         columnDefs: [
             {
                 targets: '_all',
-                className: 'align-middle'
+                className: 'align-middle text-center' // Added text-center for all columns
             },
             {
                 targets: [2, 3, 4], // Dosis, Price and Total columns
@@ -4732,24 +5008,26 @@ $(document).ready(function() {
 
 <!-- VH_lombrices Table -->
 <div class="container table-container mt-4">
-    <h3 style="text-align: center;">Historial de Vacunación Lombrices</h3>
+    <h3 style="text-align: center;">Historial Tratamiento Lombrices</h3>
     <table id="lombricesTable" class="table table-striped table-bordered" style="width:100%">
         <thead>
             <tr>
-                <th>Tag ID</th>
-                <th>Fecha</th>
-                <th>Dosis</th>
-                <th>Precio/Dosis</th>
-                <th>Total</th>
-                <th>Próxima Dosis</th>
+                <th class="text-center">Tag ID</th>
+                <th class="text-center">Fecha</th>
+                <th class="text-center">Nombre</th>
+                <th class="text-center">Producto</th>
+                <th class="text-center">Dosis</th>
+                <th class="text-center">Costo $/Dosis</th>
+                <th class="text-center">Total</th>
+                <th class="text-center">Próxima Dosis</th>
             </tr>
         </thead>
         <tbody>
-            <?php
+        <?php
             // Query for vh_lombrices table with the same filters as vacuno
-            $lombrices_sql = "SELECT vh_lombrices.*, tagid 
-                       FROM vh_lombrices 
-                       JOIN vacuno ON vh_lombrices_tagid = tagid";
+            $lombrices_sql = "SELECT vh_lombrices_tagid, vh_lombrices_fecha, vh_lombrices_producto, vh_lombrices_dosis, vh_lombrices_costo, tagid, v.nombre
+                          FROM vh_lombrices 
+                          JOIN vacuno v ON vh_lombrices_tagid = v.tagid";
             
             if (!empty($where_conditions)) {
                 $lombrices_sql .= " WHERE " . implode(" AND ", $where_conditions);
@@ -4758,18 +5036,22 @@ $(document).ready(function() {
             $lombrices_sql .= " ORDER BY vh_lombrices_fecha DESC";
             
             $lombrices_result = $conn->query($lombrices_sql);
+            $total_sum_lombrices = 0; // Initialize sum variable
 
             if ($lombrices_result && $lombrices_result->num_rows > 0) {
                 while($row = $lombrices_result->fetch_assoc()) {
                     // Calculate total
                     $total = $row['vh_lombrices_dosis'] * $row['vh_lombrices_costo'];
-                    
+                    $total_sum_lombrices += $total; // Add to running sum
+
                     // Calculate next dose date (6 months from application)
                     $next_dose = date('Y-m-d', strtotime($row['vh_lombrices_fecha'] . ' + 6 months'));
                     
                     echo "<tr>";
                     echo "<td>" . htmlspecialchars($row['vh_lombrices_tagid']) . "</td>";
                     echo "<td>" . htmlspecialchars($row['vh_lombrices_fecha']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['nombre']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['vh_lombrices_producto']) . "</td>";
                     echo "<td class='text-end'>" . htmlspecialchars($row['vh_lombrices_dosis']) . "</td>";
                     echo "<td class='text-end'>$" . htmlspecialchars(number_format($row['vh_lombrices_costo'], 2)) . "</td>";
                     echo "<td class='text-end'>$" . htmlspecialchars(number_format($total, 2)) . "</td>";
@@ -4779,6 +5061,12 @@ $(document).ready(function() {
             }
             ?>
         </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="6" class="text-end">Total General:</th>
+                <th class="text-center">$<?php echo number_format($total_sum_lombrices, 2); ?></th>
+            </tr>
+        </tfoot>
     </table>
 </div>
 
@@ -4804,15 +5092,11 @@ $(document).ready(function() {
         pageLength: 10,
         lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
         responsive: true,
-        order: [[1, 'desc']], // Order by date descending
+        order: [[0, 'desc']], // Order by date descending
         columnDefs: [
             {
                 targets: '_all',
-                className: 'align-middle'
-            },
-            {
-                targets: [2, 3, 4], // Dosis, Price and Total columns
-                className: 'text-end' // Right align numbers
+                className: 'align-middle text-center' // Added text-center for all columns
             },
             {
                 targets: [5], // Next dose date
@@ -4835,6 +5119,653 @@ $(document).ready(function() {
 <style>
 /* Additional style for upcoming doses */
 #lombricesTable .text-danger {
+    color: #dc3545 !important;
+}
+.fw-bold {
+    font-weight: bold !important;
+}
+</style>
+
+<!-- VH_inseminacion Table -->
+<div class="container table-container mt-4">
+    <h3 style="text-align: center;">Historial Inseminacion</h3>
+    <table id="inseminacionTable" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th class="text-center">Tag ID</th>
+                <th class="text-center">Fecha</th>
+                <th class="text-center">Nombre</th>
+                <th class="text-center">Numero</th>                               
+                <th class="text-center">Costo $</th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php
+            // Query for vh_inseminacion table with the same filters as vacuno
+            $inseminacion_sql = "SELECT vh_inseminacion_tagid, vh_inseminacion_fecha, vh_inseminacion_costo, vh_inseminacion_numero, v.tagid, v.nombre
+                          FROM vh_inseminacion 
+                          JOIN vacuno v ON vh_inseminacion_tagid = v.tagid";
+            
+            if (!empty($where_conditions)) {
+                $inseminacion_sql .= " WHERE " . implode(" AND ", $where_conditions);
+            }
+            
+            $inseminacion_sql .= " ORDER BY vh_inseminacion_fecha DESC";
+            
+            $inseminacion_result = $conn->query($inseminacion_sql);
+            
+	        $total_sum_inseminacion = 0; // Initialize sum variable
+
+            if ($inseminacion_result && $inseminacion_result->num_rows > 0) {
+                while($row = $inseminacion_result->fetch_assoc()) {
+                    // Calculate total
+                    $total = $row['vh_inseminacion_costo'];
+                    $total_sum_inseminacion += $total; // Add to running sum
+                                        
+                echo "<tr>";
+                    echo "<td class='text-center'>" . htmlspecialchars($row['vh_inseminacion_tagid']) . "</td>";
+                    echo "<td class='text-center'>" . htmlspecialchars($row['vh_inseminacion_fecha']) . "</td>";
+                    echo "<td class='text-center'>" . htmlspecialchars($row['nombre']) . "</td>";
+                    echo "<td class='text-center'>" . htmlspecialchars($row['vh_inseminacion_numero']) . "</td>";
+                    echo "<td class='text-end'>$" . htmlspecialchars(number_format($row['vh_inseminacion_costo'], 2)) . "</td>";                    
+                echo "</tr>";
+                }
+            }
+            ?>
+        </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="4" class="text-end">Total General:</th>
+                <th class="text-center">$<?php echo number_format($total_sum_inseminacion, 2); ?></th>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+<script>
+$(document).ready(function() {
+    // Initialize inseminacion DataTable
+    $('#inseminacionTable').DataTable({
+        dom: '<"top"<"row"<"col-sm-6"l><"col-sm-6"f>>><"row"<"col-sm-12"tr>><"row"<"col-sm-5"i><"col-sm-7"p>>',
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json',
+            lengthMenu: "Mostrar _MENU_ registros por página",
+            search: "Buscar:",
+            paginate: {
+                first: "Primero",
+                last: "Último",
+                next: "Siguiente",
+                previous: "Anterior"
+            },
+            info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+            infoEmpty: "Mostrando 0 a 0 de 0 registros",
+            infoFiltered: "(filtrado de _MAX_ registros totales)"
+            },
+            pageLength: 10,
+            lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
+            responsive: true,
+            order: [[0, 'desc']], // Order by date descending
+            columnDefs: [
+            {
+                targets: '_all',
+                className: 'align-middle text-center' // Added text-center for all columns
+            }
+        ]
+    });
+});
+</script>
+<style>
+/* Additional style for upcoming doses */
+#inseminacionTable .text-danger {
+    color: #dc3545 !important;
+}
+.fw-bold {
+    font-weight: bold !important;
+}
+</style>
+
+<!-- VH_gestacion Table -->
+<div class="container table-container mt-4">
+    <h3 style="text-align: center;">Historial Gestacion</h3>
+    <table id="gestacionTable" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th class="text-center">Tag ID</th>
+                <th class="text-center">Fecha</th>
+                <th class="text-center">Nombre</th>
+                <th class="text-center">Numero</th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php
+            // Query for vh_gestacion table with the same filters as vacuno
+            $gestacion_sql = "SELECT vh_gestacion_tagid, vh_gestacion_fecha, vh_gestacion_numero, v.tagid, v.nombre
+                          FROM vh_gestacion 
+                          JOIN vacuno v ON vh_gestacion_tagid = v.tagid";
+            
+            if (!empty($where_conditions)) {
+                $gestacion_sql .= " WHERE " . implode(" AND ", $where_conditions);
+            }
+            
+            $gestacion_sql .= " ORDER BY vh_gestacion_fecha DESC";
+            
+            $gestacion_result = $conn->query($gestacion_sql);
+
+            if ($gestacion_result && $gestacion_result->num_rows > 0) {
+                while($row = $gestacion_result->fetch_assoc()) {
+                    
+                                        
+                echo "<tr>";
+                    echo "<td class='text-center'>" . htmlspecialchars($row['vh_gestacion_tagid']) . "</td>";
+                    echo "<td class='text-center'>" . htmlspecialchars($row['vh_gestacion_fecha']) . "</td>";
+                    echo "<td class='text-center'>" . htmlspecialchars($row['nombre']) . "</td>";
+                    echo "<td class='text-center'>" . htmlspecialchars($row['vh_gestacion_numero']) . "</td>";                                     
+                echo "</tr>";
+                }
+            }
+            ?>
+        </tbody>
+    </table>
+</div>
+
+<script>
+$(document).ready(function() {
+    // Initialize gestacion DataTable
+    $('#gestacionTable').DataTable({
+        dom: '<"top"<"row"<"col-sm-6"l><"col-sm-6"f>>><"row"<"col-sm-12"tr>><"row"<"col-sm-5"i><"col-sm-7"p>>',
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json',
+            lengthMenu: "Mostrar _MENU_ registros por página",
+            search: "Buscar:",
+            paginate: {
+                first: "Primero",
+                last: "Último",
+                next: "Siguiente",
+                previous: "Anterior"
+            },
+            info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+            infoEmpty: "Mostrando 0 a 0 de 0 registros",
+            infoFiltered: "(filtrado de _MAX_ registros totales)"
+            },
+            pageLength: 10,
+            lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
+            responsive: true,
+            order: [[0, 'desc']], // Order by date descending
+            columnDefs: [
+            {
+                targets: '_all',
+                className: 'align-middle text-center' // Added text-center for all columns
+            }
+        ]
+    });
+});
+</script>
+<style>
+/* Additional style for upcoming doses */
+#gestacionTable .text-danger {
+    color: #dc3545 !important;
+}
+.fw-bold {
+    font-weight: bold !important;
+}
+</style>
+
+<!-- VH_parto Table -->
+<div class="container table-container mt-4">
+    <h3 style="text-align: center;">Historial Parto</h3>
+    <table id="partoTable" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th class="text-center">Tag ID</th>
+                <th class="text-center">Fecha</th>
+                <th class="text-center">Nombre</th>
+                <th class="text-center">Numero</th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php
+            // Query for vh_parto table with the same filters as vacuno
+            $parto_sql = "SELECT vh_parto_tagid, vh_parto_fecha, vh_parto_numero, v.tagid, v.nombre
+                          FROM vh_parto 
+                          JOIN vacuno v ON vh_parto_tagid = v.tagid";
+            
+            if (!empty($where_conditions)) {
+                $parto_sql .= " WHERE " . implode(" AND ", $where_conditions);
+            }
+            
+            $parto_sql .= " ORDER BY vh_parto_fecha DESC";
+            
+            $parto_result = $conn->query($parto_sql);
+
+            if ($parto_result && $parto_result->num_rows > 0) {
+                while($row = $parto_result->fetch_assoc()) {
+                    
+                                        
+                echo "<tr>";
+                    echo "<td class='text-center'>" . htmlspecialchars($row['vh_parto_tagid']) . "</td>";
+                    echo "<td class='text-center'>" . htmlspecialchars($row['vh_parto_fecha']) . "</td>";
+                    echo "<td class='text-center'>" . htmlspecialchars($row['nombre']) . "</td>";
+                    echo "<td class='text-center'>" . htmlspecialchars($row['vh_parto_numero']) . "</td>";
+                echo "</tr>";
+                }
+            }
+            ?>
+        </tbody>
+    </table>
+</div>
+
+<script>
+$(document).ready(function() {
+    // Initialize parto DataTable
+    $('#partoTable').DataTable({
+        dom: '<"top"<"row"<"col-sm-6"l><"col-sm-6"f>>><"row"<"col-sm-12"tr>><"row"<"col-sm-5"i><"col-sm-7"p>>',
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json',
+            lengthMenu: "Mostrar _MENU_ registros por página",
+            search: "Buscar:",
+            paginate: {
+                first: "Primero",
+                last: "Último",
+                next: "Siguiente",
+                previous: "Anterior"
+            },
+            info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+            infoEmpty: "Mostrando 0 a 0 de 0 registros",
+            infoFiltered: "(filtrado de _MAX_ registros totales)"
+            },
+            pageLength: 10,
+            lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
+            responsive: true,
+            order: [[0, 'desc']], // Order by date descending
+            columnDefs: [
+            {
+                targets: '_all',
+                className: 'align-middle text-center' // Added text-center for all columns
+            }
+        ]
+    });
+});
+</script>
+<style>
+/* Additional style for upcoming doses */
+#partoTable .text-danger {
+    color: #dc3545 !important;
+}
+.fw-bold {
+    font-weight: bold !important;
+}
+</style>
+
+<!-- VH_aborto Table -->
+<div class="container table-container mt-4">
+    <h3 style="text-align: center;">Historial Abortos</h3>
+    <table id="abortoTable" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th class="text-center">Tag ID</th>
+                <th class="text-center">Fecha</th>
+                <th class="text-center">Nombre</th>
+                <th class="text-center">Causa</th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php
+            // Query for vh_aborto table with the same filters as vacuno
+            $aborto_sql = "SELECT vh_aborto_tagid, vh_aborto_fecha, vh_aborto_causa, v.tagid, v.nombre
+                          FROM vh_aborto 
+                          JOIN vacuno v ON vh_aborto_tagid = v.tagid";
+            
+            if (!empty($where_conditions)) {
+                $aborto_sql .= " WHERE " . implode(" AND ", $where_conditions);
+            }
+            
+            $aborto_sql .= " ORDER BY vh_aborto_fecha DESC";
+            
+            $aborto_result = $conn->query($aborto_sql);
+
+            if ($aborto_result && $aborto_result->num_rows > 0) {
+                while($row = $aborto_result->fetch_assoc()) {
+                    
+                                        
+                echo "<tr>";
+                    echo "<td class='text-center'>" . htmlspecialchars($row['vh_aborto_tagid']) . "</td>";
+                    echo "<td class='text-center'>" . htmlspecialchars($row['vh_aborto_fecha']) . "</td>";
+                    echo "<td class='text-center'>" . htmlspecialchars($row['nombre']) . "</td>";
+                    echo "<td class='text-center'>" . htmlspecialchars($row['vh_aborto_causa']) . "</td>";
+                echo "</tr>";
+                }
+            }
+            ?>
+        </tbody>
+    </table>
+</div>
+
+<script>
+$(document).ready(function() {
+    // Initialize aborto DataTable
+    $('#abortoTable').DataTable({
+        dom: '<"top"<"row"<"col-sm-6"l><"col-sm-6"f>>><"row"<"col-sm-12"tr>><"row"<"col-sm-5"i><"col-sm-7"p>>',
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json',
+            lengthMenu: "Mostrar _MENU_ registros por página",
+            search: "Buscar:",
+            paginate: {
+                first: "Primero",
+                last: "Último",
+                next: "Siguiente",
+                previous: "Anterior"
+            },
+            info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+            infoEmpty: "Mostrando 0 a 0 de 0 registros",
+            infoFiltered: "(filtrado de _MAX_ registros totales)"
+            },
+            pageLength: 10,
+            lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
+            responsive: true,
+            order: [[0, 'desc']], // Order by date descending
+            columnDefs: [
+            {
+                targets: '_all',
+                className: 'align-middle text-center' // Added text-center for all columns
+            }
+        ]
+    });
+});
+</script>
+<style>
+/* Additional style for upcoming doses */
+#abortoTable .text-danger {
+    color: #dc3545 !important;
+}
+.fw-bold {
+    font-weight: bold !important;
+}
+</style>
+
+<!-- VH_venta Table -->
+<div class="container table-container mt-4">
+    <h3 style="text-align: center;">Historial Venta</h3>
+    <table id="ventaTable" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th class="text-center">Tag ID</th>
+                <th class="text-center">Nombre</th>
+                <th class="text-center">Fecha</th>                
+                <th class="text-center">Peso</th>
+                <th class="text-center">Precio</th>
+                <th class="text-center">Monto</th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php
+            // Query for vh_venta table with the same filters as vacuno
+            $venta_sql = "SELECT vh_venta_tagid, vh_venta_fecha, vh_venta_precio, vh_venta_peso, v.tagid, v.nombre
+                          FROM vh_venta 
+                          JOIN vacuno v ON vh_venta_tagid = v.tagid";
+
+            $total_sum_ventas = 0;
+            if (!empty($where_conditions)) {
+                $venta_sql .= " WHERE " . implode(" AND ", $where_conditions);
+            }
+            
+            $venta_sql .= " ORDER BY vh_venta_fecha DESC";
+            
+            $venta_result = $conn->query($venta_sql);
+
+            if ($venta_result && $venta_result->num_rows > 0) {
+                while($row = $venta_result->fetch_assoc()) {
+                    $monto = $row['vh_venta_peso'] * $row['vh_venta_precio'];
+                    $total_sum_ventas += $monto;
+                                        
+                echo "<tr>";
+                    echo "<td class='text-center'>" . htmlspecialchars($row['vh_venta_tagid']) . "</td>";
+                    echo "<td class='text-center'>" . htmlspecialchars($row['nombre']) . "</td>";
+                    echo "<td class='text-center'>" . htmlspecialchars($row['vh_venta_fecha']) . "</td>";
+                    echo "<td class='text-center'>" . htmlspecialchars($row['vh_venta_peso']) . "</td>";
+                    echo "<td class='text-center'>" . htmlspecialchars($row['vh_venta_precio']) . "</td>";
+                    echo "<td class='text-end'>$" . htmlspecialchars(number_format($monto, 2)) . "</td>";
+                echo "</tr>";
+                }
+            }
+            ?>
+        </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="5" class="text-end">Total Ventas:</th>
+                <th class="text-center">$<?php echo number_format($total_sum_ventas, 2); ?></th>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+<script>
+$(document).ready(function() {
+    // Initialize venta DataTable
+    $('#ventaTable').DataTable({
+        dom: '<"top"<"row"<"col-sm-6"l><"col-sm-6"f>>><"row"<"col-sm-12"tr>><"row"<"col-sm-5"i><"col-sm-7"p>>',
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json',
+            lengthMenu: "Mostrar _MENU_ registros por página",
+            search: "Buscar:",
+            paginate: {
+                first: "Primero",
+                last: "Último",
+                next: "Siguiente",
+                previous: "Anterior"
+            },
+            info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+            infoEmpty: "Mostrando 0 a 0 de 0 registros",
+            infoFiltered: "(filtrado de _MAX_ registros totales)"
+            },
+            pageLength: 10,
+            lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
+            responsive: true,
+            order: [[0, 'desc']], // Order by date descending
+            columnDefs: [
+            {
+                targets: '_all',
+                className: 'align-middle text-center' // Added text-center for all columns
+            }
+        ]
+    });
+});
+</script>
+<style>
+/* Additional style for upcoming doses */
+#ventaTable .text-danger {
+    color: #dc3545 !important;
+}
+.fw-bold {
+    font-weight: bold !important;
+}
+</style>
+
+<!-- VH_destete Table -->
+<div class="container table-container mt-4">
+    <h3 style="text-align: center;">Historial Destete</h3>
+    <table id="desteteTable" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th class="text-center">Tag ID</th>
+                <th class="text-center">Nombre</th>
+                <th class="text-center">Fecha</th>                
+                <th class="text-center">Peso</th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php
+            // Query for vh_destete table with the same filters as vacuno
+            $destete_sql = "SELECT vh_destete_tagid, vh_destete_fecha, vh_destete_peso, v.tagid, v.nombre
+                          FROM vh_destete 
+                          JOIN vacuno v ON vh_destete_tagid = v.tagid";
+                          
+            $total_sum_destetes = 0;
+            if (!empty($where_conditions)) {
+                $destete_sql .= " WHERE " . implode(" AND ", $where_conditions);
+            }
+            
+            $destete_sql .= " ORDER BY vh_destete_fecha DESC";
+            
+            $destete_result = $conn->query($destete_sql);
+            $prom_peso_destete = 0;
+            $numero_destetes = 0;
+            $destetes_total = 0;
+
+            if ($destete_result && $destete_result->num_rows > 0) {
+                while($row = $destete_result->fetch_assoc()) {
+                    $destetes_total += $row['vh_destete_peso'];
+                    $numero_destetes++;
+                    $prom_peso_destete = $destetes_total / $numero_destetes;
+                                        
+                echo "<tr>";
+                    echo "<td class='text-center'>" . htmlspecialchars($row['vh_destete_tagid']) . "</td>";
+                    echo "<td class='text-center'>" . htmlspecialchars($row['nombre']) . "</td>";
+                    echo "<td class='text-center'>" . htmlspecialchars($row['vh_destete_fecha']) . "</td>";
+                    echo "<td class='text-center'>" . htmlspecialchars($row['vh_destete_peso']) . "</td>";
+                echo "</tr>";
+                }
+            }
+            ?>
+        </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="3" class="text-end">Total Promedio Peso:</th>
+                <th class="text-center">$<?php echo number_format($prom_peso_destete, 2); ?></th>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+<script>
+$(document).ready(function() {
+    // Initialize destete DataTable
+    $('#desteteTable').DataTable({
+        dom: '<"top"<"row"<"col-sm-6"l><"col-sm-6"f>>><"row"<"col-sm-12"tr>><"row"<"col-sm-5"i><"col-sm-7"p>>',
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json',
+            lengthMenu: "Mostrar _MENU_ registros por página",
+            search: "Buscar:",
+            paginate: {
+                first: "Primero",
+                last: "Último",
+                next: "Siguiente",
+                previous: "Anterior"
+            },
+            info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+            infoEmpty: "Mostrando 0 a 0 de 0 registros",
+            infoFiltered: "(filtrado de _MAX_ registros totales)"
+            },
+            pageLength: 10,
+            lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
+            responsive: true,
+            order: [[0, 'desc']], // Order by date descending
+            columnDefs: [
+            {
+                targets: '_all',
+                className: 'align-middle text-center' // Added text-center for all columns
+            }
+        ]
+    });
+});
+</script>
+<style>
+/* Additional style for upcoming doses */
+#desteteTable .text-danger {
+    color: #dc3545 !important;
+}
+.fw-bold {
+    font-weight: bold !important;
+}
+</style>
+
+<!-- VH_descarte Table -->
+<div class="container table-container mt-4">
+    <h3 style="text-align: center;">Historial Descarte</h3>
+    <table id="descarteTable" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th class="text-center">Tag ID</th>
+                <th class="text-center">Nombre</th>
+                <th class="text-center">Fecha</th>                
+                <th class="text-center">Peso</th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php
+            // Query for vh_descarte table with the same filters as vacuno
+            $descarte_sql = "SELECT vh_descarte_tagid, vh_descarte_fecha, vh_descarte_peso, v.tagid, v.nombre
+                          FROM vh_descarte 
+                          JOIN vacuno v ON vh_descarte_tagid = v.tagid";
+                          
+            $total_sum_descartes = 0;
+            if (!empty($where_conditions)) {
+                $descarte_sql .= " WHERE " . implode(" AND ", $where_conditions);
+            }
+            
+            $descarte_sql .= " ORDER BY vh_descarte_fecha DESC";
+            
+            $descarte_result = $conn->query($descarte_sql);
+
+            $descartes_total = 0;
+
+            if ($descarte_result && $descarte_result->num_rows > 0) {
+                while($row = $descarte_result->fetch_assoc()) {
+                    $descartes_total += $row['vh_descarte_peso'];                    
+                                        
+                echo "<tr>";
+                    echo "<td class='text-center'>" . htmlspecialchars($row['vh_descarte_tagid']) . "</td>";
+                    echo "<td class='text-center'>" . htmlspecialchars($row['nombre']) . "</td>";
+                    echo "<td class='text-center'>" . htmlspecialchars($row['vh_descarte_fecha']) . "</td>";
+                    echo "<td class='text-center'>" . htmlspecialchars($row['vh_descarte_peso']) . "</td>";
+                echo "</tr>";
+                }
+            }
+            ?>
+        </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="3" class="text-end">Total:</th>
+                <th class="text-center">$<?php echo number_format($descartes_total, 2); ?></th>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+<script>
+$(document).ready(function() {
+    // Initialize descarte DataTable
+    $('#descarteTable').DataTable({
+        dom: '<"top"<"row"<"col-sm-6"l><"col-sm-6"f>>><"row"<"col-sm-12"tr>><"row"<"col-sm-5"i><"col-sm-7"p>>',
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json',
+            lengthMenu: "Mostrar _MENU_ registros por página",
+            search: "Buscar:",
+            paginate: {
+                first: "Primero",
+                last: "Último",
+                next: "Siguiente",
+                previous: "Anterior"
+            },
+            info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+            infoEmpty: "Mostrando 0 a 0 de 0 registros",
+            infoFiltered: "(filtrado de _MAX_ registros totales)"
+            },
+            pageLength: 10,
+            lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
+            responsive: true,
+            order: [[0, 'desc']], // Order by date descending
+            columnDefs: [
+            {
+                targets: '_all',
+                className: 'align-middle text-center' // Added text-center for all columns
+            }
+        ]
+    });
+});
+</script>
+<style>
+/* Additional style for upcoming doses */
+#descarteTable .text-danger {
     color: #dc3545 !important;
 }
 .fw-bold {

@@ -43,65 +43,55 @@ $filterValues = array(
     'estatus' => array()
 );
 
-// Fetch unique filter values
-foreach ($filterValues as $field => &$values) {
-    $query = "SELECT DISTINCT $field FROM vacuno WHERE $field IS NOT NULL AND $field != ''";        
-    $query .= " ORDER BY $field";
-    $filterResult = $conn->query($query);
-    
-    if ($filterResult) {
-        while ($row = $filterResult->fetch_assoc()) {
-            if (!empty($row[$field])) {
-                $values[] = $row[$field];
-            }
-        }
-        $filterResult->free();
-    } else {
-        echo "Error fetching $field values: " . $conn->error;
-    }
+// At the beginning of your PHP code, create the filter logic
+$where_conditions = [];
+$params = [];
+
+// Build conditions in order (cascade from left to right)
+if (!empty($_GET['genero'])) {
+    $where_conditions[] = "genero = ?";
+    $params[] = $_GET['genero'];
+}
+if (!empty($_GET['raza'])) {
+    $where_conditions[] = "raza = ?";
+    $params[] = $_GET['raza'];
+}
+if (!empty($_GET['etapa'])) {
+    $where_conditions[] = "etapa = ?";
+    $params[] = $_GET['etapa'];
+}
+if (!empty($_GET['grupo'])) {
+    $where_conditions[] = "grupo = ?";
+    $params[] = $_GET['grupo'];
+}
+if (!empty($_GET['estatus'])) {
+    $where_conditions[] = "estatus = ?";
+    $params[] = $_GET['estatus'];
 }
 
-// Initialize an empty array to hold the WHERE conditions
-$whereClause = [];
+// Create the WHERE clause
+$where_clause = !empty($where_conditions) ? " WHERE " . implode(" AND ", $where_conditions) : "";
 
-if (isset($_GET['genero']) && !empty($_GET['genero'])) {
-    $sexo = $conn->real_escape_string($_GET['genero']);
-    $whereClause[] = "sexo = '$sexo'";
+// Prepare and execute the query using prepared statements
+$sql = "SELECT id, tagid, nombre, genero, raza, etapa, grupo, estatus, fecha_nacimiento, image 
+        FROM vacuno" . $where_clause . " ORDER BY tagid ASC";
+
+$stmt = $conn->prepare($sql);
+if (!empty($params)) {
+    $stmt->bind_param(str_repeat('s', count($params)), ...$params);
 }
+$stmt->execute();
+$result = $stmt->get_result();
 
-if (isset($_GET['raza']) && !empty($_GET['raza'])) {
-    $raza = $conn->real_escape_string($_GET['raza']);
-    $whereClause[] = "raza = '$raza'";
+// Debug query
+$debug_sql = $sql;
+foreach ($params as $param) {
+    $debug_sql = preg_replace('/\?/', "'" . $param . "'", $debug_sql, 1);
 }
+error_log("Executed query: " . $debug_sql);
 
-if (isset($_GET['etapa']) && !empty($_GET['etapa'])) {
-    $etapa = $conn->real_escape_string($_GET['etapa']);
-    $whereClause[] = "etapa = '$etapa'";
-}
+// Use this same $result for both your cards and DataTable
 
-if (isset($_GET['grupo']) && !empty($_GET['grupo'])) {
-    $grupo = $conn->real_escape_string($_GET['grupo']);
-    $whereClause[] = "Grupo = '$grupo'";
-}
-
-if (isset($_GET['estatus']) && !empty($_GET['estatus'])) {
-    $estatus = $conn->real_escape_string($_GET['estatus']);
-    $whereClause[] = "estatus = '$estatus'";
-}
-
-// Build the main SQL query with the WHERE clause if any filters are set
-$sql = "SELECT * FROM vacuno";
-if (!empty($whereClause)) {
-    $sql .= " WHERE " . implode(' AND ', $whereClause);
-}
-
-// Execute the main query
-$result = $conn->query($sql);
-
-// Handle errors if the query fails
-if (!$result) {
-    die("Query Failed: " . $conn->error);
-}
 
 // Fetch counts for each filter category based on current filters
 
@@ -455,6 +445,98 @@ $partoDatasetsJson = json_encode($datasets);
 <!-- Bootstrap Icons -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <style>
+        h6 {
+            font-size: 0.8rem;
+            text-align: center;
+            color: red;
+        }
+    /* DataTables specific styling */
+    div.dataTables_wrapper {
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .dataTables_length,
+    .dataTables_filter {
+        margin: 15px 0;
+    }
+
+    .dataTables_filter {
+        text-align: right;
+    }
+
+    .dataTables_length select {
+        min-width: 70px;
+    }
+
+    .dataTables_filter input {
+        min-width: 200px;
+    }
+
+    .dataTables_info,
+    .dataTables_paginate {
+        margin: 15px 0;
+    }
+
+    /* Ensure the table takes full width */
+    table.dataTable {
+        width: 100% !important;
+        margin: 15px 0 !important;
+    }
+
+    /* Make sure controls are visible */
+    .dataTables_wrapper .row {
+        margin: 10px 0;
+        width: 100%;
+    }
+    
+    .table-container {
+        padding: 20px;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        margin: 20px auto;
+        max-width: 95%;
+    }
+
+    #vacunoTable {
+        font-size: 0.9rem;
+    }
+
+    #vacunoTable thead th {
+        background-color: #f8f9fa;
+        font-weight: 600;
+    }
+
+    .dataTables_wrapper .dataTables_filter input {
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 5px;
+        margin-left: 5px;
+    }
+
+    .dataTables_wrapper .dataTables_length select {
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 5px;
+        margin: 0 5px;
+    }
+
+    .dataTables_wrapper .dataTables_info {
+        padding-top: 10px;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button {
+        padding: 5px 10px;
+        margin: 0 2px;
+        border-radius: 4px;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+        background: #007bff;
+        color: white !important;
+        border: none;
+    }
     /* Hamburger Button Styling */
         .hamburger {
           position: fixed;
@@ -1264,164 +1346,322 @@ $partoDatasetsJson = json_encode($datasets);
             text-align: center;
             color:red;
         }
+
+        /* Professional DataTable Styling */
+        .table-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+            margin: 20px 0;
+        }
+
+        #vacunoTable {
+            width: 100% !important;
+            background: white;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        #vacunoTable thead th {
+            background-color: #f8f9fa;
+            color: #495057;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            padding: 12px 15px;
+            border-bottom: 2px solid #83956e;
+            white-space: nowrap;
+        }
+
+        #vacunoTable tbody td {
+            padding: 12px 15px;
+            vertical-align: middle;
+            border-bottom: 1px solid #e9ecef;
+            font-size: 0.875rem;
+            color: #495057;
+        }
+
+        #vacunoTable tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        /* Search and Length Menu Styling */
+        .dataTables_wrapper .dataTables_filter input {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 8px 12px;
+            margin-left: 8px;
+            width: 200px;
+            font-size: 0.875rem;
+        }
+
+        .dataTables_wrapper .dataTables_length select {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 6px 24px 6px 12px;
+            margin: 0 8px;
+            font-size: 0.875rem;
+        }
+
+        /* Pagination Styling */
+        .dataTables_wrapper .dataTables_paginate {
+            margin-top: 15px;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            padding: 6px 12px;
+            margin: 0 3px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            background: white;
+            color: #495057 !important;
+            font-size: 0.875rem;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+            background: #83956e !important;
+            color: white !important;
+            border-color: #83956e;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current,
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+            background: #83956e !important;
+            color: white !important;
+            border-color: #83956e;
+            font-weight: 600;
+        }
+
+        /* Info Text Styling */
+        .dataTables_wrapper .dataTables_info {
+            color: #6c757d;
+            font-size: 0.875rem;
+            padding-top: 15px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .dataTables_wrapper .dataTables_filter input {
+                width: 150px;
+            }
+
+            #vacunoTable thead th,
+            #vacunoTable tbody td {
+                padding: 8px 10px;
+                font-size: 0.8rem;
+            }
+
+            .dataTables_wrapper .dataTables_paginate .paginate_button {
+                padding: 4px 8px;
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Striped Rows */
+        #vacunoTable tbody tr:nth-of-type(odd) {
+            background-color: rgba(0,0,0,.02);
+        }
+
+        /* Loading State */
+        #vacunoTable.dataTable.processing tbody tr {
+            opacity: 0.5;
+        }
+
+        /* Search Highlight */
+        #vacunoTable tbody tr.highlight {
+            background-color: #fff3cd;
+        }
+
     </style>
 
     <!-- Include Chart.js and Chart.js DataLabels Plugin -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+
+    <!-- Add these in the <head> section, after your existing CSS/JS links -->
+
+    <!-- Place these in the <head> section in this exact order -->
+
+<!-- jQuery Core (main library) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
+
+<!-- DataTables JavaScript -->
+<script type="text/javascript" src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+
+<!-- Bootstrap 5 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
 <div>
-<!-- Filtros -->
+<!-- Filters Form -->
 <div class="filters-container">
     <div>
-    <a href="http://localhost:3000/inicio.php">
-        <img src="http://ganagram.com/wp-content/uploads/2024/04/Ganagram_New_Logo-removebg-preview.png" style="width: 150px; height: 150px;justify-content:space-between;">
-    </a>
-    <h6>UPV: 01012025-3528</h6>
+        <a href="http://localhost:3000/inicio.php">
+            <img src="http://ganagram.com/wp-content/uploads/2024/04/Ganagram_New_Logo-removebg-preview.png" style="width: 150px; height: 150px;justify-content:space-between;">
+        </a>
+        <h6>UPV: 01012025-3528</h6>
     </div>
     <div>
         <form method="GET" action="" class="filters-form" style="display: block;margin-top: 20px;padding: 10px;">
             <div class="filters-container" style="text-align: center;">
-            <select name="sexo" onchange="this.form.submit()" style="width: 170px;">
-                <option value="">Sexo</option>                
-                    <option value="Macho">Macho</option>
-                    <option value="Hembra">Hembra</option>
-            </select>
-            <select name="raza" onchange="this.form.submit()" style="width: 170px;">
-                <option value="">Raza</option>
-                <?php
-                // Database connection for razas
-                $conn_razas = new mysqli('localhost', $username, $password, $dbname);
-                if ($conn_razas->connect_error) {
-                    die("Connection failed: " . $conn_razas->connect_error);
-                }
+                <!-- Género/Sexo Filter -->
+                <select name="sexo" onchange="this.form.submit()" style="width: 170px;">
+                    <option value="">Sexo</option>
+                    <option value="Macho" <?php echo (isset($_GET['sexo']) && $_GET['sexo'] === 'Macho') ? 'selected' : ''; ?>>Macho</option>
+                    <option value="Hembra" <?php echo (isset($_GET['sexo']) && $_GET['sexo'] === 'Hembra') ? 'selected' : ''; ?>>Hembra</option>
+                </select>
 
-                // Fetch distinct razas from v_razas table
-                $sql_razas = "SELECT DISTINCT razas_nombre FROM v_razas";
-                $result_razas = $conn_razas->query($sql_razas);
-
-                if ($result_razas->num_rows > 0) {
-                    while ($row_razas = $result_razas->fetch_assoc()) {
-                        $selected = (isset($_GET['raza']) && $_GET['raza'] === $row_razas['razas_nombre']) ? ' selected' : '';
-                        echo '<option value="' . htmlspecialchars($row_razas['razas_nombre']) . '"' . $selected . '>' . htmlspecialchars($row_razas['razas_nombre']) . '</option>';
+                <!-- Raza Filter -->
+                <select name="raza" onchange="this.form.submit()" style="width: 170px;">
+                    <option value="">Raza</option>
+                    <?php
+                    $raza_sql = "SELECT DISTINCT raza FROM vacuno";
+                    $where_conditions = [];
+                    
+                    if (!empty($_GET['sexo'])) {
+                        $where_conditions[] = "genero = '" . $conn->real_escape_string($_GET['sexo']) . "'";
                     }
-                } else {
-                    echo '<option value="">No razas found</option>';
-                }
-
-                $conn_razas->close();
-                ?>
-            </select>
-            <select name="etapa" onchange="this.form.submit()" style="width: 170px;">
-                <option value="">Etapa</option>
-                
-                <?php foreach ($filterValues['etapa'] as $value): ?>
-                    <option value="<?php echo htmlspecialchars($value); ?>"
-                        <?php echo (isset($_GET['etapa']) && $_GET['etapa'] === $value) ? 'selected' : ''; ?>>
-                        <?php echo htmlspecialchars($value); ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-            <select name="grupo" onchange="this.form.submit()" style="width: 170px;">
-                <option value="">Grupo</option>
-                <?php
-                // Database connection for grupos
-                $conn_grupos = new mysqli('localhost', $username, $password, $dbname);
-                if ($conn_grupos->connect_error) {
-                    die("Connection failed: " . $conn_grupos->connect_error);
-                }
-
-                // Fetch distinct grupos from v_grupos table
-                $sql_grupos = "SELECT DISTINCT grupos_nombre FROM v_grupos";
-                $result_grupos = $conn_grupos->query($sql_grupos);
-
-                if ($result_grupos->num_rows > 0) {
-                    while ($row_grupos = $result_grupos->fetch_assoc()) {
-                        $selected = (isset($_GET['grupo']) && $_GET['grupo'] === $row_grupos['grupos_nombre']) ? ' selected' : '';
-                        echo '<option value="' . htmlspecialchars($row_grupos['grupos_nombre']) . '"' . $selected . '>' . htmlspecialchars($row_grupos['grupos_nombre']) . '</option>';
+                    
+                    if (!empty($where_conditions)) {
+                        $raza_sql .= " WHERE " . implode(" AND ", $where_conditions);
                     }
-                } else {
-                    echo '<option value="">No grupos found</option>';
-                }
-
-                $conn_grupos->close();
-                ?>
-            </select>
-            <select name="estatus" onchange="this.form.submit()" style="width: 170px;">
-                <option value="">Estatus</option>
-                <?php
-                // Database connection for estatus
-                $conn_estatus = new mysqli('localhost', $username, $password, $dbname);
-                if ($conn_estatus->connect_error) {
-                    die("Connection failed: " . $conn_estatus->connect_error);
-                }
-
-                // Fetch distinct estatus from v_estatus table
-                $sql_estatus = "SELECT DISTINCT estatus_nombre FROM v_estatus";
-                $result_estatus = $conn_estatus->query($sql_estatus);
-
-                if ($result_estatus->num_rows > 0) {
-                    while ($row_estatus = $result_estatus->fetch_assoc()) {
-                        $selected = (isset($_GET['estatus']) && $_GET['estatus'] === $row_estatus['estatus_nombre']) ? ' selected' : '';
-                        echo '<option value="' . htmlspecialchars($row_estatus['estatus_nombre']) . '"' . $selected . '>' . htmlspecialchars($row_estatus['estatus_nombre']) . '</option>';
+                    
+                    $result_razas = $conn->query($raza_sql);
+                    while ($row = $result_razas->fetch_assoc()) {
+                        $selected = (isset($_GET['raza']) && $_GET['raza'] === $row['raza']) ? 'selected' : '';
+                        echo "<option value='" . htmlspecialchars($row['raza']) . "' $selected>" . htmlspecialchars($row['raza']) . "</option>";
                     }
-                } else {
-                    echo '<option value="">No estatus found</option>';
-                }
+                    ?>
+                </select>
 
-                $conn_estatus->close();
-                ?>
-            </select>
+                <!-- Etapa Filter -->
+                <select name="etapa" onchange="this.form.submit()" style="width: 170px;">
+                    <option value="">Etapa</option>
+                    <?php
+                    $etapa_sql = "SELECT DISTINCT etapa FROM vacuno";
+                    $where_conditions = [];
+                    
+                    if (!empty($_GET['sexo'])) {
+                        $where_conditions[] = "genero = '" . $conn->real_escape_string($_GET['sexo']) . "'";
+                    }
+                    if (!empty($_GET['raza'])) {
+                        $where_conditions[] = "raza = '" . $conn->real_escape_string($_GET['raza']) . "'";
+                    }
+                    
+                    if (!empty($where_conditions)) {
+                        $etapa_sql .= " WHERE " . implode(" AND ", $where_conditions);
+                    }
+                    
+                    $result_etapas = $conn->query($etapa_sql);
+                    while ($row = $result_etapas->fetch_assoc()) {
+                        $selected = (isset($_GET['etapa']) && $_GET['etapa'] === $row['etapa']) ? 'selected' : '';
+                        echo "<option value='" . htmlspecialchars($row['etapa']) . "' $selected>" . htmlspecialchars($row['etapa']) . "</option>";
+                    }
+                    ?>
+                </select>
+
+                <!-- Grupo Filter -->
+                <select name="grupo" onchange="this.form.submit()" style="width: 170px;">
+                    <option value="">Grupo</option>
+                    <?php
+                    $grupo_sql = "SELECT DISTINCT grupo FROM vacuno";
+                    $where_conditions = [];
+                    
+                    if (!empty($_GET['sexo'])) {
+                        $where_conditions[] = "genero = '" . $conn->real_escape_string($_GET['sexo']) . "'";
+                    }
+                    if (!empty($_GET['raza'])) {
+                        $where_conditions[] = "raza = '" . $conn->real_escape_string($_GET['raza']) . "'";
+                    }
+                    if (!empty($_GET['etapa'])) {
+                        $where_conditions[] = "etapa = '" . $conn->real_escape_string($_GET['etapa']) . "'";
+                    }
+                    
+                    if (!empty($where_conditions)) {
+                        $grupo_sql .= " WHERE " . implode(" AND ", $where_conditions);
+                    }
+                    
+                    $result_grupos = $conn->query($grupo_sql);
+                    while ($row = $result_grupos->fetch_assoc()) {
+                        $selected = (isset($_GET['grupo']) && $_GET['grupo'] === $row['grupo']) ? 'selected' : '';
+                        echo "<option value='" . htmlspecialchars($row['grupo']) . "' $selected>" . htmlspecialchars($row['grupo']) . "</option>";
+                    }
+                    ?>
+                </select>
+
+                <!-- Estatus Filter -->
+                <select name="estatus" onchange="this.form.submit()" style="width: 170px;">
+                    <option value="">Estatus</option>
+                    <?php
+                    $estatus_sql = "SELECT DISTINCT estatus FROM vacuno";
+                    $where_conditions = [];
+                    
+                    if (!empty($_GET['sexo'])) {
+                        $where_conditions[] = "genero = '" . $conn->real_escape_string($_GET['sexo']) . "'";
+                    }
+                    if (!empty($_GET['raza'])) {
+                        $where_conditions[] = "raza = '" . $conn->real_escape_string($_GET['raza']) . "'";
+                    }
+                    if (!empty($_GET['etapa'])) {
+                        $where_conditions[] = "etapa = '" . $conn->real_escape_string($_GET['etapa']) . "'";
+                    }
+                    if (!empty($_GET['grupo'])) {
+                        $where_conditions[] = "grupo = '" . $conn->real_escape_string($_GET['grupo']) . "'";
+                    }
+                    
+                    if (!empty($where_conditions)) {
+                        $estatus_sql .= " WHERE " . implode(" AND ", $where_conditions);
+                    }
+                    
+                    $result_estatus = $conn->query($estatus_sql);
+                    while ($row = $result_estatus->fetch_assoc()) {
+                        $selected = (isset($_GET['estatus']) && $_GET['estatus'] === $row['estatus']) ? 'selected' : '';
+                        echo "<option value='" . htmlspecialchars($row['estatus']) . "' $selected>" . htmlspecialchars($row['estatus']) . "</option>";
+                    }
+                    ?>
+                </select>
             </div>
         </form>            
     </div>
-    <!-- Hamburger Button -->
-    <button class="hamburger" id="vacunoMenuToggle" aria-label="Toggle menu">
-    <i class="bi bi-list" style="font-size: 1.5rem;"></i>
-    </button>
-    <!-- Vertical Dropdown Menu -->
-    <div class="vertical-menu" id="verticalMenu">
-        <!-- Agregar Animal Dropdown -->
-        <div class="dropdown mb-2">
-            <a href="#" class="dropdown-toggle" id="reportsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <span class="tooltip-text">Agregar Animal</span>
-            <button class="new-entry-btn" title="Agregar Nuevo Animal" onclick="openModal()">
-                <i class="bi bi-plus-circle-fill"></i>
-            </button>
-            </a>              
-            </ul>
-        </div>
-        <!-- Indicators Dropdown -->
-        <div class="dropdown mb-2">
-            <a href="#" class="dropdown-toggle" id="indicatorsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="bi bi-graph-up"></i>
-                <span class="tooltip-text">Indicadores</span>
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="indicatorsDropdown">
-                <li class="dropdown-item-margin"><a class="dropdown-item" href="./vacuno_indices_reproduccion.php">Reproduccion</a></li>
-                <li class="dropdown-item-margin"><a class="dropdown-item" href="./vacuno_indices_alimentacion.php">Alimentacion</a></li>
-                <li class="dropdown-item-margin"><a class="dropdown-item" href="./vacuno_indices_produccion.php">Produccion</a></li>
-                <li class="dropdown-item-margin"><a class="dropdown-item" href="./vacuno_indices_salud.php">Salud</a></li>
-            </ul>
-        </div>
-        <!-- Configuration Dropdown -->
-        <div class="dropdown">
-            <a href="#" class="dropdown-toggle" id="configDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="bi bi-gear"></i>
-            <span class="tooltip-text">Configuracion</span>
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="configDropdown">
-            <li class="dropdown-item-margin"><a class="dropdown-item" href="./vacuno_configuracion_alimentacion.php">Alimentos</a></li>
-            <li class="dropdown-item-margin"><a class="dropdown-item" href="./vacuno_configuracion_vacunas.php">Vacunas</a></li>
-            <li class="dropdown-item-margin"><a class="dropdown-item" href="./vacuno_configuracion_razas.php">Razas</a></li>
-            <li class="dropdown-item-margin"><a class="dropdown-item" href="./vacuno_configuracion_grupos.php">Grupos</a></li>
-            <li class="dropdown-item-margin"><a class="dropdown-item" href="./vacuno_configuracion_estatus.php">Estatus</a></li>
-            </ul>
-        </div>  
-    </div>
 </div>
-</div>
+
+<?php
+// Main query for cards and DataTable
+$main_sql = "SELECT * FROM vacuno";
+$where_conditions = [];
+
+if (!empty($_GET['sexo'])) {
+    $where_conditions[] = "genero = '" . $conn->real_escape_string($_GET['sexo']) . "'";
+}
+if (!empty($_GET['raza'])) {
+    $where_conditions[] = "raza = '" . $conn->real_escape_string($_GET['raza']) . "'";
+}
+if (!empty($_GET['etapa'])) {
+    $where_conditions[] = "etapa = '" . $conn->real_escape_string($_GET['etapa']) . "'";
+}
+if (!empty($_GET['grupo'])) {
+    $where_conditions[] = "grupo = '" . $conn->real_escape_string($_GET['grupo']) . "'";
+}
+if (!empty($_GET['estatus'])) {
+    $where_conditions[] = "estatus = '" . $conn->real_escape_string($_GET['estatus']) . "'";
+}
+
+if (!empty($where_conditions)) {
+    $main_sql .= " WHERE " . implode(" AND ", $where_conditions);
+}
+
+$result = $conn->query($main_sql);
+?>
+
 <div class="cards-container">
 <?php
 if ($result->num_rows > 0) {
@@ -1499,6 +1739,48 @@ if ($result->num_rows > 0) {
 }
 ?>
 </div>
+<!-- Add this after your cards section -->
+<div class="container table-container mt-4">
+    <table id="vacunoTable" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>Tag ID</th>
+                <th>Nombre</th>
+                <th>Género</th>
+                <th>Raza</th>
+                <th>Etapa</th>
+                <th>Grupo</th>
+                <th>Estatus</th>
+                <th>Fecha Nacimiento</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            // Use the same $result from the main query that's used for cards
+            if ($result && $result->num_rows > 0) {
+                // Reset the pointer to the beginning of the result set
+                $result->data_seek(0);
+                
+                while($row = $result->fetch_assoc()) {
+                    echo "<tr>";
+                    echo "<td>" . htmlspecialchars($row['tagid']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['nombre']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['genero']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['raza']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['etapa']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['grupo']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['estatus']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['fecha_nacimiento']) . "</td>";
+                    echo "</tr>";
+                }
+            }
+            ?>
+        </tbody>
+    </table>
+</div>
+
+
+
 <!-- Canvas Genero Raza Grupo Estatus Pie Charts -->
 <div style="max-width: 600px; margin: 40px auto;">
     <h3 style="text-align: center;">Distribución por genero (%)</h3>
@@ -3004,93 +3286,93 @@ function uploadImage(id) {
   });
 </script>
 
-    <!-- Bootstrap Bundle with Popper.js -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" 
-            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" 
-            crossorigin="anonymous">
-    
-    </script>
-    <!-- Inversion en alimentacion -->
-    <script>
-        // Initialize the Average Ración Cost Line Chart with Cumulative Sum
-        document.addEventListener('DOMContentLoaded', function () {
-            // Existing chart initializations...
+<!-- Bootstrap Bundle with Popper.js -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" 
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" 
+        crossorigin="anonymous">
 
-            // Ración Cost Line Chart
-            var ctxRacion = document.getElementById('avgRacionChart').getContext('2d');
-            var avgRacionChart = new Chart(ctxRacion, {
-                type: 'line',
-                data: {
-                    labels: <?php echo json_encode($avgRacionLabels); ?>,
-                    datasets: [
-                        {
-                            label: 'Costo Promedio de Ración (USD)',
-                            data: <?php echo json_encode($avgRacionData); ?>,
-                            fill: false,
-                            borderColor: '#FF6384',
-                            backgroundColor: '#FF6384',
-                            tension: 0.1,
-                            pointBackgroundColor: '#FF6384',
-                            pointBorderColor: '#fff',
-                            pointHoverBackgroundColor: '#fff',
-                            pointHoverBorderColor: '#FF6384'
-                        },
-                        {
-                            label: 'Costo Promedio Cumulativo de Ración (USD)',
-                            data: <?php echo json_encode($avgRacionCumulativeData); ?>,
-                            fill: false,
-                            borderColor: '#36A2EB',
-                            backgroundColor: '#36A2EB',
-                            tension: 0.1,
-                            pointBackgroundColor: '#36A2EB',
-                            pointBorderColor: '#fff',
-                            pointHoverBackgroundColor: '#fff',
-                            pointHoverBorderColor: '#36A2EB'
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    var label = context.dataset.label || '';
-                                    if (label) {
-                                        label += ': ';
-                                    }
-                                    label += '$' + context.parsed.y;
-                                    return label;
+</script>
+<!-- Inversion en alimentacion -->
+<script>
+    // Initialize the Average Ración Cost Line Chart with Cumulative Sum
+    document.addEventListener('DOMContentLoaded', function () {
+        // Existing chart initializations...
+
+        // Ración Cost Line Chart
+        var ctxRacion = document.getElementById('avgRacionChart').getContext('2d');
+        var avgRacionChart = new Chart(ctxRacion, {
+            type: 'line',
+            data: {
+                labels: <?php echo json_encode($avgRacionLabels); ?>,
+                datasets: [
+                    {
+                        label: 'Costo Promedio de Ración (USD)',
+                        data: <?php echo json_encode($avgRacionData); ?>,
+                        fill: false,
+                        borderColor: '#FF6384',
+                        backgroundColor: '#FF6384',
+                        tension: 0.1,
+                        pointBackgroundColor: '#FF6384',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: '#FF6384'
+                    },
+                    {
+                        label: 'Costo Promedio Cumulativo de Ración (USD)',
+                        data: <?php echo json_encode($avgRacionCumulativeData); ?>,
+                        fill: false,
+                        borderColor: '#36A2EB',
+                        backgroundColor: '#36A2EB',
+                        tension: 0.1,
+                        pointBackgroundColor: '#36A2EB',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: '#36A2EB'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                var label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
                                 }
+                                label += '$' + context.parsed.y;
+                                return label;
                             }
-                        },
-                        title: {
-                            display: true,
-                            text: 'Costo Promedio de Ración Mensual (USD) y Cumulativo'
                         }
                     },
-                    scales: {
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'Mes (Año-Mes)'
-                            }
-                        },
-                        y: {
-                            title: {
-                                display: true,
-                                text: 'Costo Promedio (USD)'
-                            },
-                            beginAtZero: true
+                    title: {
+                        display: true,
+                        text: 'Costo Promedio de Ración Mensual (USD) y Cumulativo'
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Mes (Año-Mes)'
                         }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Costo Promedio (USD)'
+                        },
+                        beginAtZero: true
                     }
                 }
-            });
+            }
         });
-    </script>
+    });
+</script>
      <!-- Partos Mensuales -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -3189,6 +3471,1377 @@ function uploadImage(id) {
         reader.readAsDataURL(event.target.files[0]); // Read the uploaded file
     }
     </script>
+
+    <!-- Add these scripts after your existing scripts -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.bootstrap5.min.css">
+
+<script type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.bootstrap5.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
+
+<!-- Vacuno Table Script Inicializacion -->
+<script>
+$(document).ready(function() {
+    // Initialize DataTable with current filtered data
+    var table = $('#vacunoTable').DataTable({
+        dom: '<"top"<"row"<"col-sm-6"l><"col-sm-6"f>>><"row"<"col-sm-12"tr>><"row"<"col-sm-5"i><"col-sm-7"p>>',
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json',
+            lengthMenu: "Mostrar _MENU_ registros por página",
+            search: "Buscar:",
+            paginate: {
+                first: "Primero",
+                last: "Último",
+                next: "Siguiente",
+                previous: "Anterior"
+            },
+            info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+            infoEmpty: "Mostrando 0 a 0 de 0 registros",
+            infoFiltered: "(filtrado de _MAX_ registros totales)"
+        },
+        pageLength: 10,
+        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
+        responsive: true,
+        order: [[0, 'asc']],
+        columnDefs: [
+            {
+                targets: '_all',
+                className: 'align-middle'
+            }
+        ]
+    });
+
+    // Debug info
+    console.log('Current filters:', {
+        sexo: <?php echo json_encode(isset($_GET['sexo']) ? $_GET['sexo'] : ''); ?>,
+        raza: <?php echo json_encode(isset($_GET['raza']) ? $_GET['raza'] : ''); ?>,
+        etapa: <?php echo json_encode(isset($_GET['etapa']) ? $_GET['etapa'] : ''); ?>,
+        grupo: <?php echo json_encode(isset($_GET['grupo']) ? $_GET['grupo'] : ''); ?>,
+        estatus: <?php echo json_encode(isset($_GET['estatus']) ? $_GET['estatus'] : ''); ?>
+    });
+});
+</script>
+
+<!-- Make sure these exact versions of the libraries are included in your head section -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
+<script type="text/javascript" src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+
+<!-- VH_Peso Table -->
+<div class="container table-container mt-4">
+    <h3 style="text-align: center;">Historial de Produccion Carnica</h3>
+    <table id="pesosTable" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>Tag ID</th>
+                <th>Peso (kg)</th>
+                <th>Fecha</th>
+                <th>Precio/kg</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+<?php
+// Query for vh_peso table with the same filters as vacuno
+$peso_sql = "SELECT vh_peso.*, tagid 
+            FROM vh_peso 
+            JOIN vacuno ON vh_peso_tagid = tagid";
+
+if (!empty($where_conditions)) {
+    $peso_sql .= " WHERE " . implode(" AND ", $where_conditions);
+}
+
+$peso_sql .= " ORDER BY vh_peso_fecha DESC";
+
+$peso_result = $conn->query($peso_sql);
+
+if ($peso_result && $peso_result->num_rows > 0) {
+    while($row = $peso_result->fetch_assoc()) {
+        // Calculate total
+        $total = $row['vh_peso_animal'] * $row['vh_peso_precio'];
+        
+        echo "<tr>";
+        echo "<td>" . htmlspecialchars($row['vh_peso_tagid']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['vh_peso_animal']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['vh_peso_fecha']) . "</td>";
+        echo "<td>$" . htmlspecialchars(number_format($row['vh_peso_precio'], 2)) . "</td>";
+        echo "<td>$" . htmlspecialchars(number_format($total, 2)) . "</td>";
+        echo "</tr>";
+    }
+}
+?>
+        </tbody>
+    </table>
+</div>
+
+<script>
+$(document).ready(function() {
+    // Initialize Pesos DataTable
+    $('#pesosTable').DataTable({
+        dom: '<"top"<"row"<"col-sm-6"l><"col-sm-6"f>>><"row"<"col-sm-12"tr>><"row"<"col-sm-5"i><"col-sm-7"p>>',
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json',
+            lengthMenu: "Mostrar _MENU_ registros por página",
+            search: "Buscar:",
+            paginate: {
+                first: "Primero",
+                last: "Último",
+                next: "Siguiente",
+                previous: "Anterior"
+            },
+            info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+            infoEmpty: "Mostrando 0 a 0 de 0 registros",
+            infoFiltered: "(filtrado de _MAX_ registros totales)"
+        },
+        pageLength: 10,
+        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
+        responsive: true,
+        order: [[2, 'desc']], // Order by date descending
+        columnDefs: [
+            {
+                targets: '_all',
+                className: 'align-middle'
+            },
+            {
+                targets: [3, 4], // Price and Total columns
+                className: 'text-end' // Right align numbers
+            }
+        ]
+    });
+});
+</script>
+
+<!-- VH_Leche Table -->
+<div class="container table-container mt-4">
+    <h3 style="text-align: center;">Historial de Producción Lechera</h3>
+    <table id="lecheTable" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>Tag ID</th>
+                <th>Peso</th>
+                <th>Fecha</th>
+                <th>Precio $/L</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            // Query for vh_leche table with the same filters as vacuno
+            $leche_sql = "SELECT vh_leche.*, tagid 
+                         FROM vh_leche 
+                         JOIN vacuno ON vh_leche_tagid = tagid";
+            
+            if (!empty($where_conditions)) {
+                $leche_sql .= " WHERE " . implode(" AND ", $where_conditions);
+            }
+            
+            $leche_sql .= " ORDER BY vh_leche_fecha DESC";
+            
+            $leche_result = $conn->query($leche_sql);
+
+            if ($leche_result && $leche_result->num_rows > 0) {
+                while($row = $leche_result->fetch_assoc()) {
+                    // Calculate total
+                    $total = $row['vh_leche_peso'] * $row['vh_leche_precio'];
+                    
+                    echo "<tr>";
+                    echo "<td>" . htmlspecialchars($row['vh_leche_tagid']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['vh_leche_peso']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['vh_leche_fecha']) . "</td>";
+                    echo "<td>$" . htmlspecialchars(number_format($row['vh_leche_precio'], 2)) . "</td>";
+                    echo "<td>$" . htmlspecialchars(number_format($total, 2)) . "</td>";
+                    echo "</tr>";
+                }
+            }
+            ?>
+        </tbody>
+    </table>
+</div>
+
+<script>
+$(document).ready(function() {
+    // Initialize Leche DataTable
+    $('#lecheTable').DataTable({
+        dom: '<"top"<"row"<"col-sm-6"l><"col-sm-6"f>>><"row"<"col-sm-12"tr>><"row"<"col-sm-5"i><"col-sm-7"p>>',
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json',
+            lengthMenu: "Mostrar _MENU_ registros por página",
+            search: "Buscar:",
+            paginate: {
+                first: "Primero",
+                last: "Último",
+                next: "Siguiente",
+                previous: "Anterior"
+            },
+            info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+            infoEmpty: "Mostrando 0 a 0 de 0 registros",
+            infoFiltered: "(filtrado de _MAX_ registros totales)"
+        },
+        pageLength: 10,
+        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
+        responsive: true,
+        order: [[2, 'desc']], // Order by date descending
+        columnDefs: [
+            {
+                targets: '_all',
+                className: 'align-middle'
+            },
+            {
+                targets: [3, 4], // Price and Total columns
+                className: 'text-end' // Right align numbers
+            },
+            {
+                targets: [1], // Litros column
+                className: 'text-end' // Right align numbers
+            }
+        ]
+    });
+});
+</script>
+
+<!-- VH_Concentrado Table -->
+<div class="container table-container mt-4">
+    <h3 style="text-align: center;">Historial Inversion en Concentrado</h3>
+    <table id="concentradoTable" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>Tag ID</th>
+                <th>Cantidad (kg)</th>
+                <th>Fecha</th>
+                <th>Precio/kg</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            // Query for vh_concentrado table with the same filters as vacuno
+            $concentrado_sql = "SELECT vh_concentrado.*, tagid 
+                              FROM vh_concentrado 
+                              JOIN vacuno ON vh_concentrado_tagid = tagid";
+            
+            if (!empty($where_conditions)) {
+                $concentrado_sql .= " WHERE " . implode(" AND ", $where_conditions);
+            }
+            
+            $concentrado_sql .= " ORDER BY vh_concentrado_fecha DESC";
+            
+            $concentrado_result = $conn->query($concentrado_sql);
+
+            if ($concentrado_result && $concentrado_result->num_rows > 0) {
+                while($row = $concentrado_result->fetch_assoc()) {
+                    // Calculate total
+                    $total = $row['vh_concentrado_racion'] * $row['vh_concentrado_costo'];
+                    
+                    echo "<tr>";
+                    echo "<td>" . htmlspecialchars($row['vh_concentrado_tagid']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['vh_concentrado_racion']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['vh_concentrado_fecha']) . "</td>";
+                    echo "<td>$" . htmlspecialchars(number_format($row['vh_concentrado_costo'], 2)) . "</td>";
+                    echo "<td>$" . htmlspecialchars(number_format($total, 2)) . "</td>";
+                    echo "</tr>";
+                }
+            }
+            ?>
+        </tbody>
+    </table>
+</div>
+
+<script>
+$(document).ready(function() {
+    // Initialize Concentrado DataTable
+    $('#concentradoTable').DataTable({
+        dom: '<"top"<"row"<"col-sm-6"l><"col-sm-6"f>>><"row"<"col-sm-12"tr>><"row"<"col-sm-5"i><"col-sm-7"p>>',
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json',
+            lengthMenu: "Mostrar _MENU_ registros por página",
+            search: "Buscar:",
+            paginate: {
+                first: "Primero",
+                last: "Último",
+                next: "Siguiente",
+                previous: "Anterior"
+            },
+            info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+            infoEmpty: "Mostrando 0 a 0 de 0 registros",
+            infoFiltered: "(filtrado de _MAX_ registros totales)"
+        },
+        pageLength: 10,
+        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
+        responsive: true,
+        order: [[2, 'desc']], // Order by date descending
+        columnDefs: [
+            {
+                targets: '_all',
+                className: 'align-middle'
+            },
+            {
+                targets: [1, 3, 4], // Quantity, Price and Total columns
+                className: 'text-end' // Right align numbers
+            }
+        ]
+    });
+});
+</script>
+
+<!-- VH_Melaza Table -->
+<div class="container table-container mt-4">
+    <h3 style="text-align: center;">Historial de Consumo de Melaza</h3>
+    <table id="melazaTable" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>Tag ID</th>
+                <th>Cantidad (kg)</th>
+                <th>Fecha</th>
+                <th>Precio/kg</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            // Query for vh_melaza table with the same filters as vacuno
+            $melaza_sql = "SELECT vh_melaza.*, tagid 
+                          FROM vh_melaza 
+                          JOIN vacuno ON vh_melaza_tagid = tagid";
+            
+            if (!empty($where_conditions)) {
+                $melaza_sql .= " WHERE " . implode(" AND ", $where_conditions);
+            }
+            
+            $melaza_sql .= " ORDER BY vh_melaza_fecha DESC";
+            
+            $melaza_result = $conn->query($melaza_sql);
+
+            if ($melaza_result && $melaza_result->num_rows > 0) {
+                while($row = $melaza_result->fetch_assoc()) {
+                    // Calculate total
+                    $total = $row['vh_melaza_racion'] * $row['vh_melaza_costo'];
+                    
+                    echo "<tr>";
+                    echo "<td>" . htmlspecialchars($row['vh_melaza_tagid']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['vh_melaza_racion']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['vh_melaza_fecha']) . "</td>";
+                    echo "<td>$" . htmlspecialchars(number_format($row['vh_melaza_costo'], 2)) . "</td>";
+                    echo "<td>$" . htmlspecialchars(number_format($total, 2)) . "</td>";
+                    echo "</tr>";
+                }
+            }
+            ?>
+        </tbody>
+    </table>
+</div>
+
+<script>
+$(document).ready(function() {
+    // Initialize Melaza DataTable
+    $('#melazaTable').DataTable({
+        dom: '<"top"<"row"<"col-sm-6"l><"col-sm-6"f>>><"row"<"col-sm-12"tr>><"row"<"col-sm-5"i><"col-sm-7"p>>',
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json',
+            lengthMenu: "Mostrar _MENU_ registros por página",
+            search: "Buscar:",
+            paginate: {
+                first: "Primero",
+                last: "Último",
+                next: "Siguiente",
+                previous: "Anterior"
+            },
+            info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+            infoEmpty: "Mostrando 0 a 0 de 0 registros",
+            infoFiltered: "(filtrado de _MAX_ registros totales)"
+        },
+        pageLength: 10,
+        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
+        responsive: true,
+        order: [[2, 'desc']], // Order by date descending
+        columnDefs: [
+            {
+                targets: '_all',
+                className: 'align-middle'
+            },
+            {
+                targets: [1, 3, 4], // Quantity, Price and Total columns
+                className: 'text-end' // Right align numbers
+            }
+        ]
+    });
+});
+</script>
+
+<!-- VH_Sal Table -->
+<div class="container table-container mt-4">
+    <h3 style="text-align: center;">Historial de Consumo de Sal</h3>
+    <table id="salTable" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>Tag ID</th>
+                <th>Cantidad (kg)</th>
+                <th>Fecha</th>
+                <th>Precio/kg</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            // Query for vh_sal table with the same filters as vacuno
+            $sal_sql = "SELECT vh_sal.*, tagid 
+                       FROM vh_sal 
+                       JOIN vacuno ON vh_sal_tagid = tagid";
+            
+            if (!empty($where_conditions)) {
+                $sal_sql .= " WHERE " . implode(" AND ", $where_conditions);
+            }
+            
+            $sal_sql .= " ORDER BY vh_sal_fecha DESC";
+            
+            $sal_result = $conn->query($sal_sql);
+
+            if ($sal_result && $sal_result->num_rows > 0) {
+                while($row = $sal_result->fetch_assoc()) {
+                    // Calculate total
+                    $total = $row['vh_sal_racion'] * $row['vh_sal_costo'];
+                    
+                    echo "<tr>";
+                    echo "<td>" . htmlspecialchars($row['vh_sal_tagid']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['vh_sal_racion']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['vh_sal_fecha']) . "</td>";
+                    echo "<td>$" . htmlspecialchars(number_format($row['vh_sal_costo'], 2)) . "</td>";
+                    echo "<td>$" . htmlspecialchars(number_format($total, 2)) . "</td>";
+                    echo "</tr>";
+                }
+            }
+            ?>
+        </tbody>
+    </table>
+</div>
+
+<script>
+$(document).ready(function() {
+    // Initialize Sal DataTable
+    $('#salTable').DataTable({
+        dom: '<"top"<"row"<"col-sm-6"l><"col-sm-6"f>>><"row"<"col-sm-12"tr>><"row"<"col-sm-5"i><"col-sm-7"p>>',
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json',
+            lengthMenu: "Mostrar _MENU_ registros por página",
+            search: "Buscar:",
+            paginate: {
+                first: "Primero",
+                last: "Último",
+                next: "Siguiente",
+                previous: "Anterior"
+            },
+            info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+            infoEmpty: "Mostrando 0 a 0 de 0 registros",
+            infoFiltered: "(filtrado de _MAX_ registros totales)"
+        },
+        pageLength: 10,
+        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
+        responsive: true,
+        order: [[2, 'desc']], // Order by date descending
+        columnDefs: [
+            {
+                targets: '_all',
+                className: 'align-middle'
+            },
+            {
+                targets: [1, 3, 4], // Quantity, Price and Total columns
+                className: 'text-end' // Right align numbers
+            }
+        ]
+    });
+});
+</script>
+
+<!-- VH_Aftosa Table -->
+<div class="container table-container mt-4">
+    <h3 style="text-align: center;">Historial de Vacunación Aftosa</h3>
+    <table id="aftosaTable" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>Tag ID</th>
+                <th>Fecha</th>
+                <th>Dosis</th>
+                <th>Precio/Dosis</th>
+                <th>Total</th>
+                <th>Próxima Dosis</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            // Query for vh_aftosa table with the same filters as vacuno
+            $aftosa_sql = "SELECT vh_aftosa.*, tagid 
+                          FROM vh_aftosa 
+                          JOIN vacuno ON vh_aftosa_tagid = tagid";
+            
+            if (!empty($where_conditions)) {
+                $aftosa_sql .= " WHERE " . implode(" AND ", $where_conditions);
+            }
+            
+            $aftosa_sql .= " ORDER BY vh_aftosa_fecha DESC";
+            
+            $aftosa_result = $conn->query($aftosa_sql);
+
+            if ($aftosa_result && $aftosa_result->num_rows > 0) {
+                while($row = $aftosa_result->fetch_assoc()) {
+                    // Calculate total
+                    $total = $row['vh_aftosa_dosis'] * $row['vh_aftosa_costo'];
+                    
+                    // Calculate next dose date (6 months from application)
+                    $next_dose = date('Y-m-d', strtotime($row['vh_aftosa_fecha'] . ' + 6 months'));
+                    
+                    echo "<tr>";
+                    echo "<td>" . htmlspecialchars($row['vh_aftosa_tagid']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['vh_aftosa_fecha']) . "</td>";
+                    echo "<td class='text-end'>" . htmlspecialchars($row['vh_aftosa_dosis']) . "</td>";
+                    echo "<td class='text-end'>$" . htmlspecialchars(number_format($row['vh_aftosa_costo'], 2)) . "</td>";
+                    echo "<td class='text-end'>$" . htmlspecialchars(number_format($total, 2)) . "</td>";
+                    echo "<td>" . htmlspecialchars($next_dose) . "</td>";
+                    echo "</tr>";
+                }
+            }
+            ?>
+        </tbody>
+    </table>
+</div>
+
+<script>
+$(document).ready(function() {
+    // Initialize Aftosa DataTable
+    $('#aftosaTable').DataTable({
+        dom: '<"top"<"row"<"col-sm-6"l><"col-sm-6"f>>><"row"<"col-sm-12"tr>><"row"<"col-sm-5"i><"col-sm-7"p>>',
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json',
+            lengthMenu: "Mostrar _MENU_ registros por página",
+            search: "Buscar:",
+            paginate: {
+                first: "Primero",
+                last: "Último",
+                next: "Siguiente",
+                previous: "Anterior"
+            },
+            info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+            infoEmpty: "Mostrando 0 a 0 de 0 registros",
+            infoFiltered: "(filtrado de _MAX_ registros totales)"
+        },
+        pageLength: 10,
+        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
+        responsive: true,
+        order: [[1, 'desc']], // Order by date descending
+        columnDefs: [
+            {
+                targets: '_all',
+                className: 'align-middle'
+            },
+            {
+                targets: [2, 3, 4], // Dosis, Price and Total columns
+                className: 'text-end' // Right align numbers
+            },
+            {
+                targets: [5], // Next dose date
+                render: function(data, type, row) {
+                    // Highlight upcoming doses (within next 30 days)
+                    var doseDate = new Date(data);
+                    var today = new Date();
+                    var diffDays = Math.ceil((doseDate - today) / (1000 * 60 * 60 * 24));
+                    
+                    if (diffDays <= 30 && diffDays >= 0) {
+                        return '<span class="text-danger fw-bold">' + data + '</span>';
+                    }
+                    return data;
+                }
+            }
+        ]
+    });
+});
+</script>
+
+<style>
+/* Additional style for upcoming doses */
+#aftosaTable .text-danger {
+    color: #dc3545 !important;
+}
+.fw-bold {
+    font-weight: bold !important;
+}
+</style>
+
+<!-- VH_IBR Table -->
+<div class="container table-container mt-4">
+    <h3 style="text-align: center;">Historial de Vacunación IBR</h3>
+    <table id="ibrTable" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>Tag ID</th>
+                <th>Fecha</th>
+                <th>Dosis</th>
+                <th>Precio/Dosis</th>
+                <th>Total</th>
+                <th>Próxima Dosis</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            // Query for vh_ibr table with the same filters as vacuno
+            $ibr_sql = "SELECT vh_ibr.*, tagid 
+                       FROM vh_ibr 
+                       JOIN vacuno ON vh_ibr_tagid = tagid";
+            
+            if (!empty($where_conditions)) {
+                $ibr_sql .= " WHERE " . implode(" AND ", $where_conditions);
+            }
+            
+            $ibr_sql .= " ORDER BY vh_ibr_fecha DESC";
+            
+            $ibr_result = $conn->query($ibr_sql);
+
+            if ($ibr_result && $ibr_result->num_rows > 0) {
+                while($row = $ibr_result->fetch_assoc()) {
+                    // Calculate total
+                    $total = $row['vh_ibr_dosis'] * $row['vh_ibr_costo'];
+                    
+                    // Calculate next dose date (6 months from application)
+                    $next_dose = date('Y-m-d', strtotime($row['vh_ibr_fecha'] . ' + 6 months'));
+                    
+                    echo "<tr>";
+                    echo "<td>" . htmlspecialchars($row['vh_ibr_tagid']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['vh_ibr_fecha']) . "</td>";
+                    echo "<td class='text-end'>" . htmlspecialchars($row['vh_ibr_dosis']) . "</td>";
+                    echo "<td class='text-end'>$" . htmlspecialchars(number_format($row['vh_ibr_costo'], 2)) . "</td>";
+                    echo "<td class='text-end'>$" . htmlspecialchars(number_format($total, 2)) . "</td>";
+                    echo "<td>" . htmlspecialchars($next_dose) . "</td>";
+                    echo "</tr>";
+                }
+            }
+            ?>
+        </tbody>
+    </table>
+</div>
+
+<script>
+$(document).ready(function() {
+    // Initialize IBR DataTable
+    $('#ibrTable').DataTable({
+        dom: '<"top"<"row"<"col-sm-6"l><"col-sm-6"f>>><"row"<"col-sm-12"tr>><"row"<"col-sm-5"i><"col-sm-7"p>>',
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json',
+            lengthMenu: "Mostrar _MENU_ registros por página",
+            search: "Buscar:",
+            paginate: {
+                first: "Primero",
+                last: "Último",
+                next: "Siguiente",
+                previous: "Anterior"
+            },
+            info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+            infoEmpty: "Mostrando 0 a 0 de 0 registros",
+            infoFiltered: "(filtrado de _MAX_ registros totales)"
+        },
+        pageLength: 10,
+        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
+        responsive: true,
+        order: [[1, 'desc']], // Order by date descending
+        columnDefs: [
+            {
+                targets: '_all',
+                className: 'align-middle'
+            },
+            {
+                targets: [2, 3, 4], // Dosis, Price and Total columns
+                className: 'text-end' // Right align numbers
+            },
+            {
+                targets: [5], // Next dose date
+                render: function(data, type, row) {
+                    // Highlight upcoming doses (within next 30 days)
+                    var doseDate = new Date(data);
+                    var today = new Date();
+                    var diffDays = Math.ceil((doseDate - today) / (1000 * 60 * 60 * 24));
+                    
+                    if (diffDays <= 30 && diffDays >= 0) {
+                        return '<span class="text-danger fw-bold">' + data + '</span>';
+                    }
+                    return data;
+                }
+            }
+        ]
+    });
+});
+</script>
+
+<!-- VH_CBR Table -->
+<div class="container table-container mt-4">
+    <h3 style="text-align: center;">Historial de Vacunación CBR</h3>
+    <table id="cbrTable" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>Tag ID</th>
+                <th>Fecha</th>
+                <th>Dosis</th>
+                <th>Precio/Dosis</th>
+                <th>Total</th>
+                <th>Próxima Dosis</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            // Query for vh_ibr table with the same filters as vacuno
+            $cbr_sql = "SELECT vh_cbr.*, tagid 
+                       FROM vh_cbr 
+                       JOIN vacuno ON vh_cbr_tagid = tagid";
+            
+            if (!empty($where_conditions)) {
+                $cbr_sql .= " WHERE " . implode(" AND ", $where_conditions);
+            }
+            
+            $cbr_sql .= " ORDER BY vh_cbr_fecha DESC";
+            
+            $cbr_result = $conn->query($cbr_sql);
+
+            if ($cbr_result && $cbr_result->num_rows > 0) {
+                while($row = $cbr_result->fetch_assoc()) {
+                    // Calculate total
+                    $total = $row['vh_cbr_dosis'] * $row['vh_cbr_costo'];
+                    
+                    // Calculate next dose date (6 months from application)
+                    $next_dose = date('Y-m-d', strtotime($row['vh_cbr_fecha'] . ' + 6 months'));
+                    
+                    echo "<tr>";
+                    echo "<td>" . htmlspecialchars($row['vh_cbr_tagid']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['vh_cbr_fecha']) . "</td>";
+                    echo "<td class='text-end'>" . htmlspecialchars($row['vh_cbr_dosis']) . "</td>";
+                    echo "<td class='text-end'>$" . htmlspecialchars(number_format($row['vh_cbr_costo'], 2)) . "</td>";
+                    echo "<td class='text-end'>$" . htmlspecialchars(number_format($total, 2)) . "</td>";
+                    echo "<td>" . htmlspecialchars($next_dose) . "</td>";
+                    echo "</tr>";
+                }
+            }
+            ?>
+        </tbody>
+    </table>
+</div>
+
+<script>
+$(document).ready(function() {
+    // Initialize CBR DataTable
+    $('#cbrTable').DataTable({
+        dom: '<"top"<"row"<"col-sm-6"l><"col-sm-6"f>>><"row"<"col-sm-12"tr>><"row"<"col-sm-5"i><"col-sm-7"p>>',
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json',
+            lengthMenu: "Mostrar _MENU_ registros por página",
+            search: "Buscar:",
+            paginate: {
+                first: "Primero",
+                last: "Último",
+                next: "Siguiente",
+                previous: "Anterior"
+            },
+            info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+            infoEmpty: "Mostrando 0 a 0 de 0 registros",
+            infoFiltered: "(filtrado de _MAX_ registros totales)"
+        },
+        pageLength: 10,
+        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
+        responsive: true,
+        order: [[1, 'desc']], // Order by date descending
+        columnDefs: [
+            {
+                targets: '_all',
+                className: 'align-middle'
+            },
+            {
+                targets: [2, 3, 4], // Dosis, Price and Total columns
+                className: 'text-end' // Right align numbers
+            },
+            {
+                targets: [5], // Next dose date
+                render: function(data, type, row) {
+                    // Highlight upcoming doses (within next 30 days)
+                    var doseDate = new Date(data);
+                    var today = new Date();
+                    var diffDays = Math.ceil((doseDate - today) / (1000 * 60 * 60 * 24));
+                    
+                    if (diffDays <= 30 && diffDays >= 0) {
+                        return '<span class="text-danger fw-bold">' + data + '</span>';
+                    }
+                    return data;
+                }
+            }
+        ]
+    });
+});
+</script>
+<style>
+/* Additional style for upcoming doses */
+#cbrTable .text-danger {
+    color: #dc3545 !important;
+}
+.fw-bold {
+    font-weight: bold !important;
+}
+</style>
+<!-- VH_brucelosis Table -->
+<div class="container table-container mt-4">
+    <h3 style="text-align: center;">Historial de Vacunación Brucelosis</h3>
+    <table id="brucelosisTable" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>Tag ID</th>
+                <th>Fecha</th>
+                <th>Dosis</th>
+                <th>Precio/Dosis</th>
+                <th>Total</th>
+                <th>Próxima Dosis</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            // Query for vh_brucelosis table with the same filters as vacuno
+            $brucelosis_sql = "SELECT vh_brucelosis.*, tagid 
+                       FROM vh_brucelosis 
+                       JOIN vacuno ON vh_brucelosis_tagid = tagid";
+            
+            if (!empty($where_conditions)) {
+                $brucelosis_sql .= " WHERE " . implode(" AND ", $where_conditions);
+            }
+            
+            $brucelosis_sql .= " ORDER BY vh_brucelosis_fecha DESC";
+            
+            $brucelosis_result = $conn->query($brucelosis_sql);
+
+            if ($brucelosis_result && $brucelosis_result->num_rows > 0) {
+                while($row = $brucelosis_result->fetch_assoc()) {
+                    // Calculate total
+                    $total = $row['vh_brucelosis_dosis'] * $row['vh_brucelosis_costo'];
+                    
+                    // Calculate next dose date (6 months from application)
+                    $next_dose = date('Y-m-d', strtotime($row['vh_brucelosis_fecha'] . ' + 6 months'));
+                    
+                    echo "<tr>";
+                    echo "<td>" . htmlspecialchars($row['vh_brucelosis_tagid']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['vh_brucelosis_fecha']) . "</td>";
+                    echo "<td class='text-end'>" . htmlspecialchars($row['vh_brucelosis_dosis']) . "</td>";
+                    echo "<td class='text-end'>$" . htmlspecialchars(number_format($row['vh_brucelosis_costo'], 2)) . "</td>";
+                    echo "<td class='text-end'>$" . htmlspecialchars(number_format($total, 2)) . "</td>";
+                    echo "<td>" . htmlspecialchars($next_dose) . "</td>";
+                    echo "</tr>";
+                }
+            }
+            ?>
+        </tbody>
+    </table>
+</div>
+
+<script>
+$(document).ready(function() {
+    // Initialize brucelosis DataTable
+    $('#brucelosisTable').DataTable({
+        dom: '<"top"<"row"<"col-sm-6"l><"col-sm-6"f>>><"row"<"col-sm-12"tr>><"row"<"col-sm-5"i><"col-sm-7"p>>',
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json',
+            lengthMenu: "Mostrar _MENU_ registros por página",
+            search: "Buscar:",
+            paginate: {
+                first: "Primero",
+                last: "Último",
+                next: "Siguiente",
+                previous: "Anterior"
+            },
+            info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+            infoEmpty: "Mostrando 0 a 0 de 0 registros",
+            infoFiltered: "(filtrado de _MAX_ registros totales)"
+        },
+        pageLength: 10,
+        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
+        responsive: true,
+        order: [[1, 'desc']], // Order by date descending
+        columnDefs: [
+            {
+                targets: '_all',
+                className: 'align-middle'
+            },
+            {
+                targets: [2, 3, 4], // Dosis, Price and Total columns
+                className: 'text-end' // Right align numbers
+            },
+            {
+                targets: [5], // Next dose date
+                render: function(data, type, row) {
+                    // Highlight upcoming doses (within next 30 days)
+                    var doseDate = new Date(data);
+                    var today = new Date();
+                    var diffDays = Math.ceil((doseDate - today) / (1000 * 60 * 60 * 24));
+                    
+                    if (diffDays <= 30 && diffDays >= 0) {
+                        return '<span class="text-danger fw-bold">' + data + '</span>';
+                    }
+                    return data;
+                }
+            }
+        ]
+    });
+});
+</script>
+<style>
+/* Additional style for upcoming doses */
+#brucelosisTable .text-danger {
+    color: #dc3545 !important;
+}
+.fw-bold {
+    font-weight: bold !important;
+}
+</style>
+<!-- VH_carbunco Table -->
+<div class="container table-container mt-4">
+    <h3 style="text-align: center;">Historial de Vacunación Carbunco</h3>
+    <table id="carbuncoTable" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>Tag ID</th>
+                <th>Fecha</th>
+                <th>Dosis</th>
+                <th>Precio/Dosis</th>
+                <th>Total</th>
+                <th>Próxima Dosis</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            // Query for vh_carbunco table with the same filters as vacuno
+            $carbunco_sql = "SELECT vh_carbunco.*, tagid 
+                       FROM vh_carbunco 
+                       JOIN vacuno ON vh_carbunco_tagid = tagid";
+            
+            if (!empty($where_conditions)) {
+                $carbunco_sql .= " WHERE " . implode(" AND ", $where_conditions);
+            }
+            
+            $carbunco_sql .= " ORDER BY vh_carbunco_fecha DESC";
+            
+            $carbunco_result = $conn->query($carbunco_sql);
+
+            if ($carbunco_result && $carbunco_result->num_rows > 0) {
+                while($row = $carbunco_result->fetch_assoc()) {
+                    // Calculate total
+                    $total = $row['vh_carbunco_dosis'] * $row['vh_carbunco_costo'];
+                    
+                    // Calculate next dose date (6 months from application)
+                    $next_dose = date('Y-m-d', strtotime($row['vh_carbunco_fecha'] . ' + 6 months'));
+                    
+                    echo "<tr>";
+                    echo "<td>" . htmlspecialchars($row['vh_carbunco_tagid']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['vh_carbunco_fecha']) . "</td>";
+                    echo "<td class='text-end'>" . htmlspecialchars($row['vh_carbunco_dosis']) . "</td>";
+                    echo "<td class='text-end'>$" . htmlspecialchars(number_format($row['vh_carbunco_costo'], 2)) . "</td>";
+                    echo "<td class='text-end'>$" . htmlspecialchars(number_format($total, 2)) . "</td>";
+                    echo "<td>" . htmlspecialchars($next_dose) . "</td>";
+                    echo "</tr>";
+                }
+            }
+            ?>
+        </tbody>
+    </table>
+</div>
+
+<script>
+$(document).ready(function() {
+    // Initialize carbunco DataTable
+    $('#carbuncoTable').DataTable({
+        dom: '<"top"<"row"<"col-sm-6"l><"col-sm-6"f>>><"row"<"col-sm-12"tr>><"row"<"col-sm-5"i><"col-sm-7"p>>',
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json',
+            lengthMenu: "Mostrar _MENU_ registros por página",
+            search: "Buscar:",
+            paginate: {
+                first: "Primero",
+                last: "Último",
+                next: "Siguiente",
+                previous: "Anterior"
+            },
+            info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+            infoEmpty: "Mostrando 0 a 0 de 0 registros",
+            infoFiltered: "(filtrado de _MAX_ registros totales)"
+        },
+        pageLength: 10,
+        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
+        responsive: true,
+        order: [[1, 'desc']], // Order by date descending
+        columnDefs: [
+            {
+                targets: '_all',
+                className: 'align-middle'
+            },
+            {
+                targets: [2, 3, 4], // Dosis, Price and Total columns
+                className: 'text-end' // Right align numbers
+            },
+            {
+                targets: [5], // Next dose date
+                render: function(data, type, row) {
+                    // Highlight upcoming doses (within next 30 days)
+                    var doseDate = new Date(data);
+                    var today = new Date();
+                    var diffDays = Math.ceil((doseDate - today) / (1000 * 60 * 60 * 24));
+                    
+                    if (diffDays <= 30 && diffDays >= 0) {
+                        return '<span class="text-danger fw-bold">' + data + '</span>';
+                    }
+                    return data;
+                }
+            }
+        ]
+    });
+});
+</script>
+<style>
+/* Additional style for upcoming doses */
+#carbuncoTable .text-danger {
+    color: #dc3545 !important;
+}
+.fw-bold {
+    font-weight: bold !important;
+}
+</style>
+
+<!-- VH_garrapatas Table -->
+<div class="container table-container mt-4">
+    <h3 style="text-align: center;">Historial de Vacunación Garrapatas</h3>
+    <table id="garrapatasTable" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>Tag ID</th>
+                <th>Fecha</th>
+                <th>Dosis</th>
+                <th>Precio/Dosis</th>
+                <th>Total</th>
+                <th>Próxima Dosis</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            // Query for vh_garrapatas table with the same filters as vacuno
+            $garrapatas_sql = "SELECT vh_garrapatas.*, tagid 
+                       FROM vh_garrapatas 
+                       JOIN vacuno ON vh_garrapatas_tagid = tagid";
+            
+            if (!empty($where_conditions)) {
+                $garrapatas_sql .= " WHERE " . implode(" AND ", $where_conditions);
+            }
+            
+            $garrapatas_sql .= " ORDER BY vh_garrapatas_fecha DESC";
+            
+            $garrapatas_result = $conn->query($garrapatas_sql);
+
+            if ($garrapatas_result && $garrapatas_result->num_rows > 0) {
+                while($row = $garrapatas_result->fetch_assoc()) {
+                    // Calculate total
+                    $total = $row['vh_garrapatas_dosis'] * $row['vh_garrapatas_costo'];
+                    
+                    // Calculate next dose date (6 months from application)
+                    $next_dose = date('Y-m-d', strtotime($row['vh_garrapatas_fecha'] . ' + 6 months'));
+                    
+                    echo "<tr>";
+                    echo "<td>" . htmlspecialchars($row['vh_garrapatas_tagid']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['vh_garrapatas_fecha']) . "</td>";
+                    echo "<td class='text-end'>" . htmlspecialchars($row['vh_garrapatas_dosis']) . "</td>";
+                    echo "<td class='text-end'>$" . htmlspecialchars(number_format($row['vh_garrapatas_costo'], 2)) . "</td>";
+                    echo "<td class='text-end'>$" . htmlspecialchars(number_format($total, 2)) . "</td>";
+                    echo "<td>" . htmlspecialchars($next_dose) . "</td>";
+                    echo "</tr>";
+                }
+            }
+            ?>
+        </tbody>
+    </table>
+</div>
+
+<script>
+$(document).ready(function() {
+    // Initialize garrapatas DataTable
+    $('#garrapatasTable').DataTable({
+        dom: '<"top"<"row"<"col-sm-6"l><"col-sm-6"f>>><"row"<"col-sm-12"tr>><"row"<"col-sm-5"i><"col-sm-7"p>>',
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json',
+            lengthMenu: "Mostrar _MENU_ registros por página",
+            search: "Buscar:",
+            paginate: {
+                first: "Primero",
+                last: "Último",
+                next: "Siguiente",
+                previous: "Anterior"
+            },
+            info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+            infoEmpty: "Mostrando 0 a 0 de 0 registros",
+            infoFiltered: "(filtrado de _MAX_ registros totales)"
+        },
+        pageLength: 10,
+        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
+        responsive: true,
+        order: [[1, 'desc']], // Order by date descending
+        columnDefs: [
+            {
+                targets: '_all',
+                className: 'align-middle'
+            },
+            {
+                targets: [2, 3, 4], // Dosis, Price and Total columns
+                className: 'text-end' // Right align numbers
+            },
+            {
+                targets: [5], // Next dose date
+                render: function(data, type, row) {
+                    // Highlight upcoming doses (within next 30 days)
+                    var doseDate = new Date(data);
+                    var today = new Date();
+                    var diffDays = Math.ceil((doseDate - today) / (1000 * 60 * 60 * 24));
+                    
+                    if (diffDays <= 30 && diffDays >= 0) {
+                        return '<span class="text-danger fw-bold">' + data + '</span>';
+                    }
+                    return data;
+                }
+            }
+        ]
+    });
+});
+</script>
+<style>
+/* Additional style for upcoming doses */
+#garrapatasTable .text-danger {
+    color: #dc3545 !important;
+}
+.fw-bold {
+    font-weight: bold !important;
+}
+</style>
+
+<!-- VH_mastitis Table -->
+<div class="container table-container mt-4">
+    <h3 style="text-align: center;">Historial de Vacunación mastitis</h3>
+    <table id="mastitisTable" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>Tag ID</th>
+                <th>Fecha</th>
+                <th>Dosis</th>
+                <th>Precio/Dosis</th>
+                <th>Total</th>
+                <th>Próxima Dosis</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            // Query for vh_mastitis table with the same filters as vacuno
+            $mastitis_sql = "SELECT vh_mastitis.*, tagid 
+                       FROM vh_mastitis 
+                       JOIN vacuno ON vh_mastitis_tagid = tagid";
+            
+            if (!empty($where_conditions)) {
+                $mastitis_sql .= " WHERE " . implode(" AND ", $where_conditions);
+            }
+            
+            $mastitis_sql .= " ORDER BY vh_mastitis_fecha DESC";
+            
+            $mastitis_result = $conn->query($mastitis_sql);
+
+            if ($mastitis_result && $mastitis_result->num_rows > 0) {
+                while($row = $mastitis_result->fetch_assoc()) {
+                    // Calculate total
+                    $total = $row['vh_mastitis_dosis'] * $row['vh_mastitis_costo'];
+                    
+                    // Calculate next dose date (6 months from application)
+                    $next_dose = date('Y-m-d', strtotime($row['vh_mastitis_fecha'] . ' + 6 months'));
+                    
+                    echo "<tr>";
+                    echo "<td>" . htmlspecialchars($row['vh_mastitis_tagid']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['vh_mastitis_fecha']) . "</td>";
+                    echo "<td class='text-end'>" . htmlspecialchars($row['vh_mastitis_dosis']) . "</td>";
+                    echo "<td class='text-end'>$" . htmlspecialchars(number_format($row['vh_mastitis_costo'], 2)) . "</td>";
+                    echo "<td class='text-end'>$" . htmlspecialchars(number_format($total, 2)) . "</td>";
+                    echo "<td>" . htmlspecialchars($next_dose) . "</td>";
+                    echo "</tr>";
+                }
+            }
+            ?>
+        </tbody>
+    </table>
+</div>
+
+<script>
+$(document).ready(function() {
+    // Initialize mastitis DataTable
+    $('#mastitisTable').DataTable({
+        dom: '<"top"<"row"<"col-sm-6"l><"col-sm-6"f>>><"row"<"col-sm-12"tr>><"row"<"col-sm-5"i><"col-sm-7"p>>',
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json',
+            lengthMenu: "Mostrar _MENU_ registros por página",
+            search: "Buscar:",
+            paginate: {
+                first: "Primero",
+                last: "Último",
+                next: "Siguiente",
+                previous: "Anterior"
+            },
+            info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+            infoEmpty: "Mostrando 0 a 0 de 0 registros",
+            infoFiltered: "(filtrado de _MAX_ registros totales)"
+        },
+        pageLength: 10,
+        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
+        responsive: true,
+        order: [[1, 'desc']], // Order by date descending
+        columnDefs: [
+            {
+                targets: '_all',
+                className: 'align-middle'
+            },
+            {
+                targets: [2, 3, 4], // Dosis, Price and Total columns
+                className: 'text-end' // Right align numbers
+            },
+            {
+                targets: [5], // Next dose date
+                render: function(data, type, row) {
+                    // Highlight upcoming doses (within next 30 days)
+                    var doseDate = new Date(data);
+                    var today = new Date();
+                    var diffDays = Math.ceil((doseDate - today) / (1000 * 60 * 60 * 24));
+                    
+                    if (diffDays <= 30 && diffDays >= 0) {
+                        return '<span class="text-danger fw-bold">' + data + '</span>';
+                    }
+                    return data;
+                }
+            }
+        ]
+    });
+});
+</script>
+<style>
+/* Additional style for upcoming doses */
+#mastitisTable .text-danger {
+    color: #dc3545 !important;
+}
+.fw-bold {
+    font-weight: bold !important;
+}
+</style>
+
+<!-- VH_lombrices Table -->
+<div class="container table-container mt-4">
+    <h3 style="text-align: center;">Historial de Vacunación Lombrices</h3>
+    <table id="lombricesTable" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>Tag ID</th>
+                <th>Fecha</th>
+                <th>Dosis</th>
+                <th>Precio/Dosis</th>
+                <th>Total</th>
+                <th>Próxima Dosis</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            // Query for vh_lombrices table with the same filters as vacuno
+            $lombrices_sql = "SELECT vh_lombrices.*, tagid 
+                       FROM vh_lombrices 
+                       JOIN vacuno ON vh_lombrices_tagid = tagid";
+            
+            if (!empty($where_conditions)) {
+                $lombrices_sql .= " WHERE " . implode(" AND ", $where_conditions);
+            }
+            
+            $lombrices_sql .= " ORDER BY vh_lombrices_fecha DESC";
+            
+            $lombrices_result = $conn->query($lombrices_sql);
+
+            if ($lombrices_result && $lombrices_result->num_rows > 0) {
+                while($row = $lombrices_result->fetch_assoc()) {
+                    // Calculate total
+                    $total = $row['vh_lombrices_dosis'] * $row['vh_lombrices_costo'];
+                    
+                    // Calculate next dose date (6 months from application)
+                    $next_dose = date('Y-m-d', strtotime($row['vh_lombrices_fecha'] . ' + 6 months'));
+                    
+                    echo "<tr>";
+                    echo "<td>" . htmlspecialchars($row['vh_lombrices_tagid']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['vh_lombrices_fecha']) . "</td>";
+                    echo "<td class='text-end'>" . htmlspecialchars($row['vh_lombrices_dosis']) . "</td>";
+                    echo "<td class='text-end'>$" . htmlspecialchars(number_format($row['vh_lombrices_costo'], 2)) . "</td>";
+                    echo "<td class='text-end'>$" . htmlspecialchars(number_format($total, 2)) . "</td>";
+                    echo "<td>" . htmlspecialchars($next_dose) . "</td>";
+                    echo "</tr>";
+                }
+            }
+            ?>
+        </tbody>
+    </table>
+</div>
+
+<script>
+$(document).ready(function() {
+    // Initialize lombrices DataTable
+    $('#lombricesTable').DataTable({
+        dom: '<"top"<"row"<"col-sm-6"l><"col-sm-6"f>>><"row"<"col-sm-12"tr>><"row"<"col-sm-5"i><"col-sm-7"p>>',
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json',
+            lengthMenu: "Mostrar _MENU_ registros por página",
+            search: "Buscar:",
+            paginate: {
+                first: "Primero",
+                last: "Último",
+                next: "Siguiente",
+                previous: "Anterior"
+            },
+            info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+            infoEmpty: "Mostrando 0 a 0 de 0 registros",
+            infoFiltered: "(filtrado de _MAX_ registros totales)"
+        },
+        pageLength: 10,
+        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
+        responsive: true,
+        order: [[1, 'desc']], // Order by date descending
+        columnDefs: [
+            {
+                targets: '_all',
+                className: 'align-middle'
+            },
+            {
+                targets: [2, 3, 4], // Dosis, Price and Total columns
+                className: 'text-end' // Right align numbers
+            },
+            {
+                targets: [5], // Next dose date
+                render: function(data, type, row) {
+                    // Highlight upcoming doses (within next 30 days)
+                    var doseDate = new Date(data);
+                    var today = new Date();
+                    var diffDays = Math.ceil((doseDate - today) / (1000 * 60 * 60 * 24));
+                    
+                    if (diffDays <= 30 && diffDays >= 0) {
+                        return '<span class="text-danger fw-bold">' + data + '</span>';
+                    }
+                    return data;
+                }
+            }
+        ]
+    });
+});
+</script>
+<style>
+/* Additional style for upcoming doses */
+#lombricesTable .text-danger {
+    color: #dc3545 !important;
+}
+.fw-bold {
+    font-weight: bold !important;
+}
+</style>
+
 </body>
 </html>
 <?php

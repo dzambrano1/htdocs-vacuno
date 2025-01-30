@@ -219,13 +219,13 @@ if ($conn->connect_error) {
 
         /* Custom tooltip styling */
         .tooltip {
-            font-size: 0.5rem !important;
+            font-size: 1rem !important;
         }
         
         .tooltip-inner {
             max-width: 200px;
             padding: 0.25rem 0.5rem;
-            font-size: 0.5rem;
+            font-size: 1rem;
             line-height: 1.2;
         }
 
@@ -816,23 +816,15 @@ if ($conn->connect_error) {
     </div>
 </div>
 
-<div class="container mt-4">
+<div class="container mt-4" style="display:block; justify-content: center; align-items: center;">
         <div>
             <h1 class="page-title">REGISTROS</h1>
             <?php if (!empty($animalName)): ?>
                 <div class="animal-name">(<?php echo htmlspecialchars(strtoupper($animalName)); ?>)</div>
             <?php endif; ?>
         </div>
-    
-    <!-- Search Form -->
-    <form method="GET" class="mb-4">
-        <div class="input-group">
-            <input type="text" id="search" name="search" placeholder="Buscar por Tag ID..." 
-                value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
-            <button type="submit" class="btn btn-primary">Buscar</button>
-        </div>
-    </form>
 </div>
+
 <?php
 // PESAJE ANIMAL 
 if (isset($_GET['search']) && !empty($_GET['search'])) {
@@ -1268,10 +1260,17 @@ if (isset($_GET['search']) && !empty($_GET['search'])) {
 }
 $result_peso = $conn->query($baseQuery_peso);
 ?>
-
+<div class="container">
+    <!-- Search Form -->
+<form method="GET" class="mb-4">
+        <div class="input-group">
+            <input type="text" id="search" name="search" placeholder="Buscar por Tag ID..." 
+                value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
+            <button type="submit" class="btn btn-primary">Buscar</button>
+        </div>
+    </form>
+</div>
 <div class="container mt-4">
-
-
 <div class="table-section">
 <h3 class="section-title">REGISTROS DE PRODUCCION</h3>
 
@@ -1431,6 +1430,7 @@ $result_leche = $conn->query($baseQuery_leche);
 ?>
 
 <!-- Leche Table -->
+<div class="container"> 
 <div class="mb-4">
     <h4 class="sub-section-title">Control de Leche</h4>
     
@@ -1508,7 +1508,7 @@ $result_leche = $conn->query($baseQuery_leche);
                 </tr>
             </tfoot>
         </table>
-    </div>
+</div>
 </div>
 </div>
 <!-- Add this JavaScript for Leche table -->
@@ -1571,101 +1571,124 @@ $(document).ready(function() {
 <!-- Add this JavaScript after your existing chart scripts -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Format dates for display
-    const formatDates = dates => dates.map(date => {
-        const [year, month, day] = date.split('-');
-        return `${month}/${year}`;  // Changed to show only month/year
-    });
+    try {
+        // Get the chart element
+        const lecheRevenueChart = document.getElementById('lecheRevenueChart');
+        
+        // Verify chart element exists
+        if (!lecheRevenueChart) {
+            console.error('Chart element not found: lecheRevenueChart');
+            return;
+        }
 
-    // Create the cumulative revenue chart
-    const lecheRevenueCtx = document.getElementById('lecheRevenueChart').getContext('2d');
-    new Chart(lecheRevenueCtx, {
-        type: 'line',
-        data: {
-            labels: formatDates(<?php echo json_encode($lecheFechaLabels); ?>),
-            datasets: [{
-                label: 'Ingresos Acumulados ($)',
-                data: <?php echo json_encode($cumulativeRevenueData); ?>,
-                borderColor: '#83956e',
-                backgroundColor: 'rgba(131, 149, 110, 0.1)',
-                borderWidth: 2,
-                fill: true,
-                tension: 0.4,
-                pointRadius: 4,
-                pointBackgroundColor: '#83956e'
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: true,
-            aspectRatio: 3, // Made wider
-            plugins: {
-                title: {
-                    display: false // Removed since we now use section-title
-                },
-                legend: {
-                    display: true,
-                    position: 'top'
-                },
-                tooltip: {
-                    mode: 'index',
-                    intersect: false,
-                    callbacks: {
-                        label: function(context) {
-                            let label = context.dataset.label || '';
-                            if (label) {
-                                label += ': ';
+        // Format dates for display
+        const formatDates = dates => dates.map(date => {
+            if (!date) return '';
+            const [year, month, day] = date.split('-');
+            return `${month}/${year}`;
+        });
+
+        // Get the context
+        const lecheRevenueCtx = lecheRevenueChart.getContext('2d');
+        
+        // Verify data exists
+        const fechaLabels = <?php echo json_encode($lecheFechaLabels ?? []); ?>;
+        const revenueData = <?php echo json_encode($cumulativeRevenueData ?? []); ?>;
+        
+        if (!fechaLabels.length || !revenueData.length) {
+            console.warn('No data available for chart');
+        }
+
+        // Create the chart
+        new Chart(lecheRevenueCtx, {
+            type: 'line',
+            data: {
+                labels: formatDates(fechaLabels),
+                datasets: [{
+                    label: 'Ingresos Acumulados ($)',
+                    data: revenueData,
+                    borderColor: '#83956e',
+                    backgroundColor: 'rgba(131, 149, 110, 0.1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 4,
+                    pointBackgroundColor: '#83956e'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                aspectRatio: 3,
+                plugins: {
+                    title: {
+                        display: false
+                    },
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    label += new Intl.NumberFormat('es-AR', {
+                                        style: 'currency',
+                                        currency: 'ARS'
+                                    }).format(context.parsed.y);
+                                }
+                                return label;
                             }
-                            if (context.parsed.y !== null) {
-                                label += new Intl.NumberFormat('es-AR', {
-                                    style: 'currency',
-                                    currency: 'ARS'
-                                }).format(context.parsed.y);
-                            }
-                            return label;
                         }
                     }
-                }
-            },
-            scales: {
-                x: {
-                    display: true,
-                    title: {
-                        display: true,
-                        text: 'Mes'
-                    },
-                    ticks: {
-                        maxRotation: 45,
-                        minRotation: 45
-                    }
                 },
-                y: {
-                    display: true,
-                    title: {
+                scales: {
+                    x: {
                         display: true,
-                        text: 'Ingresos Estimados ($)'
+                        title: {
+                            display: true,
+                            text: 'Mes'
+                        },
+                        ticks: {
+                            maxRotation: 45,
+                            minRotation: 45
+                        }
                     },
-                    beginAtZero: true,
-                    ticks: {
-                        callback: function(value) {
-                            return new Intl.NumberFormat('es-AR', {
-                                style: 'currency',
-                                currency: 'ARS'
-                            }).format(value);
+                    y: {
+                        display: true,
+                        title: {
+                            display: true,
+                            text: 'Ingresos Estimados ($)'
+                        },
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return new Intl.NumberFormat('es-AR', {
+                                    style: 'currency',
+                                    currency: 'ARS'
+                                }).format(value);
+                            }
                         }
                     }
                 }
             }
-        }
-    });
+        });
+    } catch (error) {
+        console.error('Error creating chart:', error);
+    }
 });
 </script>
 
-<div class="table-section">
+<div class="container table-section" style="display:block; justify-content: center; align-items: center;">
 <h3 class="section-title">REGISTROS DE ALIMENTACION</h3>
 <!-- ALIMENTACION Table -->
 <!-- Concentrado Table -->
-<div class="mb-4">
     <h4 class="sub-section-title">Control de Concentrado</h4>
     
     <!-- Add New Concentrado Form -->
@@ -1775,6 +1798,7 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
 </div>
 
+
 <!-- Add this JavaScript for Concentrado table -->
 <script>
 $(document).ready(function() {
@@ -1878,7 +1902,8 @@ $result_melaza = $conn->query($baseQuery_melaza);
 ?>
 
 <!-- Melaza Table -->
-<div class="mb-4">
+
+<div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
     <h4 class="sub-section-title">Control de Melaza</h4>
     
 <!-- Add New Melaza Form -->
@@ -2005,9 +2030,9 @@ $result_melaza = $conn->query($baseQuery_melaza);
                 </tr>
             </tfoot>
         </table>
-    </div>
 </div>
-
+</div>
+        
 <!-- Modified JavaScript for Melaza table -->
 <script>
 $(document).ready(function() {
@@ -2094,7 +2119,7 @@ $result_sal = $conn->query($baseQuery_sal);
 ?>
 
 <!-- Sal Table -->
-<div class="mb-4">
+<div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
     <h4 class="sub-section-title">Control de Sal</h4>
     
     <!-- Add New Sal Form -->
@@ -2310,6 +2335,7 @@ $baseQuery_vacuna = "SELECT * FROM vh_aftosa";
 }
 $result_vacuna = $conn->query($baseQuery_vacuna);
 ?>
+<div class="container" style="display:block; justify-content: center; align-items: center;">
 <div class="table-section">
 <h3 class="section-title">REGISTROS DE SALUD</h3>
 
@@ -2401,8 +2427,11 @@ $result_vacuna = $conn->query($baseQuery_vacuna);
             </table>
         </div>
     </div>
+</div>
+</div>
+</div>
 
-    <script>
+<script>
 $(document).ready(function() {
     // Handle delete button clicks
     $('.delete-aftosa').click(function(e) {
@@ -2458,7 +2487,7 @@ $result_ibr = $conn->query($baseQuery_ibr);
 ?>
 
 <!-- IBR Table -->
-<div class="mb-4">
+<div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
     <h4 class="sub-section-title">Vacunas IBR</h4>
     
     <!-- Add New IBR Form -->
@@ -2595,7 +2624,7 @@ $result_cbr = $conn->query($baseQuery_cbr);
 ?>
 
 <!-- CBR Table -->
-<div class="mb-4">
+<div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
     <h4 class="sub-section-title">Vacunas CBR</h4>
     
     <!-- Add New CBR Form -->
@@ -2731,7 +2760,7 @@ $result_brucelosis = $conn->query($baseQuery_brucelosis);
 ?>
 
 <!-- Brucelosis Table -->
-<div class="mb-4">
+<div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
     <h4 class="sub-section-title">Vacunas Brucelosis</h4>
     
     <!-- Add New Brucelosis Form -->
@@ -2867,7 +2896,7 @@ $result_carbunco = $conn->query($baseQuery_carbunco);
 ?>
 
 <!-- Carbunco Table -->
-<div class="mb-4">
+<div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
     <h4 class="sub-section-title">Vacunas Carbunco</h4>
     
     <!-- Add New Carbunco Form -->
@@ -3005,7 +3034,7 @@ $result_garrapatas = $conn->query($baseQuery_garrapatas);
 ?>
 
 <!-- garrapatas Table -->
-<div class="mb-4">
+<div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
     <h4 class="sub-section-title">Tratamiento Garrapatas</h4>
     
     <!-- Add New garrapatas Form -->
@@ -3143,7 +3172,7 @@ $result_mastitis = $conn->query($baseQuery_mastitis);
 ?>
 
 <!-- Mastitis Table -->
-<div class="mb-4">
+<div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
     <h4 class="sub-section-title">Tratamiento Mastitis</h4>
     
     <!-- Add New Mastitis Form -->
@@ -3281,7 +3310,7 @@ $result_lombrices = $conn->query($baseQuery_lombrices);
 ?>
 
 <!-- Lombrices Table -->
-<div class="mb-4">
+<div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
     <h4 class="sub-section-title">Tratamiento Lombrices</h4>
     
     <!-- Add New Lombrices Form -->
@@ -3405,10 +3434,6 @@ $(document).ready(function() {
     });
 });
 </script>
-
-    
-
-
 
 <!-- Caulculo Estructura de Costos -->
 
@@ -3958,7 +3983,7 @@ $(document).ready(function() {
     });
 </script> 
 
-<div class="table-section">
+<div class="container table-section" style="display:block; justify-content: center; align-items: center;">
 <h3 class="section-title">REGISTROS DE REPRODUCCION</h3>
 
 <!-- Inseminacion Table Section -->
@@ -4050,6 +4075,7 @@ $result_inseminacion = $conn->query($baseQuery_inseminacion);
         </table>
     </div>
 </div>
+</div>
 
 <!-- Add this JavaScript for Inseminacion table -->
 <script>
@@ -4106,7 +4132,7 @@ $result_gestacion = $conn->query($baseQuery_gestacion);
 ?>
 
 <!-- Gestacion Table -->
-<div class="mb-4">
+<div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
     <h4 class="sub-section-title">Gestación</h4>
     
     <!-- Add New Gestacion Form -->
@@ -4132,7 +4158,6 @@ $result_gestacion = $conn->query($baseQuery_gestacion);
                 </div>
             </form>
         </div>
-    </div>
 
     <div class="table-responsive">
         <table id="gestacionTable" class="table table-striped table-bordered">
@@ -4165,7 +4190,7 @@ $result_gestacion = $conn->query($baseQuery_gestacion);
             </tbody>
         </table>
     </div>
-</div>
+</div>  
 
 <!-- Add this JavaScript for Gestacion table -->
 <script>
@@ -4222,7 +4247,7 @@ $result_parto = $conn->query($baseQuery_parto);
 ?>
 
 <!-- Parto Table -->
-<div class="mb-4">
+<div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
     <h4 class="sub-section-title">Parto</h4>
     
     <!-- Add New Parto Form -->
@@ -4337,7 +4362,7 @@ $result_aborto = $conn->query($baseQuery_aborto);
 ?>
 
 <!-- Aborto Table -->
-<div class="mb-4">
+<div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
     <h4 class="sub-section-title">Aborto</h4>
     
     <!-- Add New Aborto Form -->
@@ -4438,7 +4463,7 @@ $(document).ready(function() {
     });
 });
 </script>
-<div class="table-section">
+<div class="container table-section" style="display:block; justify-content: center; align-items: center;">
 <h3 class="section-title">OTROS REGISTROS</h3>
 <!-- Venta Table Section -->
 <?php
@@ -4532,6 +4557,7 @@ $result_venta = $conn->query($baseQuery_venta);
         </table>
     </div>
 </div>
+</div>
 
 <!-- Add this JavaScript for Venta table -->
 <script>
@@ -4588,7 +4614,7 @@ $result_destete = $conn->query($baseQuery_destete);
 ?>
 
 <!-- Destete Table -->
-<div class="mb-4">
+<div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
     <h4 class="sub-section-title">Destete</h4>
     
     <!-- Add New Destete Form -->
@@ -4689,70 +4715,68 @@ $(document).ready(function() {
     });
 });
 </script>
-
 <!-- Descarte Table Section -->
 <?php
-// Build the base query for Descarte
+// Build the base query for Descarte with JOIN
 if (isset($_GET['search']) && !empty($_GET['search'])) {
     $tagid = $conn->real_escape_string($_GET['search']);
-    $baseQuery_descarte = "SELECT * FROM vh_descarte WHERE vh_descarte_tagid = '$tagid'";
+    $baseQuery_descarte = "SELECT d.id, d.vh_descarte_peso, d.vh_descarte_fecha, v.nombre, v.tagid 
+                          FROM vh_descarte d 
+                          JOIN vacuno v ON d.vh_descarte_tagid = v.tagid 
+                          WHERE v.tagid = '$tagid'";
 } else {
-    $baseQuery_descarte = "SELECT * FROM vh_descarte";
+    $baseQuery_descarte = "SELECT d.id, d.vh_descarte_peso, d.vh_descarte_fecha, v.nombre, v.tagid 
+                          FROM vh_descarte d 
+                          JOIN vacuno v ON d.vh_descarte_tagid = v.tagid";
 }
 $result_descarte = $conn->query($baseQuery_descarte);
 ?>
 
 <!-- Descarte Table -->
-<div class="mb-4">
+<div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
     <h4 class="sub-section-title">Descarte</h4>
     
-    <!-- Add New Descarte Form -->
-    <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addDescarteForm">
+    <!-- Add New Descarte Button -->
+    <button class="btn btn-primary mb-3" type="button" data-bs-toggle="modal" data-bs-target="#descarteModal">
         <i class="fas fa-plus"></i> Agregar Descarte
     </button>
     
-    <div class="collapse mb-3" id="addDescarteForm">
-        <div class="card card-body">
-            <form id="descarteForm" action="process_descarte.php" method="POST">
-                <input type="hidden" name="tagid" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <label class="form-label">Peso (kg)</label>
-                        <input type="number" step="0.01" class="form-control" name="peso" required>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Fecha</label>
-                        <input type="date" class="form-control" name="fecha" required>
-                    </div>
-                    <div class="col-12">
-                        <button type="submit" class="btn btn-success">Guardar</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-
     <div class="table-responsive">
         <table id="descarteTable" class="table table-striped table-bordered">
             <thead>
                 <tr>
+                    <th>Tag ID</th>
+                    <th>Nombre</th>
                     <th>Peso (kg)</th>
                     <th>Fecha</th>
-                    <th></th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
-                if ($result_descarte->num_rows > 0) {
+                if ($result_descarte && $result_descarte->num_rows > 0) {
                     while($row = $result_descarte->fetch_assoc()) {
                         echo "<tr>";
+                        echo "<td>" . htmlspecialchars($row['tagid']) . "</td>";
+                        echo "<td>" . htmlspecialchars($row['nombre']) . "</td>";
                         echo "<td>" . htmlspecialchars($row['vh_descarte_peso']) . "</td>";
                         echo "<td>" . htmlspecialchars($row['vh_descarte_fecha']) . "</td>";
                         echo "<td>
-                                <button class='btn btn-danger btn-sm delete-descarte' 
-                                        data-id='" . $row['id'] . "'>
-                                    <i class='fas fa-trash'></i>
-                                </button>
+                                <div class='btn-group' role='group'>
+                                    <button type='button' class='btn btn-primary btn-sm edit-descarte' 
+                                            data-id='" . htmlspecialchars($row['id']) . "'
+                                            data-tagid='" . htmlspecialchars($row['tagid']) . "'
+                                            data-peso='" . htmlspecialchars($row['vh_descarte_peso']) . "'
+                                            data-fecha='" . htmlspecialchars($row['vh_descarte_fecha']) . "'
+                                            data-bs-toggle='modal' 
+                                            data-bs-target='#descarteModal'>
+                                        <i class='fas fa-edit'></i>
+                                    </button>
+                                    <button type='button' class='btn btn-danger btn-sm delete-descarte' 
+                                            data-id='" . htmlspecialchars($row['id']) . "'>
+                                        <i class='fas fa-trash'></i>
+                                    </button>
+                                </div>
                             </td>";
                         echo "</tr>";
                     }
@@ -4763,17 +4787,143 @@ $result_descarte = $conn->query($baseQuery_descarte);
     </div>
 </div>
 
-<!-- Add this JavaScript for Descarte table -->
+<!-- Descarte Modal -->
+<div class="modal fade" id="descarteModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="descarteModalTitle">Agregar Descarte</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="descarteForm">
+                    <input type="hidden" name="action" value="create">
+                    <input type="hidden" name="id" id="descarte_id">
+                    <input type="hidden" name="tagid" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
+                    
+                    <div class="mb-3">
+                        <label for="descarte_peso" class="form-label">Peso (kg)</label>
+                        <input type="number" step="0.01" class="form-control" id="descarte_peso" name="peso" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="descarte_fecha" class="form-label">Fecha</label>
+                        <input type="date" class="form-control" id="descarte_fecha" name="fecha" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="saveDescarte">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Descarte JavaScript -->
 <script>
 $(document).ready(function() {
-    $('.delete-descarte').click(function(e) {
-        e.preventDefault();
-        console.log('Delete Descarte button clicked');
+    // Initialize DataTable with Spanish language
+    $('#descarteTable').DataTable({
+        language: {
+            "sProcessing":     "Procesando...",
+            "sLengthMenu":     "Mostrar _MENU_ registros",
+            "sZeroRecords":    "No se encontraron resultados",
+            "sEmptyTable":     "Ningún dato disponible en esta tabla",
+            "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+            "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+            "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+            "sInfoPostFix":    "",
+            "sSearch":         "Buscar:",
+            "sUrl":           "",
+            "sInfoThousands":  ",",
+            "sLoadingRecords": "Cargando...",
+            "oPaginate": {
+                "sFirst":    "Primero",
+                "sLast":     "Último",
+                "sNext":     "Siguiente",
+                "sPrevious": "Anterior"
+            },
+            "oAria": {
+                "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+            },
+            "buttons": {
+                "copy": "Copiar",
+                "colvis": "Visibilidad"
+            }
+        }
+    });
+
+    // Handle modal open for new record
+    $('#descarteModal').on('show.bs.modal', function(e) {
+        const button = $(e.relatedTarget);
+        const isEdit = button.hasClass('edit-descarte');
+        const modal = $(this);
         
-        const id = $(this).data('id');
-        console.log('ID to delete:', id);
+        // Reset form
+        $('#descarteForm')[0].reset();
         
-        if (confirm('¿Está seguro de que desea eliminar esta entrada?')) {
+        if (isEdit) {
+            modal.find('.modal-title').text('Editar Descarte');
+            modal.find('[name="action"]').val('update');
+            modal.find('#descarte_id').val(button.data('id'));
+            modal.find('#descarte_peso').val(button.data('peso'));
+            modal.find('#descarte_fecha').val(button.data('fecha'));
+        } else {
+            modal.find('.modal-title').text('Agregar Descarte');
+            modal.find('[name="action"]').val('create');
+            modal.find('#descarte_id').val('');
+        }
+    });
+
+    // Handle save
+    $('#saveDescarte').click(function() {
+        const form = $('#descarteForm');
+        if (!form[0].checkValidity()) {
+            form[0].reportValidity();
+            return;
+        }
+
+        // Log form data
+        console.log('Form data:', form.serialize());
+
+        $.ajax({
+            url: 'process_descarte.php',
+            type: 'POST',
+            data: form.serialize(),
+            dataType: 'json',
+            beforeSend: function() {
+                console.log('Sending request...');
+            },
+            success: function(response) {
+                console.log('Response received:', response);
+                if (response && response.success) {
+                    location.reload();
+                } else {
+                    console.error('Error details:', response);
+                    alert('Error: ' + (response.error || 'Unknown error'));
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Full error details:', {
+                    status: status,
+                    error: error,
+                    response: xhr.responseText,
+                    statusCode: xhr.status
+                });
+                alert('Error processing request. Check console for details.');
+            }
+        });
+    });
+
+    // Handle delete
+    $('.delete-descarte').click(function() {
+        if (confirm('¿Está seguro de que desea eliminar este registro?')) {
+            const id = $(this).data('id');
+            
+            // Log delete request
+            console.log('Deleting record:', id);
+
             $.ajax({
                 url: 'process_descarte.php',
                 type: 'POST',
@@ -4781,23 +4931,27 @@ $(document).ready(function() {
                     action: 'delete',
                     id: id
                 },
+                dataType: 'json',
+                beforeSend: function() {
+                    console.log('Sending delete request...');
+                },
                 success: function(response) {
-                    console.log('Response received:', response);
-                    try {
-                        const result = typeof response === 'string' ? JSON.parse(response) : response;
-                        if (result.success) {
-                            window.location.reload(true);
-                        } else {
-                            alert('Error al eliminar la entrada: ' + (result.error || 'Error desconocido'));
-                        }
-                    } catch (e) {
-                        console.error('Error parsing response:', e);
-                        alert('Error al procesar la respuesta del servidor');
+                    console.log('Delete response:', response);
+                    if (response && response.success) {
+                        location.reload();
+                    } else {
+                        console.error('Delete error:', response);
+                        alert('Error: ' + (response.error || 'Unknown error'));
                     }
                 },
                 error: function(xhr, status, error) {
-                    console.error('AJAX Error:', {xhr, status, error});
-                    alert('Error al procesar la solicitud: ' + error);
+                    console.error('Delete request failed:', {
+                        status: status,
+                        error: error,
+                        response: xhr.responseText,
+                        statusCode: xhr.status
+                    });
+                    alert('Error processing delete request. Check console for details.');
                 }
             });
         }
@@ -4850,101 +5004,6 @@ if ($result_leche && $result_leche->num_rows > 0) {
     }
 }
 ?>
-
-
-
-<!-- Add this JavaScript after your existing chart scripts -->
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Format dates for display
-    const formatDates = dates => dates.map(date => {
-        const [year, month, day] = date.split('-');
-        return `${month}/${year}`;  // Changed to show only month/year
-    });
-
-    // Create the cumulative revenue chart
-    const lecheRevenueCtx = document.getElementById('lecheRevenueChart').getContext('2d');
-    new Chart(lecheRevenueCtx, {
-        type: 'line',
-        data: {
-            labels: formatDates(<?php echo json_encode($lecheFechaLabels); ?>),
-            datasets: [{
-                label: 'Ingresos Acumulados ($)',
-                data: <?php echo json_encode($cumulativeRevenueData); ?>,
-                borderColor: '#83956e',
-                backgroundColor: 'rgba(131, 149, 110, 0.1)',
-                borderWidth: 2,
-                fill: true,
-                tension: 0.4,
-                pointRadius: 4,
-                pointBackgroundColor: '#83956e'
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: true,
-            aspectRatio: 3, // Made wider
-            plugins: {
-                title: {
-                    display: false // Removed since we now use section-title
-                },
-                legend: {
-                    display: true,
-                    position: 'top'
-                },
-                tooltip: {
-                    mode: 'index',
-                    intersect: false,
-                    callbacks: {
-                        label: function(context) {
-                            let label = context.dataset.label || '';
-                            if (label) {
-                                label += ': ';
-                            }
-                            if (context.parsed.y !== null) {
-                                label += new Intl.NumberFormat('es-AR', {
-                                    style: 'currency',
-                                    currency: 'ARS'
-                                }).format(context.parsed.y);
-                            }
-                            return label;
-                        }
-                    }
-                }
-            },
-            scales: {
-                x: {
-                    display: true,
-                    title: {
-                        display: true,
-                        text: 'Mes'
-                    },
-                    ticks: {
-                        maxRotation: 45,
-                        minRotation: 45
-                    }
-                },
-                y: {
-                    display: true,
-                    title: {
-                        display: true,
-                        text: 'Ingresos Estimados ($)'
-                    },
-                    beginAtZero: true,
-                    ticks: {
-                        callback: function(value) {
-                            return new Intl.NumberFormat('es-AR', {
-                                style: 'currency',
-                                currency: 'ARS'
-                            }).format(value);
-                        }
-                    }
-                }
-            }
-        }
-    });
-});
-</script>
 <script>
         // Initialize all tooltips
         document.addEventListener('DOMContentLoaded', function() {
