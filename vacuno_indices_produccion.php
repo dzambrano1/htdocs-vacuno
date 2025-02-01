@@ -490,7 +490,7 @@ $concentradoImpact = $total_costo_concentrado/$totalMarketValue;
 </head>
 <body>
 <!-- Add back button before the header container -->
-<a href="./inventario_Vacuno.php" class="back-btn">
+<a href="./inventario_vacuno.php" class="back-btn">
     <i class="fas fa-arrow-left"></i>
 </a>
 <div class="container d-flex justify-content-center flex-wrap">      

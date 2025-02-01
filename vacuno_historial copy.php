@@ -656,7 +656,7 @@ if ($conn->connect_error) {
 <body>
 
     <!-- Add back button before the header container -->
-    <a href="http://localhost:3000/vacuno/inventario_vacuno.php" class="back-btn">
+    <a href="./inventario_vacuno.php" class="back-btn">
         <i class="fas fa-arrow-left"></i>
     </a>
 

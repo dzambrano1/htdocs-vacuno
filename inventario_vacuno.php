@@ -1,25 +1,8 @@
 <?php
 
-// local Credentials
-// header("Access-Control-Allow-Headers:*");
-// $servername = "localhost";
-// $username = "root";
-// $password = "";
-// $dbname = "ganagram";
 
-// Hostinger credentials
-// $servername = "localhost";
-// $username = "u568157883_root";
-// $password = "Sebastian7754*";
-// $dbname = "u568157883_ganagram";
-
-// local Credentials
-header("Access-Control-Allow-Headers:*");
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "ganagram";
-
+require_once '../conexion.php';  // Go up one directory since inventario_vacuno.php is in the vacuno folder
+// Now you can use $conn for database queries
 
 
 $conn = mysqli_connect($servername, $username, $password, $dbname);
@@ -533,51 +516,55 @@ $partoDatasetsJson = json_encode($datasets);
     }
 
     .dataTables_wrapper .dataTables_paginate .paginate_button.current {
-        background: #007bff;
+        background: rgba(138, 184, 159, 0.95);
         color: white !important;
         border: none;
     }
     /* Hamburger Button Styling */
-        .hamburger {
-          position: fixed;
-          top: 20px;
-          right: 20px;
-          z-index: 1100; /* Above the vertical menu */
-          background: rgba(186, 245, 238, 0.95); /* Semi-transparent */
+    .hamburger {
+    position: relative;
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1001;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.hamburger:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.hamburger i {
+    font-size: 1.5rem;
+}
+        /* Vertical Menu Styling */
+        .vertical-menu {
+          position: relative;
+          
+          transform: translateY(-50%); /* Adjust for perfect centering */
+          background-color: rgba(230, 247, 245, 0.98);
           border: none;
           border-radius: 8px;
           padding: 10px;
-          cursor: pointer;
-          color: black;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          transition: background-color 0.3s;
-        }
-
-        .hamburger:hover {
-          background-color: rgba(138, 184, 159, 0.95);
-        }
-
-        /* Vertical Menu Styling */
-        .vertical-menu {
-          position: fixed;
-          top: 50%;
-          right: 20px;
-          transform: translateY(-50%);
-          background-color: rgba(230, 247, 245, 0.8); /* Semi-transparent */
-          border:none;
-          border-radius: 8px;
-          padding: 10px;
           z-index: 1000;
-          display: none; /* Hidden by default */
+          display: none;
           flex-direction: column;
           align-items: center;
           transition: opacity 0.3s, visibility 0.3s;
           opacity: 0;
           visibility: hidden;
+          box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
+        /* When menu is active */
         .vertical-menu.show {
           display: flex;
           opacity: 1;
@@ -619,7 +606,7 @@ $partoDatasetsJson = json_encode($datasets);
         .vertical-menu a .tooltip-text {
           visibility: hidden;
           width: 120px;
-          background-color: black;
+          background-color: #000;
           color: #fff;
           text-align: center;
           border-radius: 6px;
@@ -630,7 +617,7 @@ $partoDatasetsJson = json_encode($datasets);
           left: -130px;
           top: 50%;
           transform: translateY(-50%);
-          z-index: 1;
+          z-index: 1000;
           opacity: 0;
           transition: opacity 0.3s;
         }
@@ -663,10 +650,6 @@ $partoDatasetsJson = json_encode($datasets);
             width: 100px;
             left: -110px;
           }
-        }
-        /* Additional Custom Styles */
-        .container {
-            margin-top: 80px; /* To prevent content from being hidden behind the fixed menu */
         }
     
         .cards-container {
@@ -794,7 +777,7 @@ $partoDatasetsJson = json_encode($datasets);
         display: flex;
         flex-direction: column;
         align-items: stretch;
-        padding: 10px; /* Optional: Adjust padding for smaller screens */
+        padding: 0px;
     }
 
     .filters-form {
@@ -820,28 +803,40 @@ $partoDatasetsJson = json_encode($datasets);
 }
 
         .filters-container {
-            margin: 20px auto;
-            padding: 0 20px;
             display: flex;
-            justify-content: center; /* Ensures space between form and button */
-            align-items: center;
-        }
-
-        .filters-form {
-            display: flex;
-            gap: 20px;
-            flex-wrap: nowrap; /* Prevents wrapping to multiple lines */
             justify-content: center;
             align-items: center;
+            padding-top: 0px;
+            padding-bottom: 0px;  
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        .filters-form {
+            display: flex;
+
+            gap: 10px;
+            flex-wrap: nowrap;
+            justify-content: center;
+            align-items: center;
+            padding-top: 0px;
+            padding-bottom: 0px;
+            margin-top: 0px;
+            margin-bottom: 0px;
         }
 
         .filters-form select {
-            padding: 8px;
+            padding-left: 4px;
+            padding-right: 4px;
+            padding-top: 0px;
+            padding-bottom: 0px;
             border: 1px solid #ddd;
             border-radius: 5px;
             background-color: white;
             min-width: 150px; /* Adjust as needed */
             cursor: pointer;
+            margin-top:0px;
+
+            margin-bottom: 0px;
         }
 
         .filters-form select:hover {
@@ -1501,183 +1496,286 @@ $partoDatasetsJson = json_encode($datasets);
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-<div>
-<!-- Filters Form -->
-<div class="filters-container">
-    <div>
-        <a href="http://localhost:3000/inicio.php">
-            <img src="http://ganagram.com/wp-content/uploads/2024/04/Ganagram_New_Logo-removebg-preview.png" style="width: 150px; height: 150px;justify-content:space-between;">
-        </a>
-        <h6>UPV: 01012025-3528</h6>
-    </div>
-    <div>
-        <form method="GET" action="" class="filters-form" style="display: block;margin-top: 20px;padding: 10px;">
-            <div class="filters-container" style="text-align: center;">
-                <!-- Género/Sexo Filter -->
-                <select name="sexo" onchange="this.form.submit()" style="width: 170px;">
-                    <option value="">Sexo</option>
-                    <option value="Macho" <?php echo (isset($_GET['sexo']) && $_GET['sexo'] === 'Macho') ? 'selected' : ''; ?>>Macho</option>
-                    <option value="Hembra" <?php echo (isset($_GET['sexo']) && $_GET['sexo'] === 'Hembra') ? 'selected' : ''; ?>>Hembra</option>
-                </select>
 
-                <!-- Raza Filter -->
-                <select name="raza" onchange="this.form.submit()" style="width: 170px;">
-                    <option value="">Raza</option>
-                    <?php
-                    $raza_sql = "SELECT DISTINCT raza FROM vacuno";
-                    $where_conditions = [];
-                    
-                    if (!empty($_GET['sexo'])) {
-                        $where_conditions[] = "genero = '" . $conn->real_escape_string($_GET['sexo']) . "'";
-                    }
-                    
-                    if (!empty($where_conditions)) {
-                        $raza_sql .= " WHERE " . implode(" AND ", $where_conditions);
-                    }
-                    
-                    $result_razas = $conn->query($raza_sql);
-                    while ($row = $result_razas->fetch_assoc()) {
-                        $selected = (isset($_GET['raza']) && $_GET['raza'] === $row['raza']) ? 'selected' : '';
-                        echo "<option value='" . htmlspecialchars($row['raza']) . "' $selected>" . htmlspecialchars($row['raza']) . "</option>";
-                    }
-                    ?>
-                </select>
-
-                <!-- Etapa Filter -->
-                <select name="etapa" onchange="this.form.submit()" style="width: 170px;">
-                    <option value="">Etapa</option>
-                    <?php
-                    $etapa_sql = "SELECT DISTINCT etapa FROM vacuno";
-                    $where_conditions = [];
-                    
-                    if (!empty($_GET['sexo'])) {
-                        $where_conditions[] = "genero = '" . $conn->real_escape_string($_GET['sexo']) . "'";
-                    }
-                    if (!empty($_GET['raza'])) {
-                        $where_conditions[] = "raza = '" . $conn->real_escape_string($_GET['raza']) . "'";
-                    }
-                    
-                    if (!empty($where_conditions)) {
-                        $etapa_sql .= " WHERE " . implode(" AND ", $where_conditions);
-                    }
-                    
-                    $result_etapas = $conn->query($etapa_sql);
-                    while ($row = $result_etapas->fetch_assoc()) {
-                        $selected = (isset($_GET['etapa']) && $_GET['etapa'] === $row['etapa']) ? 'selected' : '';
-                        echo "<option value='" . htmlspecialchars($row['etapa']) . "' $selected>" . htmlspecialchars($row['etapa']) . "</option>";
-                    }
-                    ?>
-                </select>
-
-                <!-- Grupo Filter -->
-                <select name="grupo" onchange="this.form.submit()" style="width: 170px;">
-                    <option value="">Grupo</option>
-                    <?php
-                    $grupo_sql = "SELECT DISTINCT grupo FROM vacuno";
-                    $where_conditions = [];
-                    
-                    if (!empty($_GET['sexo'])) {
-                        $where_conditions[] = "genero = '" . $conn->real_escape_string($_GET['sexo']) . "'";
-                    }
-                    if (!empty($_GET['raza'])) {
-                        $where_conditions[] = "raza = '" . $conn->real_escape_string($_GET['raza']) . "'";
-                    }
-                    if (!empty($_GET['etapa'])) {
-                        $where_conditions[] = "etapa = '" . $conn->real_escape_string($_GET['etapa']) . "'";
-                    }
-                    
-                    if (!empty($where_conditions)) {
-                        $grupo_sql .= " WHERE " . implode(" AND ", $where_conditions);
-                    }
-                    
-                    $result_grupos = $conn->query($grupo_sql);
-                    while ($row = $result_grupos->fetch_assoc()) {
-                        $selected = (isset($_GET['grupo']) && $_GET['grupo'] === $row['grupo']) ? 'selected' : '';
-                        echo "<option value='" . htmlspecialchars($row['grupo']) . "' $selected>" . htmlspecialchars($row['grupo']) . "</option>";
-                    }
-                    ?>
-                </select>
-
-                <!-- Estatus Filter -->
-                <select name="estatus" onchange="this.form.submit()" style="width: 170px;">
-                    <option value="">Estatus</option>
-                    <?php
-                    $estatus_sql = "SELECT DISTINCT estatus FROM vacuno";
-                    $where_conditions = [];
-                    
-                    if (!empty($_GET['sexo'])) {
-                        $where_conditions[] = "genero = '" . $conn->real_escape_string($_GET['sexo']) . "'";
-                    }
-                    if (!empty($_GET['raza'])) {
-                        $where_conditions[] = "raza = '" . $conn->real_escape_string($_GET['raza']) . "'";
-                    }
-                    if (!empty($_GET['etapa'])) {
-                        $where_conditions[] = "etapa = '" . $conn->real_escape_string($_GET['etapa']) . "'";
-                    }
-                    if (!empty($_GET['grupo'])) {
-                        $where_conditions[] = "grupo = '" . $conn->real_escape_string($_GET['grupo']) . "'";
-                    }
-                    
-                    if (!empty($where_conditions)) {
-                        $estatus_sql .= " WHERE " . implode(" AND ", $where_conditions);
-                    }
-                    
-                    $result_estatus = $conn->query($estatus_sql);
-                    while ($row = $result_estatus->fetch_assoc()) {
-                        $selected = (isset($_GET['estatus']) && $_GET['estatus'] === $row['estatus']) ? 'selected' : '';
-                        echo "<option value='" . htmlspecialchars($row['estatus']) . "' $selected>" . htmlspecialchars($row['estatus']) . "</option>";
-                    }
-                    ?>
-                </select>
-            </div>
-        </form>            
-    </div>
-    <!-- Hamburger Button -->
-    <button class="hamburger" id="vacunoMenuToggle" aria-label="Toggle menu">
-    <i class="bi bi-list" style="font-size: 1.5rem;"></i>
+<div class="container" id="nav-buttons">
+  <!-- Icon Navigation Buttons -->
+  <div class="container nav-icons-container">
+    <button onclick="window.location.href='../inicio.php'" class="icon-button" data-tooltip="Inicio">
+        <img src="./images/Ganagram_New_Logo-png.png" alt="Inicio" class="nav-icon">
     </button>
-    <!-- Vertical Dropdown Menu -->
-    <div class="vertical-menu" id="verticalMenu">
-        <!-- Agregar Animal Dropdown -->
-        <div class="dropdown mb-2">
-            <a href="#" class="dropdown-toggle" id="reportsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <span class="tooltip-text">Agregar Animal</span>
-            <button class="new-entry-btn" title="Agregar Nuevo Animal" onclick="openModal()">
-                <i class="bi bi-plus-circle-fill"></i>
-            </button>
-            </a>              
-            </ul>
-        </div>
-        <!-- Indicators Dropdown -->
-        <div class="dropdown mb-2">
-            <a href="#" class="dropdown-toggle" id="indicatorsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="bi bi-graph-up"></i>
-                <span class="tooltip-text">Indicadores</span>
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="indicatorsDropdown">
-                <li class="dropdown-item-margin"><a class="dropdown-item" href="./vacuno_indices_reproduccion.php">Reproduccion</a></li>
-                <li class="dropdown-item-margin"><a class="dropdown-item" href="./vacuno_indices_alimentacion.php">Alimentacion</a></li>
-                <li class="dropdown-item-margin"><a class="dropdown-item" href="./vacuno_indices_produccion.php">Produccion</a></li>
-                <li class="dropdown-item-margin"><a class="dropdown-item" href="./vacuno_indices_salud.php">Salud</a></li>
-            </ul>
-        </div>
-        <!-- Configuration Dropdown -->
-        <div class="dropdown">
-            <a href="#" class="dropdown-toggle" id="configDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="bi bi-gear"></i>
-            <span class="tooltip-text">Configuracion</span>
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="configDropdown">
-            <li class="dropdown-item-margin"><a class="dropdown-item" href="./vacuno_configuracion_alimentacion.php">Alimentos</a></li>
-            <li class="dropdown-item-margin"><a class="dropdown-item" href="./vacuno_configuracion_vacunas.php">Vacunas</a></li>
-            <li class="dropdown-item-margin"><a class="dropdown-item" href="./vacuno_configuracion_razas.php">Razas</a></li>
-            <li class="dropdown-item-margin"><a class="dropdown-item" href="./vacuno_configuracion_grupos.php">Grupos</a></li>
-            <li class="dropdown-item-margin"><a class="dropdown-item" href="./vacuno_configuracion_estatus.php">Estatus</a></li>
-            </ul>
-        </div>  
-    </div>
+    
+    <button onclick="window.location.href='./vacuno_historial.php'" class="icon-button" data-tooltip="Registrar Ganado">
+        <img src="./images/registros.png" alt="Inicio" class="nav-icon">
+    </button>
+    
+    <button onclick="window.location.href='./vacuno_indices.php'" class="icon-button" data-tooltip="Indices Vacunos">
+        <img src="./images/fondo-indexado.png" alt="Inicio" class="nav-icon">
+    </button>
+    
+    <button onclick="window.location.href='./vacuno_configuracion.php'" class="icon-button" data-tooltip="Configurar Tablas">
+        <img src="./images/configuracion.png" alt="Inicio" class="nav-icon">
+    </button>
+  </div>
+</div>
+
+<!-- Scroll Icons Container -->
+<div class="container scroll-Icons-container">      
+    <button onclick="scrollToSection('Produccion-Carnica')" class="icon-button" data-tooltip="Producción">
+        <img src="./images/bascula-de-comestibles.png" alt="Producción" class="nav-icon">
+    </button>
+    
+    <button onclick="scrollToSection('Section-Alimentacion')" class="icon-button" data-tooltip="Alimentación">
+        <img src="./images/bolso.png" alt="Alimentacion" class="nav-icon">
+    </button>
+    
+    <button onclick="scrollToSection('Section-Vacunas')" class="icon-button" data-tooltip="Salud">
+        <img src="./images/vacunacion.png" alt="Vacunación" class="nav-icon">
+    </button>
+    
+    <buttonon onclick="scrollToSection('Section-Reproduccion')"  class="icon-button" data-tooltip="Reproducción">
+        <img src="./images/matriz.png" alt="Inseminación" class="nav-icon">
+    </buttonon>
+    
+    <button onclick="scrollToSection('Section-Otros')" class="icon-button" data-tooltip="Otros">
+        <img src="./images/compra.png" alt="Venta" class="nav-icon">
+    </button>
+</div>
+
+<style>
+.nav-icons-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0;
+    gap: 50px;
+    flex-wrap: wrap;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    margin: 10px 0;
+}
+.scroll-Icons-container{
+  width: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 0;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+    .icon-nav-container {
+        gap: 15px;
+    }
+}
+</style>
+
+<style>
+.icon-nav-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin: 0px;
+    padding-top: 0px;
+    margin-top: 0px;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+    padding-left: 0px;
+    margin-left: 0px;
+    padding-right: 0px;
+    margin-right: 0px;
+}
+
+.icon-button {
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    padding: 0;
+}
+
+.nav-icon {
+    width: 24px;
+    height: 24px;
+    transition: all 0.3s ease;
+}
+
+.icon-button:hover .nav-icon {
+    transform: scale(1.2);
+}
+
+.icon-button:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Tooltip Styles */
+.icon-button::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 4px 8px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    font-size: 12px;
+    border-radius: 4px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.icon-button:hover::before {
+    opacity: 1;
+    visibility: visible;
+}
+
+@media (max-width: 768px) {
+    .icon-nav-container {
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+    
+    .icon-button {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .nav-icon {
+        width: 20px;
+        height: 20px;
+    }
+}
+</style>
 
 </div>
+<div class="container filters-container" style="text-align: center;">
+  <form method="GET" action="" class="filters-form" style="display: block;">
+        <!-- Género/Sexo Filter -->
+        <select name="sexo" onchange="this.form.submit()" style="width: 170px;">
+          <option value="">Sexo</option>
+          <option value="Macho" <?php echo (isset($_GET['sexo']) && $_GET['sexo'] === 'Macho') ? 'selected' : ''; ?>>Macho</option>
+          <option value="Hembra" <?php echo (isset($_GET['sexo']) && $_GET['sexo'] === 'Hembra') ? 'selected' : ''; ?>>Hembra</option>
+        </select>
+      <!-- Raza Filter -->
+      <select name="raza" onchange="this.form.submit()" style="width: 170px;">
+        <option value="">Raza</option>
+        <?php
+        $raza_sql = "SELECT DISTINCT raza FROM vacuno";
+        $where_conditions = [];
+        
+        if (!empty($_GET['sexo'])) {
+            $where_conditions[] = "genero = '" . $conn->real_escape_string($_GET['sexo']) . "'";
+        }
+        
+        if (!empty($where_conditions)) {
+            $raza_sql .= " WHERE " . implode(" AND ", $where_conditions);
+        }
+        
+        $result_razas = $conn->query($raza_sql);
+        while ($row = $result_razas->fetch_assoc()) {
+            $selected = (isset($_GET['raza']) && $_GET['raza'] === $row['raza']) ? 'selected' : '';
+            echo "<option value='" . htmlspecialchars($row['raza']) . "' $selected>" . htmlspecialchars($row['raza']) . "</option>";
+        }
+        ?>
+      </select>
+      <!-- Etapa Filter -->
+      <select name="etapa" onchange="this.form.submit()" style="width: 170px;">
+        <option value="">Etapa</option>
+        <?php
+        $etapa_sql = "SELECT DISTINCT etapa FROM vacuno";
+        $where_conditions = [];
+        
+        if (!empty($_GET['sexo'])) {
+            $where_conditions[] = "genero = '" . $conn->real_escape_string($_GET['sexo']) . "'";
+        }
+        if (!empty($_GET['raza'])) {
+            $where_conditions[] = "raza = '" . $conn->real_escape_string($_GET['raza']) . "'";
+        }
+        
+        if (!empty($where_conditions)) {
+            $etapa_sql .= " WHERE " . implode(" AND ", $where_conditions);
+        }
+        
+        $result_etapas = $conn->query($etapa_sql);
+        while ($row = $result_etapas->fetch_assoc()) {
+            $selected = (isset($_GET['etapa']) && $_GET['etapa'] === $row['etapa']) ? 'selected' : '';
+            echo "<option value='" . htmlspecialchars($row['etapa']) . "' $selected>" . htmlspecialchars($row['etapa']) . "</option>";
+        }
+        ?>
+      </select>
+      <!-- Grupo Filter -->
+      <select name="grupo" onchange="this.form.submit()" style="width: 170px;">
+        <option value="">Grupo</option>
+        <?php
+        $grupo_sql = "SELECT DISTINCT grupo FROM vacuno";
+        $where_conditions = [];
+        
+        if (!empty($_GET['sexo'])) {
+            $where_conditions[] = "genero = '" . $conn->real_escape_string($_GET['sexo']) . "'";
+        }
+        if (!empty($_GET['raza'])) {
+            $where_conditions[] = "raza = '" . $conn->real_escape_string($_GET['raza']) . "'";
+        }
+        if (!empty($_GET['etapa'])) {
+            $where_conditions[] = "etapa = '" . $conn->real_escape_string($_GET['etapa']) . "'";
+        }
+        
+        if (!empty($where_conditions)) {
+            $grupo_sql .= " WHERE " . implode(" AND ", $where_conditions);
+        }
+        
+        $result_grupos = $conn->query($grupo_sql);
+        while ($row = $result_grupos->fetch_assoc()) {
+            $selected = (isset($_GET['grupo']) && $_GET['grupo'] === $row['grupo']) ? 'selected' : '';
+            echo "<option value='" . htmlspecialchars($row['grupo']) . "' $selected>" . htmlspecialchars($row['grupo']) . "</option>";
+        }
+        ?>
+      </select>
+      <!-- Estatus Filter -->
+      <select name="estatus" onchange="this.form.submit()" style="width: 170px;">
+        <option value="">Estatus</option>
+        <?php
+        $estatus_sql = "SELECT DISTINCT estatus FROM vacuno";
+        $where_conditions = [];
+        
+        if (!empty($_GET['sexo'])) {
+            $where_conditions[] = "genero = '" . $conn->real_escape_string($_GET['sexo']) . "'";
+        }
+        if (!empty($_GET['raza'])) {
+            $where_conditions[] = "raza = '" . $conn->real_escape_string($_GET['raza']) . "'";
+        }
+        if (!empty($_GET['etapa'])) {
+            $where_conditions[] = "etapa = '" . $conn->real_escape_string($_GET['etapa']) . "'";
+        }
+        if (!empty($_GET['grupo'])) {
+            $where_conditions[] = "grupo = '" . $conn->real_escape_string($_GET['grupo']) . "'";
+        }
+        
+        if (!empty($where_conditions)) {
+            $estatus_sql .= " WHERE " . implode(" AND ", $where_conditions);
+        }
+        
+        $result_estatus = $conn->query($estatus_sql);
+        while ($row = $result_estatus->fetch_assoc()) {
+            $selected = (isset($_GET['estatus']) && $_GET['estatus'] === $row['estatus']) ? 'selected' : '';
+            echo "<option value='" . htmlspecialchars($row['estatus']) . "' $selected>" . htmlspecialchars($row['estatus']) . "</option>";
+        }
+        ?>
+      </select>
+  </form>            
+</div>
+
 
 <?php
 // Main query for cards and DataTable
@@ -1980,7 +2078,7 @@ if ($result->num_rows > 0) {
                             $conn_grupos->close();
                             ?>
                         </select>
-                    </div>                        
+                    </div>
                 </div>
             </div>
             <div class="submit-btn-container">
@@ -3578,63 +3676,68 @@ $(document).ready(function() {
 <script type="text/javascript" src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
 
 <!-- VH_Peso Table -->
-<div class="container table-container mt-4">
-    <h3 style="text-align: center;">Historial Produccion Carnica</h3>
-    <table id="pesosTable" class="table table-striped table-bordered" style="width:100%">
-        <thead>
-            <tr>
-                <th class="text-center">Tag ID</th>
-                <th class="text-center">Nombre</th>                
-                <th class="text-center">Fecha</th>
-                <th class="text-center">Peso (kg)</th>
-                <th class="text-center">Precio/kg</th>
-                <th class="text-center">Total</th>
-            </tr>
-        </thead>
-        <tbody>
-<?php
-// Query for vh_peso table with the same filters as vacuno
-$peso_sql = "SELECT vh_peso.*, vacuno.tagid, vacuno.nombre 
-            FROM vh_peso 
-            JOIN vacuno ON vh_peso_tagid = tagid";
+<div class="container" style="display:block; margin-top: 5px; margin-bottom: 5px;">
+    <h3 id="Produccion-Carnica" style="text-align: center;">Historial Produccion Carnica</h3>
+</div>
+<div class="container table-container mt-4">        
 
-if (!empty($where_conditions)) {
-    $peso_sql .= " WHERE " . implode(" AND ", $where_conditions);
-}
+        <table id="pesosTable" class="table table-striped table-bordered" style="width:100%">
+            <thead>
+                <tr>
+                    <th class="text-center">Tag ID</th>
+                    <th class="text-center">Nombre</th>                
+                    <th class="text-center">Fecha</th>
+                    <th class="text-center">Peso (kg)</th>
+                    <th class="text-center">Precio/kg</th>
+                    <th class="text-center">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+            <?php
+            // Query for vh_peso table with the same filters as vacuno
+            $peso_sql = "SELECT vh_peso.*, vacuno.tagid, vacuno.nombre 
+                        FROM vh_peso 
+                        JOIN vacuno ON vh_peso_tagid = tagid";
 
-$peso_sql .= " ORDER BY vh_peso_tagid";
+            if (!empty($where_conditions)) {
+                $peso_sql .= " WHERE " . implode(" AND ", $where_conditions);
+            }
 
-$peso_result = $conn->query($peso_sql);
-$total_sum = 0; // Initialize sum variable
+            $peso_sql .= " ORDER BY vh_peso_tagid";
 
-if ($peso_result && $peso_result->num_rows > 0) {
-    while($row = $peso_result->fetch_assoc()) {
-        // Calculate total
-        $total = $row['vh_peso_animal'] * $row['vh_peso_precio'];
-        $total_sum += $total; // Add to running sum
-        
-        echo "<tr>";
-        echo "<td class='text-center'>" . htmlspecialchars($row['vh_peso_tagid']) . "</td>";
-        echo "<td class='text-center'>" . htmlspecialchars($row['nombre']) . "</td>";        
-        echo "<td class='text-center'>" . htmlspecialchars($row['vh_peso_fecha']) . "</td>";
-        echo "<td class='text-center'>" . htmlspecialchars($row['vh_peso_animal']) . "</td>";
-        echo "<td class='text-center'>$" . htmlspecialchars(number_format($row['vh_peso_precio'], 2)) . "</td>";
-        echo "<td class='text-center'>$" . htmlspecialchars(number_format($total, 2)) . "</td>";
-        echo "</tr>";
-    }
-}
-?>
-        </tbody>
-        <tfoot>
-            <tr>
-                <th colspan="5" class="text-end">Total General:</th>
-                <th class="text-center">$<?php echo number_format($total_sum, 2); ?></th>
-            </tr>
-        </tfoot>
-    </table>
+            $peso_result = $conn->query($peso_sql);
+            $total_sum = 0; // Initialize sum variable
+
+            if ($peso_result && $peso_result->num_rows > 0) {
+                while($row = $peso_result->fetch_assoc()) {
+                    // Calculate total
+                    $total = $row['vh_peso_animal'] * $row['vh_peso_precio'];
+                    $total_sum += $total; // Add to running sum
+                    
+                    echo "<tr>";
+                    echo "<td class='text-center'>" . htmlspecialchars($row['vh_peso_tagid']) . "</td>";
+                    echo "<td class='text-center'>" . htmlspecialchars($row['nombre']) . "</td>";        
+                    echo "<td class='text-center'>" . htmlspecialchars($row['vh_peso_fecha']) . "</td>";
+                    echo "<td class='text-center'>" . htmlspecialchars($row['vh_peso_animal']) . "</td>";
+                    echo "<td class='text-center'>$" . htmlspecialchars(number_format($row['vh_peso_precio'], 2)) . "</td>";
+                    echo "<td class='text-center'>$" . htmlspecialchars(number_format($total, 2)) . "</td>";
+                    echo "</tr>";
+                }
+                }
+            ?>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="5" class="text-end">Total General:</th>
+                    <th class="text-center">$<?php echo number_format($total_sum, 2); ?></th>
+                </tr>
+            </tfoot>
+        </table>
 </div>
 
+
 <script>
+
 $(document).ready(function() {
     // Initialize Pesos DataTable
     $('#pesosTable').DataTable({
@@ -3705,10 +3808,12 @@ function number_format(number, decimals) {
     return number.toFixed(decimals).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 </script>
-
+<div class="container" style="display:block; margin-top: 5px; margin-bottom: 5px;">
+    <h3 id="Produccion-Lechera" style="text-align: center;">Historial Produccion Lechera</h3>
+</div>
 <!-- VH_Leche Table -->
 <div class="container table-container mt-4">
-    <h3 style="text-align: center;">Historial Producción Lechera</h3>
+    
     <table id="lecheTable" class="table table-striped table-bordered" style="width:100%">
         <thead>
             <tr>
@@ -3820,10 +3925,11 @@ $(document).ready(function() {
     });
 });
 </script>
-
+<div class="container" style="display:block; margin-top: 5px; margin-bottom: 5px;">
+    <h3 id="Section-Alimentacion" style="text-align: center;">Historial Inversion Concentrado</h3>
+</div>
 <!-- VH_Concentrado Table -->
 <div class="container table-container mt-4">
-    <h3 style="text-align: center;">Historial Inversion Concentrado</h3>
     <table id="concentradoTable" class="table table-striped table-bordered" style="width:100%">
         <thead>
             <tr>
@@ -3929,10 +4035,11 @@ $(document).ready(function() {
     });
 });
 </script>
-
+<div class="container text-center" style="margin-top: 5px; margin-bottom: 5px;">
+    <h3>Historial Inversion Melaza</h3>
+</div>
 <!-- VH_Melaza Table -->
 <div class="container table-container mt-4">
-    <h3 style="text-align: center;">Historial Inversion Melaza</h3>
     <table id="melazaTable" class="table table-striped table-bordered" style="width:100%">
         <thead>
             <tr>
@@ -4040,8 +4147,10 @@ $(document).ready(function() {
 </script>
 
 <!-- VH_Sal Table -->
+<div class="container text-center" style="margin-top: 5px; margin-bottom: 5px;">
+    <h3>Historial Inversion Sal</h3>
+</div>
 <div class="container table-container mt-4">
-    <h3 style="text-align: center;">Historial Inversion Sal</h3>
     <table id="salTable" class="table table-striped table-bordered" style="width:100%">
         <thead>
             <tr>
@@ -4147,13 +4256,15 @@ $(document).ready(function() {
     });
 });
 </script>
-
+<div class="container" style="display:block; margin-top: 5px; margin-bottom: 5px;">
+    <h3 id="Section-Vacunas" style="text-align: center;">Historial Vacunación Aftosa</h3>
+</div>
 <!-- VH_Aftosa Table -->
 <div class="container table-container mt-4">
-    <h3 style="text-align: center;">Historial Vacunación Aftosa</h3>
     <table id="aftosaTable" class="table table-striped table-bordered" style="width:100%">
         <thead>
             <tr>
+
                 <th>Tag ID</th>
                 <th>Fecha</th>
                 <th>Nombre</th>
@@ -4272,10 +4383,11 @@ $(document).ready(function() {
     font-weight: bold !important;
 }
 </style>
-
+<div class="container text-center" style="margin-top: 5px; margin-bottom: 5px;">
+    <h3>Historial de Vacunación IBR</h3>
+</div>
 <!-- VH_IBR Table -->
-<div class="container table-container mt-4">
-    <h3 style="text-align: center;">Historial de Vacunación IBR</h3>
+<div class="container table-container mt-4">    
     <table id="ibrTable" class="table table-striped table-bordered" style="width:100%">
         <thead>
             <tr>
@@ -4388,9 +4500,12 @@ $(document).ready(function() {
 });
 </script>
 
+<div class="container text-center" style="margin-top: 5px; margin-bottom: 5px;">
+    <h3>Historial Vacunación CBR</h3>
+</div>
+
 <!-- VH_CBR Table -->
-<div class="container table-container mt-4">
-    <h3 style="text-align: center;">Historial Vacunación CBR</h3>
+<div class="container table-container mt-4">    
     <table id="cbrTable" class="table table-striped table-bordered" style="width:100%">
         <thead>
             <tr>
@@ -4511,9 +4626,13 @@ $(document).ready(function() {
     font-weight: bold !important;
 }
 </style>
+
+<div class="container text-center" style="margin-top: 5px; margin-bottom: 5px;">
+    <h3>Historial Vacunación Brucelosis</h3>
+</div>
+
 <!-- VH_brucelosis Table -->
 <div class="container table-container mt-4">
-    <h3 style="text-align: center;">Historial Vacunación Brucelosis</h3>
     <table id="brucelosisTable" class="table table-striped table-bordered" style="width:100%">
         <thead>
             <tr>
@@ -4634,9 +4753,13 @@ $(document).ready(function() {
     font-weight: bold !important;
 }
 </style>
+
+<div class="container text-center" style="margin-top: 5px; margin-bottom: 5px;">
+    <h3>Historial Vacunación Carbunco</h3>
+</div>
+
 <!-- VH_carbunco Table -->
 <div class="container table-container mt-4">
-    <h3 style="text-align: center;">Historial Vacunación Carbunco</h3>
     <table id="carbuncoTable" class="table table-striped table-bordered" style="width:100%">
         <thead>
             <tr>
@@ -4758,9 +4881,12 @@ $(document).ready(function() {
 }
 </style>
 
+<div class="container text-center" style="margin-top: 5px; margin-bottom: 5px;">
+    <h3>Historial Tratamiento Garrapatas</h3>
+</div>
+
 <!-- VH_garrapatas Table -->
 <div class="container table-container mt-4">
-    <h3 style="text-align: center;">Historial Tratamiento Garrapatas</h3>
     <table id="garrapatasTable" class="table table-striped table-bordered" style="width:100%">
         <thead>
             <tr>
@@ -4882,9 +5008,12 @@ $(document).ready(function() {
 }
 </style>
 
+<div class="container text-center" style="margin-top: 5px; margin-bottom: 5px;">
+    <h3>Historial Tratamiento Mastitis</h3>
+</div>
+
 <!-- VH_mastitis Table -->
 <div class="container table-container mt-4">
-    <h3 style="text-align: center;">Historial Tratamiento Mastitis</h3>
     <table id="mastitisTable" class="table table-striped table-bordered" style="width:100%">
         <thead>
             <tr>
@@ -5006,9 +5135,12 @@ $(document).ready(function() {
 }
 </style>
 
+<div class="container text-center" style="margin-top: 5px; margin-bottom: 5px;">
+    <h3>Historial Tratamiento Lombrices</h3>
+</div>
+
 <!-- VH_lombrices Table -->
 <div class="container table-container mt-4">
-    <h3 style="text-align: center;">Historial Tratamiento Lombrices</h3>
     <table id="lombricesTable" class="table table-striped table-bordered" style="width:100%">
         <thead>
             <tr>
@@ -5126,9 +5258,12 @@ $(document).ready(function() {
 }
 </style>
 
+<div class="container text-center" style="margin-top: 5px; margin-bottom: 5px;">
+    <h3 id="Section-Reproduccion" style="text-align: center;">Historial Inseminacion</h3>
+</div>
+
 <!-- VH_inseminacion Table -->
 <div class="container table-container mt-4">
-    <h3 style="text-align: center;">Historial Inseminacion</h3>
     <table id="inseminacionTable" class="table table-striped table-bordered" style="width:100%">
         <thead>
             <tr>
@@ -5224,9 +5359,13 @@ $(document).ready(function() {
 }
 </style>
 
+<div class="container text-center" style="margin-top: 5px; margin-bottom: 5px;">
+    <h3 style="text-align: center;">Historial Gestacion</h3>
+</div>
+
 <!-- VH_gestacion Table -->
 <div class="container table-container mt-4">
-    <h3 style="text-align: center;">Historial Gestacion</h3>
+    <h3 style="text-align: center;"></h3>
     <table id="gestacionTable" class="table table-striped table-bordered" style="width:100%">
         <thead>
             <tr>
@@ -5310,9 +5449,13 @@ $(document).ready(function() {
 }
 </style>
 
+<div class="container text-center" style="margin-top: 5px; margin-bottom: 5px;">
+    <h3 style="text-align: center;">Historial Partos</h3>
+</div>
+
 <!-- VH_parto Table -->
 <div class="container table-container mt-4">
-    <h3 style="text-align: center;">Historial Parto</h3>
+    <h3 style="text-align: center;"></h3>
     <table id="partoTable" class="table table-striped table-bordered" style="width:100%">
         <thead>
             <tr>
@@ -5396,9 +5539,12 @@ $(document).ready(function() {
 }
 </style>
 
+<div class="container text-center" style="margin-top: 5px; margin-bottom: 5px;">
+    <h3 style="text-align: center;">Historial Abortos</h3>
+</div>
+
 <!-- VH_aborto Table -->
 <div class="container table-container mt-4">
-    <h3 style="text-align: center;">Historial Abortos</h3>
     <table id="abortoTable" class="table table-striped table-bordered" style="width:100%">
         <thead>
             <tr>
@@ -5482,9 +5628,16 @@ $(document).ready(function() {
 }
 </style>
 
+<div class="container text-center" style="margin-top: 5px; margin-bottom: 5px;">
+    <h3 id="Section-Otros" style="text-align: center;">Historial Venta</h3>
+</div>
+
+<div class="container text-center" style="margin-top: 5px; margin-bottom: 5px;">
+    <h3 id="Section-Otros" style="text-align: center;"></h3>
+</div>
+
 <!-- VH_venta Table -->
 <div class="container table-container mt-4">
-    <h3 style="text-align: center;">Historial Venta</h3>
     <table id="ventaTable" class="table table-striped table-bordered" style="width:100%">
         <thead>
             <tr>
@@ -5580,9 +5733,12 @@ $(document).ready(function() {
 }
 </style>
 
+<div class="container text-center" style="margin-top: 5px; margin-bottom: 5px;">
+    <h3 style="text-align: center;">Historial Destete</h3>
+</div>
+
 <!-- VH_destete Table -->
 <div class="container table-container mt-4">
-    <h3 style="text-align: center;">Historial Destete</h3>
     <table id="desteteTable" class="table table-striped table-bordered" style="width:100%">
         <thead>
             <tr>
@@ -5678,9 +5834,12 @@ $(document).ready(function() {
 }
 </style>
 
+<div class="container text-center" style="margin-top: 5px; margin-bottom: 5px;">
+    <h3 style="text-align: center;">Historial Descarte</h3>
+</div>
+
 <!-- VH_descarte Table -->
 <div class="container table-container mt-4">
-    <h3 style="text-align: center;">Historial Descarte</h3>
     <table id="descarteTable" class="table table-striped table-bordered" style="width:100%">
         <thead>
             <tr>
@@ -5773,6 +5932,231 @@ $(document).ready(function() {
 }
 </style>
 
+<script>
+function scrollToSection(sectionTitle) {
+    // Find all h3 elements
+    const headers = document.querySelectorAll('h3');
+    let targetHeader = null;
+    
+    // Loop through headers to find matching text
+    headers.forEach(header => {
+        console.log('Checking header:', header.textContent.trim());
+        if (header.textContent.trim().includes('Historial')) {
+            if (header.textContent.trim().includes(sectionTitle)) {
+                targetHeader = header;
+                console.log('Found matching header:', header.textContent.trim());
+            }
+        }
+    });
+
+    if (targetHeader) {
+        // Get the element's position relative to the viewport
+        const elementRect = targetHeader.getBoundingClientRect();
+        const absoluteElementTop = elementRect.top + window.pageYOffset;
+        
+        // Scroll to element
+        window.scrollTo({
+            top: absoluteElementTop - 100, // 100px offset from top
+            behavior: 'smooth'
+        });
+
+        // Visual feedback
+        targetHeader.style.backgroundColor = '#fff3cd';
+        setTimeout(() => {
+            targetHeader.style.backgroundColor = 'transparent';
+            targetHeader.style.transition = 'background-color 1s ease';
+        }, 1000);
+    } else {
+        console.log('Target section not found:', sectionTitle);
+    }
+}
+</script>
+
+<!-- Back to top button -->
+<button id="backToTop" class="back-to-top" onclick="scrollToTop()" title="Volver arriba">
+    <div class="arrow-up"></div>
+</button>
+<style>
+.back-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 45px;
+    height: 45px;
+    background-color: #ffffff;
+    border: 2px solid #4caf50;
+    border-radius: 50%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 9999;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+.arrow-up {
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 12px solid #4caf50;
+}
+
+.back-to-top:hover {
+    background-color: #4caf50;
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.back-to-top:hover .arrow-up {
+    border-bottom-color: #ffffff;
+}
+
+@media (max-width: 768px) {
+    .back-to-top {
+        bottom: 20px;
+        right: 20px;
+        width: 40px;
+        height: 40px;
+    }
+    
+    .arrow-up {
+        border-left-width: 6px;
+        border-right-width: 6px;
+        border-bottom-width: 10px;
+    }
+}
+</style>
+
+
+<script>
+// Show/hide back to top button based on scroll position
+window.onscroll = function() {
+    const backToTopButton = document.getElementById("backToTop");
+    if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+        backToTopButton.style.display = "flex";
+    } else {
+        backToTopButton.style.display = "none";
+    }
+};
+
+// Smooth scroll to top function
+function scrollToTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}
+</script>
+
+
+
+<script>
+// Add active class to parent when submenu item is current page
+document.addEventListener('DOMContentLoaded', function() {
+    const currentPath = window.location.pathname;
+    const submenuLinks = document.querySelectorAll('.submenu a');
+    
+    submenuLinks.forEach(link => {
+        if (link.getAttribute('href').includes(currentPath)) {
+            const parentButton = link.closest('.menu-item').querySelector('.menu-button');
+            parentButton.classList.add('active');
+            link.style.color = '#2e7d32'; // Dark green
+            link.style.fontWeight = '500';
+        }
+    });
+});
+</script>
+
+<style>
+.menu-button {
+    width: 100%;
+    padding: 12px 15px;
+    background: #f0f9f0;
+    border: 1px solid #e8f5e9;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: #2c3e50;
+    font-weight: 500;
+    margin-bottom: 5px;
+    box-shadow: 0 2px 4px rgba(76, 175, 80, 0.1);
+}
+
+.menu-button:hover {
+    background: #e8f5e9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(76, 175, 80, 0.15);
+    border-color: #4caf50;
+}
+
+.menu-button i {
+    font-size: 1.2em;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #4caf50;
+    background: white;
+    border-radius: 6px;
+    padding: 4px;
+}
+
+.menu-button.active {
+    background: #e8f5e9;
+    border-color: #4caf50;
+    color: #2e7d32;
+    box-shadow: 0 2px 8px rgba(76, 175, 80, 0.2);
+}
+
+/* Enhance submenu items to match the style */
+.submenu a {
+    display: block;
+    padding: 10px 15px;
+    color: #2c3e50;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    font-size: 0.95em;
+    margin: 5px 0;
+    background: white;
+}
+
+.submenu a:hover {
+    background: #f0f9f0;
+    color: #2e7d32;
+    padding-left: 20px;
+    box-shadow: 0 2px 4px rgba(76, 175, 80, 0.1);
+}
+</style>
+<script>
+function scrollToSection(sectionId) {
+    const element = document.getElementById(sectionId);
+    if (element) {
+        // Get the element's position relative to the viewport
+        const elementRect = element.getBoundingClientRect();
+        const absoluteElementTop = elementRect.top + window.pageYOffset;
+        
+        // Scroll to element with offset for any fixed headers
+        window.scrollTo({
+            top: absoluteElementTop - 100, // 100px offset from top
+            behavior: 'smooth'
+        });
+
+        // Optional: Add highlight effect
+        element.style.backgroundColor = '#fff3cd';
+        setTimeout(() => {
+            element.style.backgroundColor = 'transparent';
+            element.style.transition = 'background-color 1s ease';
+        }, 1000);
+    }
+}
+</script>
 </body>
 </html>
 <?php

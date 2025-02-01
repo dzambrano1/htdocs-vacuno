@@ -1,24 +1,7 @@
 <?php
 
-// local Credentials
-// header("Access-Control-Allow-Headers:*");
-// $servername = "localhost";
-// $username = "root";
-// $password = "";
-// $dbname = "ganagram";
-
-// Hostinger credentials
-// $servername = "localhost";
-// $username = "u568157883_root";
-// $password = "Sebastian7754*";
-// $dbname = "u568157883_ganagram";
-
-// local Credentials
-header("Access-Control-Allow-Headers:*");
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "ganagram";
+require_once '../conexion.php';  // Go up one directory since inventario_vacuno.php is in the vacuno folder
+// Now you can use $conn for database queries
 
 $conn = mysqli_connect($servername, $username, $password, $dbname);
 
@@ -656,7 +639,7 @@ if ($conn->connect_error) {
 <body>
 
     <!-- Add back button before the header container -->
-    <a href="http://localhost:3000/vacuno/inventario_vacuno.php" class="back-btn">
+    <a href="./inventario_vacuno.php" class="back-btn">
         <i class="fas fa-arrow-left"></i>
     </a>
 
@@ -673,148 +656,166 @@ if ($conn->connect_error) {
         }
     }
     ?>
-
-<div class="container">
-    <div class="info-card-container" 
-        data-bs-toggle="tooltip" 
-        data-bs-placement="bottom" 
-        title="Click para seccion Produccion">
-        <div class="info-card">
-        <div class="card-header">
-            <div class="icon-wrapper">
-                <img src="./images/bascula-de-comestibles.png" alt="trigo Icon" class="rounded">
-            </div>
-            <div class="card-content">
-                <div class="numero-label">7</div>
-                <div class="numero-unidad">Toneladas</div>
-            </div>
-        </div>
-        <div class="additional-info">
-            <div class="info-item">
-                <div class="info-label">Becerros</div>
-                <div class="info-value text-success">
-                    <div class="info-value">1 T</div>
-                </div>
-            </div>
-            <div class="info-item">
-                <div class="info-label">Novillos</div>
-                <div class="info-value">3 T</div>
-            </div>
-            <div class="info-item">
-                <div class="info-label">Adultos</div>
-                <div class="info-value text-primary">
-                    <div class="info-value">5 T</div>
-                </div>
-            </div>
-        </div>
-    </div>
-    </div>
-
-    <div class="info-card-container" 
-        data-bs-toggle="tooltip" 
-        data-bs-placement="bottom" 
-        title="Click para seccion Reproduccion">
-        <div class="info-card">
-        <div class="card-header">
-            <div class="icon-wrapper">
-                <img src="./images/matriz.png" alt="Cow Icon" class="rounded">
-            </div>
-            <div class="card-content">
-                <div class="numero-label">50</div>
-                <div class="numero-unidad">Vientres</div>
-            </div>
-        </div>
-        <div class="additional-info">
-            <div class="info-item">
-                <div class="info-label">Preñadas</div>
-                <div class="info-value text-success">
-                    <div class="info-value">30</div>
-                </div>
-            </div>
-            <div class="info-item">
-                <div class="info-label">Vacias</div>
-                <div class="info-value">20</div>
-            </div>
-            <div class="info-item">
-                <div class="info-label">Relacion</div>
-                <div class="info-value text-primary">
-                    <div class="info-value">60%</div>
-                </div>
-            </div>
-        </div>
-    </div>
-    </div>
-
-    <div class="info-card-container" 
-        data-bs-toggle="tooltip" 
-        data-bs-placement="bottom" 
-        title="Click para seccion Salud">  
-        <div class="info-card">
-            <div class="card-header">
-                <div class="icon-wrapper">
-                    <img src="./images/vacunacion.png" alt="carne Icon" class="rounded">
-                </div>
-                <div class="card-content">
-                    <div class="numero-label">750</div>
-                    <div class="numero-unidad">Vacunados</div>
-                </div>
-            </div>
-            <div class="additional-info">
-                <div class="info-item">
-                    <div class="info-label">Becerros</div>
-                    <div class="info-value text-success">
-                        <div class="info-value">50</div>
-                    </div>
-                </div>
-                <div class="info-item">
-                    <div class="info-label">Novillos</div>
-                    <div class="info-value">200</div>
-                </div>
-                <div class="info-item">
-                    <div class="info-label">Adultos</div>
-                    <div class="info-value text-primary">
-                        <div class="info-value">500</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="info-card-container" 
-        data-bs-toggle="tooltip" 
-        data-bs-placement="bottom" 
-        title="Click para seccion Alimentacion">
-        <div class="info-card">
-            <div class="card-header">
-                <div class="icon-wrapper">
-                <img src="./images/bolso.png" alt="trigo Icon" class="rounded">
-                </div>
-                <div class="card-content">
-                    <div class="numero-label">1</div>
-                    <div class="numero-unidad">Tonelada</div>
-                </div>
-            </div>
-            <div class="additional-info">
-                <div class="info-item">
-                    <div class="info-label">Becerros</div>
-                    <div class="info-value text-success">
-                        <div class="info-value">0.1 T</div>
-                    </div>
-                </div>
-                <div class="info-item">
-                    <div class="info-label">Novillos</div>
-                    <div class="info-value">0.3 T</div>
-                </div>
-                <div class="info-item">
-                    <div class="info-label">Adultos</div>
-                    <div class="info-value text-primary">
-                        <div class="info-value">0.6 T</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="container" id="nav-buttons">
+  <!-- Icon Navigation Buttons -->
+  <div class="container nav-icons-container">
+    <button onclick="window.location.href='../inicio.php'" class="icon-button" data-tooltip="Inicio">
+        <img src="./images/Ganagram_New_Logo-png.png" alt="Inicio" class="nav-icon">
+    </button>
+    
+    <button onclick="window.location.href='./inventario_vacuno.php'" class="icon-button" data-tooltip="Inventario Vacuno">
+        <img src="./images/vacas.png" alt="Inventario Vacuno" class="nav-icon">
+    </button>
+    
+    <button onclick="window.location.href='./vacuno_indices.php'" class="icon-button" data-tooltip="Indices Vacunos">
+        <img src="./images/fondo-indexado.png" alt="Inicio" class="nav-icon">
+    </button>
+    
+    <button onclick="window.location.href='./vacuno_configuracion.php'" class="icon-button" data-tooltip="Configurar Tablas">
+        <img src="./images/configuracion.png" alt="Inicio" class="nav-icon">
+    </button>
+  </div>
 </div>
+
+<!-- Scroll Icons Container -->
+<div class="container scroll-Icons-container">      
+    <button onclick="scrollToSection('Produccion-Carnica')" class="icon-button" data-tooltip="Producción">
+        <img src="./images/bascula-de-comestibles.png" alt="Producción" class="nav-icon">
+    </button>
+    
+    <button onclick="scrollToSection('Section-Alimentacion')" class="icon-button" data-tooltip="Alimentación">
+        <img src="./images/bolso.png" alt="Alimentacion" class="nav-icon">
+    </button>
+    
+    <button onclick="scrollToSection('Section-Vacunas')" class="icon-button" data-tooltip="Salud">
+        <img src="./images/vacunacion.png" alt="Vacunación" class="nav-icon">
+    </button>
+    
+    <buttonon onclick="scrollToSection('Section-Reproduccion')"  class="icon-button" data-tooltip="Reproducción">
+        <img src="./images/matriz.png" alt="Inseminación" class="nav-icon">
+    </buttonon>
+    
+    <button onclick="scrollToSection('Section-Otros')" class="icon-button" data-tooltip="Otros">
+        <img src="./images/compra.png" alt="Venta" class="nav-icon">
+    </button>
+</div>
+
+<style>
+.nav-icons-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0;
+    gap: 50px;
+    flex-wrap: wrap;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    margin: 10px 0;
+}
+.scroll-Icons-container{
+  width: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 0;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+    .icon-nav-container {
+        gap: 15px;
+    }
+}
+</style>
+
+<style>
+.icon-nav-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin: 0px;
+    padding-top: 0px;
+    margin-top: 0px;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+    padding-left: 0px;
+    margin-left: 0px;
+    padding-right: 0px;
+    margin-right: 0px;
+}
+
+.icon-button {
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    padding: 0;
+}
+
+.nav-icon {
+    width: 24px;
+    height: 24px;
+    transition: all 0.3s ease;
+}
+
+.icon-button:hover .nav-icon {
+    transform: scale(1.2);
+}
+
+.icon-button:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Tooltip Styles */
+.icon-button::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 4px 8px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    font-size: 12px;
+    border-radius: 4px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.icon-button:hover::before {
+    opacity: 1;
+    visibility: visible;
+}
+
+@media (max-width: 768px) {
+    .icon-nav-container {
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+    
+    .icon-button {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .nav-icon {
+        width: 20px;
+        height: 20px;
+    }
+}
+</style>
 
 <div class="container mt-4" style="display:block; justify-content: center; align-items: center;">
         <div>
@@ -1277,7 +1278,8 @@ $result_peso = $conn->query($baseQuery_peso);
 </div>
 <div class="container mt-4">
 <div class="table-section">
-<h3 class="section-title">REGISTROS DE PRODUCCION</h3>
+<h3 id="section-produccion" style="text-align: center;">REGISTROS DE PRODUCCION</h3>
+
 
 <!-- Peso Table -->
 <div class="mb-4">
@@ -1815,7 +1817,8 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 <div class="container table-section" style="display:block; justify-content: center; align-items: center;">
-<h3 class="section-title">REGISTROS DE ALIMENTACION</h3>
+<h3 id="section-alimentacion" style="text-align: center;">REGISTROS DE ALIMENTACION</h3>
+
 <!-- ALIMENTACION Table -->
 <!-- Concentrado Table -->
     <h4 class="sub-section-title">Control de Concentrado</h4>
@@ -2466,7 +2469,7 @@ $result_vacuna = $conn->query($baseQuery_vacuna);
 ?>
 <div class="container" style="display:block; justify-content: center; align-items: center;">
 <div class="table-section">
-<h3 class="section-title">REGISTROS DE SALUD</h3>
+<h3 id="section-salud" style="text-align: center;">REGISTROS DE SALUD</h3>
 
 <!-- Mobile version -->
 <div class="mobile-table">
@@ -4113,7 +4116,7 @@ $(document).ready(function() {
 </script> 
 
 <div class="container table-section" style="display:block; justify-content: center; align-items: center;">
-<h3 class="section-title">REGISTROS DE REPRODUCCION</h3>
+<h3 id="section-reproduccion" style="text-align: center;">REGISTROS DE REPRODUCCION</h3>
 
 <!-- Inseminacion Table Section -->
 <?php
@@ -4593,7 +4596,7 @@ $(document).ready(function() {
 });
 </script>
 <div class="container table-section" style="display:block; justify-content: center; align-items: center;">
-<h3 class="section-title">OTROS REGISTROS</h3>
+<h3 id="section-otros" style="text-align: center;">OTROS REGISTROS</h3>
 <!-- Venta Table Section -->
 <?php
 // Build the base query for Venta
@@ -5155,3 +5158,143 @@ if ($result_leche && $result_leche->num_rows > 0) {
 <?php
 $conn->close();
 ?>
+
+<script>
+function scrollToSection(sectionId) {
+    // Find the section element
+    const section = document.getElementById(sectionId);
+    
+    if (section) {
+        // Get any fixed header height
+        const header = document.querySelector('header'); // Adjust selector if needed
+        const headerHeight = header ? header.offsetHeight : 0;
+        
+        // Get the element's position
+        const elementPosition = section.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerHeight - 20; // 20px extra padding
+        
+        // Smooth scroll to the section
+        window.scrollTo({
+            top: offsetPosition,
+            behavior: "smooth"
+        });
+        
+        // Optional: Add highlight effect
+        section.style.backgroundColor = '#f0f9f0'; // Light green background
+        setTimeout(() => {
+            section.style.backgroundColor = 'transparent';
+            section.style.transition = 'background-color 0.5s ease';
+        }, 1000);
+    } else {
+        console.error(`Section with ID "${sectionId}" not found`);
+    }
+}
+
+// Back to top functionality
+window.onscroll = function() {
+    const backToTopButton = document.getElementById("backToTop");
+    if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+        backToTopButton.style.display = "flex";
+    } else {
+        backToTopButton.style.display = "none";
+    }
+};
+
+function scrollToTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}
+
+// Optional: Add scroll offset adjustment for fixed header
+document.addEventListener('DOMContentLoaded', function() {
+    // Adjust scroll position for anchor links
+    if (window.location.hash) {
+        const header = document.querySelector('header');
+        const headerHeight = header ? header.offsetHeight : 0;
+        
+        setTimeout(function() {
+            window.scrollTo({
+                top: window.pageYOffset - headerHeight - 20,
+                behavior: 'smooth'
+            });
+        }, 1);
+    }
+});
+</script>
+
+<!-- Back to top button -->
+<button id="backToTop" class="back-to-top" onclick="scrollToTop()" title="Volver arriba">
+    <div class="arrow-up"></div>
+</button>
+<style>
+.back-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 45px;
+    height: 45px;
+    background-color: #ffffff;
+    border: 2px solid #4caf50;
+    border-radius: 50%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 9999;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+.arrow-up {
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 12px solid #4caf50;
+}
+
+.back-to-top:hover {
+    background-color: #4caf50;
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.back-to-top:hover .arrow-up {
+    border-bottom-color: #ffffff;
+}
+
+@media (max-width: 768px) {
+    .back-to-top {
+        bottom: 20px;
+        right: 20px;
+        width: 40px;
+        height: 40px;
+    }
+    
+    .arrow-up {
+        border-left-width: 6px;
+        border-right-width: 6px;
+        border-bottom-width: 10px;
+    }
+}
+</style>
+
+<script>
+window.onscroll = function() {
+    const backToTopButton = document.getElementById("backToTop");
+    if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+        backToTopButton.style.display = "flex";
+    } else {
+        backToTopButton.style.display = "none";
+    }
+};
+
+function scrollToTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}
+</script>
