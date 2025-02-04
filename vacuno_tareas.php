@@ -1,24 +1,7 @@
 <?php
 
-// local Credentials
-// header("Access-Control-Allow-Headers:*");
-// $servername = "localhost";
-// $username = "root";
-// $password = "";
-// $dbname = "ganagram";
-
-// Hostinger credentials
-// $servername = "localhost";
-// $username = "u568157883_root";
-// $password = "Sebastian7754*";
-// $dbname = "u568157883_ganagram";
-
-// local Credentials
-header("Access-Control-Allow-Headers:*");
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "ganagram";
+require_once '../conexion.php';  // Go up one directory since inventario_vacuno.php is in the vacuno folder
+// Now you can use $conn for database queries
 
 $conn = mysqli_connect($servername, $username, $password, $dbname);
 

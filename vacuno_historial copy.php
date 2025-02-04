@@ -1,24 +1,7 @@
 <?php
 
-// local Credentials
-// header("Access-Control-Allow-Headers:*");
-// $servername = "localhost";
-// $username = "root";
-// $password = "";
-// $dbname = "ganagram";
-
-// Hostinger credentials
-// $servername = "localhost";
-// $username = "u568157883_root";
-// $password = "Sebastian7754*";
-// $dbname = "u568157883_ganagram";
-
-// local Credentials
-header("Access-Control-Allow-Headers:*");
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "ganagram";
+require_once '../conexion.php';  // Go up one directory since inventario_vacuno.php is in the vacuno folder
+// Now you can use $conn for database queries
 
 $conn = mysqli_connect($servername, $username, $password, $dbname);
 
@@ -651,6 +634,18 @@ if ($conn->connect_error) {
         background-color: #689260;
         border-color: #689260;
     }
+
+    /* Add spacing between action buttons */
+    .table td .btn-primary {
+        margin-right: 10px;
+    }
+
+    /* For better mobile responsiveness */
+    @media (max-width: 768px) {
+        .table td .btn-primary {
+            margin-right: 5px;
+        }
+    }
 </style>
 </head>
 <body>
@@ -673,148 +668,166 @@ if ($conn->connect_error) {
         }
     }
     ?>
-
-<div class="container">
-    <div class="info-card-container" 
-        data-bs-toggle="tooltip" 
-        data-bs-placement="bottom" 
-        title="Click para seccion Produccion">
-        <div class="info-card">
-        <div class="card-header">
-            <div class="icon-wrapper">
-                <img src="./images/bascula-de-comestibles.png" alt="trigo Icon" class="rounded">
-            </div>
-            <div class="card-content">
-                <div class="numero-label">7</div>
-                <div class="numero-unidad">Toneladas</div>
-            </div>
-        </div>
-        <div class="additional-info">
-            <div class="info-item">
-                <div class="info-label">Becerros</div>
-                <div class="info-value text-success">
-                    <div class="info-value">1 T</div>
-                </div>
-            </div>
-            <div class="info-item">
-                <div class="info-label">Novillos</div>
-                <div class="info-value">3 T</div>
-            </div>
-            <div class="info-item">
-                <div class="info-label">Adultos</div>
-                <div class="info-value text-primary">
-                    <div class="info-value">5 T</div>
-                </div>
-            </div>
-        </div>
-    </div>
-    </div>
-
-    <div class="info-card-container" 
-        data-bs-toggle="tooltip" 
-        data-bs-placement="bottom" 
-        title="Click para seccion Reproduccion">
-        <div class="info-card">
-        <div class="card-header">
-            <div class="icon-wrapper">
-                <img src="./images/matriz.png" alt="Cow Icon" class="rounded">
-            </div>
-            <div class="card-content">
-                <div class="numero-label">50</div>
-                <div class="numero-unidad">Vientres</div>
-            </div>
-        </div>
-        <div class="additional-info">
-            <div class="info-item">
-                <div class="info-label">Preñadas</div>
-                <div class="info-value text-success">
-                    <div class="info-value">30</div>
-                </div>
-            </div>
-            <div class="info-item">
-                <div class="info-label">Vacias</div>
-                <div class="info-value">20</div>
-            </div>
-            <div class="info-item">
-                <div class="info-label">Relacion</div>
-                <div class="info-value text-primary">
-                    <div class="info-value">60%</div>
-                </div>
-            </div>
-        </div>
-    </div>
-    </div>
-
-    <div class="info-card-container" 
-        data-bs-toggle="tooltip" 
-        data-bs-placement="bottom" 
-        title="Click para seccion Salud">  
-        <div class="info-card">
-            <div class="card-header">
-                <div class="icon-wrapper">
-                    <img src="./images/vacunacion.png" alt="carne Icon" class="rounded">
-                </div>
-                <div class="card-content">
-                    <div class="numero-label">750</div>
-                    <div class="numero-unidad">Vacunados</div>
-                </div>
-            </div>
-            <div class="additional-info">
-                <div class="info-item">
-                    <div class="info-label">Becerros</div>
-                    <div class="info-value text-success">
-                        <div class="info-value">50</div>
-                    </div>
-                </div>
-                <div class="info-item">
-                    <div class="info-label">Novillos</div>
-                    <div class="info-value">200</div>
-                </div>
-                <div class="info-item">
-                    <div class="info-label">Adultos</div>
-                    <div class="info-value text-primary">
-                        <div class="info-value">500</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="info-card-container" 
-        data-bs-toggle="tooltip" 
-        data-bs-placement="bottom" 
-        title="Click para seccion Alimentacion">
-        <div class="info-card">
-            <div class="card-header">
-                <div class="icon-wrapper">
-                <img src="./images/bolso.png" alt="trigo Icon" class="rounded">
-                </div>
-                <div class="card-content">
-                    <div class="numero-label">1</div>
-                    <div class="numero-unidad">Tonelada</div>
-                </div>
-            </div>
-            <div class="additional-info">
-                <div class="info-item">
-                    <div class="info-label">Becerros</div>
-                    <div class="info-value text-success">
-                        <div class="info-value">0.1 T</div>
-                    </div>
-                </div>
-                <div class="info-item">
-                    <div class="info-label">Novillos</div>
-                    <div class="info-value">0.3 T</div>
-                </div>
-                <div class="info-item">
-                    <div class="info-label">Adultos</div>
-                    <div class="info-value text-primary">
-                        <div class="info-value">0.6 T</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="container" id="nav-buttons">
+  <!-- Icon Navigation Buttons -->
+  <div class="container nav-icons-container">
+    <button onclick="window.location.href='../inicio.php'" class="icon-button" data-tooltip="Inicio">
+        <img src="./images/Ganagram_New_Logo-png.png" alt="Inicio" class="nav-icon">
+    </button>
+    
+    <button onclick="window.location.href='./inventario_vacuno.php'" class="icon-button" data-tooltip="Inventario Vacuno">
+        <img src="./images/vacas.png" alt="Inventario Vacuno" class="nav-icon">
+    </button>
+    
+    <button onclick="window.location.href='./vacuno_indices.php'" class="icon-button" data-tooltip="Indices Vacunos">
+        <img src="./images/fondo-indexado.png" alt="Inicio" class="nav-icon">
+    </button>
+    
+    <button onclick="window.location.href='./vacuno_configuracion.php'" class="icon-button" data-tooltip="Configurar Tablas">
+        <img src="./images/configuracion.png" alt="Inicio" class="nav-icon">
+    </button>
+  </div>
 </div>
+
+<!-- Scroll Icons Container -->
+<div class="container scroll-Icons-container">      
+    <button onclick="scrollToSection('Produccion-Carnica')" class="icon-button" data-tooltip="Producción">
+        <img src="./images/bascula-de-comestibles.png" alt="Producción" class="nav-icon">
+    </button>
+    
+    <button onclick="scrollToSection('Section-Alimentacion')" class="icon-button" data-tooltip="Alimentación">
+        <img src="./images/bolso.png" alt="Alimentacion" class="nav-icon">
+    </button>
+    
+    <button onclick="scrollToSection('Section-Vacunas')" class="icon-button" data-tooltip="Salud">
+        <img src="./images/vacunacion.png" alt="Vacunación" class="nav-icon">
+    </button>
+    
+    <buttonon onclick="scrollToSection('Section-Reproduccion')"  class="icon-button" data-tooltip="Reproducción">
+        <img src="./images/matriz.png" alt="Inseminación" class="nav-icon">
+    </buttonon>
+    
+    <button onclick="scrollToSection('Section-Otros')" class="icon-button" data-tooltip="Otros">
+        <img src="./images/compra.png" alt="Venta" class="nav-icon">
+    </button>
+</div>
+
+<style>
+.nav-icons-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0;
+    gap: 50px;
+    flex-wrap: wrap;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    margin: 10px 0;
+}
+.scroll-Icons-container{
+  width: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 0;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+    .icon-nav-container {
+        gap: 15px;
+    }
+}
+</style>
+
+<style>
+.icon-nav-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin: 0px;
+    padding-top: 0px;
+    margin-top: 0px;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+    padding-left: 0px;
+    margin-left: 0px;
+    padding-right: 0px;
+    margin-right: 0px;
+}
+
+.icon-button {
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    padding: 0;
+}
+
+.nav-icon {
+    width: 24px;
+    height: 24px;
+    transition: all 0.3s ease;
+}
+
+.icon-button:hover .nav-icon {
+    transform: scale(1.2);
+}
+
+.icon-button:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Tooltip Styles */
+.icon-button::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 4px 8px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    font-size: 12px;
+    border-radius: 4px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.icon-button:hover::before {
+    opacity: 1;
+    visibility: visible;
+}
+
+@media (max-width: 768px) {
+    .icon-nav-container {
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+    
+    .icon-button {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .nav-icon {
+        width: 20px;
+        height: 20px;
+    }
+}
+</style>
 
 <div class="container mt-4" style="display:block; justify-content: center; align-items: center;">
         <div>
@@ -1251,12 +1264,17 @@ $concentradoPercentage = ($totalInvestment > 0) ? round(($totalConcentradoInvest
 
 <!-- Peso Table Section -->
 <?php
-// Build the base query for Peso
+// First, update the query to include the JOIN
 if (isset($_GET['search']) && !empty($_GET['search'])) {
     $tagid = $conn->real_escape_string($_GET['search']);
-    $baseQuery_peso = "SELECT * FROM vh_peso WHERE vh_peso_tagid = '$tagid'";
+    $baseQuery_peso = "SELECT p.*, v.nombre 
+                      FROM vh_peso p 
+                      LEFT JOIN vacuno v ON p.vh_peso_tagid = v.tagid 
+                      WHERE p.vh_peso_tagid = '$tagid'";
 } else {
-    $baseQuery_peso = "SELECT * FROM vh_peso";
+    $baseQuery_peso = "SELECT p.*, v.nombre 
+                      FROM vh_peso p 
+                      LEFT JOIN vacuno v ON p.vh_peso_tagid = v.tagid";
 }
 $result_peso = $conn->query($baseQuery_peso);
 ?>
@@ -1272,20 +1290,20 @@ $result_peso = $conn->query($baseQuery_peso);
 </div>
 <div class="container mt-4">
 <div class="table-section">
-<h3 class="section-title">REGISTROS DE PRODUCCION</h3>
+<h3 id="section-produccion" style="text-align: center;">REGISTROS DE PRODUCCION</h3>
 
 <!-- Peso Table -->
 <div class="mb-4">
-    <h4 class="sub-section-title">Control de Peso</h4>
-    
+    <h4 class="sub-section-title">Control de Peso</h4>    
     <!-- Add New Peso Form -->
     <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addPesoForm">
-        <i class="fas fa-plus"></i> Agregar Peso
+        <i class="fas fa-plus"></i> Registrar  Pesaje Animal
     </button>
     
     <div class="collapse mb-3" id="addPesoForm">
         <div class="card card-body">
             <form id="pesoForm" action="process_peso.php" method="POST">
+                <input type="hidden" name="action" value="insert">
                 <input type="hidden" name="tagid" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
                 <div class="row g-3">
                     <div class="col-md-4">
@@ -1312,11 +1330,13 @@ $result_peso = $conn->query($baseQuery_peso);
         <table id="pesoTable" class="table table-striped table-bordered">
             <thead>
                 <tr>
+                    <th>Tag ID</th>
+                    <th>Nombre</th>
                     <th>Peso Animal (kg)</th>
                     <th>Precio ($/kg)</th>
                     <th>Valor Total ($)</th>
                     <th>Fecha</th>
-                    <th></th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -1326,15 +1346,29 @@ $result_peso = $conn->query($baseQuery_peso);
                         $valor_total = floatval($row['vh_peso_animal']) * floatval($row['vh_peso_precio']);
                         
                         echo "<tr>";
+                        echo "<td>" . htmlspecialchars($row['vh_peso_tagid']) . "</td>";
+                        echo "<td>" . htmlspecialchars($row['nombre'] ?? 'N/A') . "</td>";
                         echo "<td>" . htmlspecialchars($row['vh_peso_animal']) . "</td>";
                         echo "<td>" . htmlspecialchars($row['vh_peso_precio']) . "</td>";
                         echo "<td>" . number_format($valor_total, 2) . "</td>";
                         echo "<td>" . htmlspecialchars($row['vh_peso_fecha']) . "</td>";
                         echo "<td>
-                                <button class='btn btn-danger btn-sm delete-peso' 
-                                        data-id='" . $row['id'] . "'>
-                                    <i class='fas fa-trash'></i>
-                                </button>
+                                <div class='btn-group' role='group'>
+                                    <button class='btn btn-primary btn-sm edit-peso' 
+                                            data-bs-toggle='modal'
+                                            data-bs-target='#editPesoModal'
+                                            data-id='" . htmlspecialchars($row['id']) . "'
+                                            data-tagid='" . htmlspecialchars($row['vh_peso_tagid']) . "'
+                                            data-peso='" . htmlspecialchars($row['vh_peso_animal']) . "'
+                                            data-precio='" . htmlspecialchars($row['vh_peso_precio']) . "'
+                                            data-fecha='" . htmlspecialchars($row['vh_peso_fecha']) . "'>
+                                        <i class='fas fa-edit'></i>
+                                    </button>
+                                    <button class='btn btn-danger btn-sm delete-peso' 
+                                            data-id='" . htmlspecialchars($row['id']) . "'>
+                                        <i class='fas fa-trash'></i>
+                                    </button>
+                                </div>
                             </td>";
                         echo "</tr>";
                     }
@@ -1388,6 +1422,113 @@ $(document).ready(function() {
 });
 </script>
 
+
+<!-- Add this modal after your peso table -->
+<div class="modal fade" id="editPesoModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Editar Peso</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="editPesoForm" action="process_peso.php" method="POST">
+                <div class="modal-body">
+                    <input type="hidden" name="action" value="update">
+                    <input type="hidden" name="id" id="edit_id">
+                    <input type="hidden" name="tagid" id="edit_tagid">
+                    <div class="mb-3">
+                        <label class="form-label">Peso Animal (kg)</label>
+                        <input type="number" step="0.01" class="form-control" name="peso" id="edit_peso" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Precio por kg ($)</label>
+                        <input type="number" step="0.01" class="form-control" name="precio" id="edit_precio" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Fecha</label>
+                        <input type="date" class="form-control" name="fecha" id="edit_fecha" required>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-between">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Update your JavaScript -->
+<script>
+$(document).ready(function() {
+    // Existing delete handler...
+
+    // Handle edit button click
+    $('.edit-peso').click(function() {
+        const button = $(this);
+        
+        // Get data from data attributes
+        const id = button.data('id');
+        const peso = button.data('peso');
+        const precio = button.data('precio');
+        const fecha = button.data('fecha');
+
+        // Populate modal fields
+        $('#edit_id').val(id);
+        $('#edit_peso').val(peso);
+        $('#edit_precio').val(precio);
+        $('#edit_fecha').val(fecha);
+    });
+
+    // Handle save changes
+    $('#saveEditPeso').click(function() {
+        const form = $('#editPesoForm');
+        
+        // Validate form
+        if (!form[0].checkValidity()) {
+            form[0].reportValidity();
+            return;
+        }
+
+        // Show loading state
+        const saveButton = $(this);
+        const originalText = saveButton.text();
+        saveButton.prop('disabled', true).text('Guardando...');
+
+        // Send AJAX request
+        $.ajax({
+            url: 'process_peso.php',
+            type: 'POST',
+            data: form.serialize(),
+            action: 'update',
+            dataType: 'json',
+            success: function(response) {
+                console.log('Response received:', response);
+                try {
+                    if (response.success) {
+                        $('#editPesoModal').modal('hide');
+                        location.reload();
+                    } else {
+                        alert('Error al actualizar: ' + (response.error || 'Error desconocido'));
+                    }
+                } catch (e) {
+                    console.error('Error parsing response:', e);
+                    alert('Error al procesar la respuesta del servidor');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX Error:', {xhr, status, error});
+                alert('Error al procesar la solicitud: ' + error);
+            },
+            complete: function() {
+                // Reset button state
+                saveButton.prop('disabled', false).text(originalText);
+            }
+        });
+    });
+});
+</script>
+
 <!-- Concentrado Table Section -->
 <?php
 // Build the base query for Concentrado
@@ -1436,12 +1577,13 @@ $result_leche = $conn->query($baseQuery_leche);
     
     <!-- Add New Leche Form -->
     <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addLecheForm">
-        <i class="fas fa-plus"></i> Agregar Producción de Leche
+        <i class="fas fa-plus"></i> Registrar  Pesaje Leche
     </button>
     
     <div class="collapse mb-3" id="addLecheForm">
         <div class="card card-body">
             <form id="lecheForm" action="process_leche.php" method="POST">
+            <input type="hidden" name="action" value="insert">
                 <input type="hidden" name="tagid" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
                 <div class="row g-3">
                     <div class="col-md-4">
@@ -1489,10 +1631,14 @@ $result_leche = $conn->query($baseQuery_leche);
                         echo "<td>" . number_format($valor_total, 2) . "</td>";
                         echo "<td>" . htmlspecialchars($row['vh_leche_fecha']) . "</td>";
                         echo "<td>
-                                <button class='btn btn-danger btn-sm delete-leche' 
-                                        data-id='" . $row['id'] . "'>
-                                    <i class='fas fa-trash'></i>
-                                </button>
+                                <div class='d-flex justify-content-center gap-2'>
+                                    <button class='btn btn-sm btn-primary' onclick='openEditLecheModal(" . $row['id'] . ", \"" . $row['vh_leche_tagid'] . "\", \"" . $row['vh_leche_peso'] . "\", \"" . $row['vh_leche_precio'] . "\", \"" . $row['vh_leche_fecha'] . "\")'>
+                                        <i class='fas fa-edit'></i>
+                                    </button>
+                                    <button class='btn btn-sm btn-danger' onclick='deleteLecheEntry(" . $row['id'] . ")'>
+                                        <i class='fas fa-trash'></i>
+                                    </button>
+                                </div>
                             </td>";
                         echo "</tr>";
                     }
@@ -1686,22 +1832,25 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 <div class="container table-section" style="display:block; justify-content: center; align-items: center;">
-<h3 class="section-title">REGISTROS DE ALIMENTACION</h3>
+<h3 id="section-alimentacion" style="text-align: center;">REGISTROS DE ALIMENTACION</h3>
+
 <!-- ALIMENTACION Table -->
 <!-- Concentrado Table -->
     <h4 class="sub-section-title">Control de Concentrado</h4>
     
     <!-- Add New Concentrado Form -->
     <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addConcentradoForm">
-        <i class="fas fa-plus"></i> Agregar Concentrado
+        <i class="fas fa-plus"></i> Registrar  Concentrado
     </button>
     
     <div class="collapse mb-3" id="addConcentradoForm">
         <div class="card card-body">
             <form id="concentradoForm" action="process_concentrado.php" method="POST">
+                <input type="hidden" name="action" value="insert">                
                 <?php
                 // Ensure tagid is set from either GET or SESSION
                 $tagid = '';
+
                 if (isset($_GET['search']) && !empty($_GET['search'])) {
                     $tagid = htmlspecialchars($_GET['search']);
                 } elseif (isset($_SESSION['current_tagid']) && !empty($_SESSION['current_tagid'])) {
@@ -1752,52 +1901,137 @@ document.addEventListener('DOMContentLoaded', function() {
         <table id="concentradoTable" class="table table-striped table-bordered">
             <thead>
                 <tr>
-                    <th>Etapa</th>
-                    <th>Producto</th>
-                    <th>Ración (kg)</th>
-                    <th>Costo ($/kg)</th>
-                    <th>Valor Total ($)</th>
                     <th>Fecha</th>
-                    <th></th>
+                    <th>Producto</th>
+                    <th>Etapa</th>
+                    <th>Racion Kg</th>
+                    <th>Costo $/Kg</th>
+                    <th>Total</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
-                $total_valor_concentrado = 0;
-                if ($result_concentrado->num_rows > 0) {
-                    while($row = $result_concentrado->fetch_assoc()) {
-                        $valor_total = floatval($row['vh_concentrado_racion']) * floatval($row['vh_concentrado_costo']);
-                        $total_valor_concentrado += $valor_total;
-                        
-                        echo "<tr>";
-                        echo "<td>" . htmlspecialchars($row['vh_concentrado_etapa']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['vh_concentrado_producto']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['vh_concentrado_racion']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['vh_concentrado_costo']) . "</td>";
-                        echo "<td>" . number_format($valor_total, 2) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['vh_concentrado_fecha']) . "</td>";
-                        echo "<td>
-                                <button class='btn btn-danger btn-sm delete-concentrado' 
-                                        data-id='" . $row['id'] . "'>
-                                    <i class='fas fa-trash'></i>
-                                </button>
-                            </td>";
-                        echo "</tr>";
+                $sql = "SELECT * FROM vh_concentrado WHERE vh_concentrado_tagid = '$tagid' ORDER BY vh_concentrado_fecha DESC";
+                $result = $conn->query($sql);
+                
+                if ($result->num_rows > 0) {
+                    while($row = $result->fetch_assoc()) {
+                        $total = $row['vh_concentrado_racion'] * $row['vh_concentrado_costo'];
+                        echo "<tr>
+                                <td>" . date('d/m/Y', strtotime($row['vh_concentrado_fecha'])) . "</td>
+                                <td>" . $row['vh_concentrado_producto'] . "</td>
+                                <td>" . $row['vh_concentrado_etapa'] . "</td>
+                                <td>" . $row['vh_concentrado_racion'] . "</td>
+                                <td>$" . number_format($row['vh_concentrado_costo'], 2) . "</td>
+                                <td>$" . number_format($total, 2) . "</td>
+                                <td>
+                                    <div class='d-flex justify-content-center gap-2'>
+                                        <button class='btn btn-sm btn-primary' onclick='openEditConcentradoModal(" . 
+                                            $row['id'] . ", \"" . 
+                                            $row['vh_concentrado_tagid'] . "\", \"" . 
+                                            $row['vh_concentrado_racion'] . "\", \"" . 
+                                            $row['vh_concentrado_costo'] . "\", \"" . 
+                                            $row['vh_concentrado_etapa'] . "\", \"" . 
+                                            $row['vh_concentrado_producto'] . "\", \"" . 
+                                            $row['vh_concentrado_fecha'] . "\")'>
+                                            <i class='fas fa-edit'></i>
+                                        </button>
+                                        <button class='btn btn-sm btn-danger' onclick='deleteConcentradoEntry(" . $row['id'] . ")'>
+                                            <i class='fas fa-trash'></i>
+                                        </button>
+                                    </div>
+                                </td>
+                              </tr>";
                     }
                 }
                 ?>
             </tbody>
-            <tfoot>
-                <tr class="table-info">
-                    <td colspan="4"><strong>Total</strong></td>
-                    <td><strong>$<?php echo number_format($total_valor_concentrado, 2); ?></strong></td>
-                    <td colspan="2"></td>
-                </tr>
-            </tfoot>
         </table>
     </div>
 </div>
 
+<!-- Edit Concentrado Modal -->
+<div class="modal fade" id="editConcentradoModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Editar Concentrado</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="editConcentradoForm" action="process_concentrado.php" method="POST">
+                <div class="modal-body">
+                    <input type="hidden" name="action" value="update">
+                    <input type="hidden" name="id" id="edit_concentrado_id">
+                    <input type="hidden" name="tagid" id="edit_concentrado_tagid">
+                    <div class="mb-3">
+                        <label class="form-label">Producto</label>
+                        <input type="text" class="form-control" name="producto" id="edit_concentrado_producto" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Etapa</label>
+                        <input type="text" class="form-control" name="etapa" id="edit_concentrado_etapa" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Ración (kg)</label>
+                        <input type="number" step="0.01" class="form-control" name="racion" id="edit_concentrado_racion" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Costo ($)</label>
+                        <input type="number" step="0.01" class="form-control" name="costo" id="edit_concentrado_costo" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Fecha</label>
+                        <input type="date" class="form-control" name="fecha" id="edit_concentrado_fecha" required>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-between">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+// Function to open edit modal for concentrado entries
+function openEditConcentradoModal(id, tagid, racion, costo, etapa, producto, fecha) {
+    // Set values in the form
+    document.getElementById('edit_concentrado_id').value = id;
+    document.getElementById('edit_concentrado_tagid').value = tagid;
+    document.getElementById('edit_concentrado_producto').value = producto;
+    document.getElementById('edit_concentrado_etapa').value = etapa;
+    document.getElementById('edit_concentrado_racion').value = racion;
+    document.getElementById('edit_concentrado_costo').value = costo;
+    document.getElementById('edit_concentrado_fecha').value = fecha;
+    
+    // Open the modal
+    var editModal = new bootstrap.Modal(document.getElementById('editConcentradoModal'));
+    editModal.show();
+}
+
+// Function to delete concentrado entries
+function deleteConcentradoEntry(id) {
+    if (confirm('¿Está seguro de que desea eliminar este registro?')) {
+        fetch('process_concentrado.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'action=delete&id=' + id
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Error al eliminar el registro');
+            }
+        });
+    }
+}
+</script>
 
 <!-- Add this JavaScript for Concentrado table -->
 <script>
@@ -1908,45 +2142,29 @@ $result_melaza = $conn->query($baseQuery_melaza);
     
 <!-- Add New Melaza Form -->
 <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addMelazaForm">
-    <i class="fas fa-plus"></i> Agregar Melaza
+    <i class="fas fa-plus"></i> Registrar  Melaza
 </button>
 
 <div class="collapse mb-3" id="addMelazaForm">
     <div class="card card-body">
         <form id="melazaForm" action="process_melaza.php" method="POST">
-            <?php
-            // Ensure tagid is set from either GET or SESSION
-            $tagid = '';
-            if (isset($_GET['search']) && !empty($_GET['search'])) {
-                $tagid = htmlspecialchars($_GET['search']);
-            } elseif (isset($_SESSION['current_tagid']) && !empty($_SESSION['current_tagid'])) {
-                $tagid = htmlspecialchars($_SESSION['current_tagid']);
-            }
-            ?>
-            <input type="hidden" name="tagid" value="<?php echo $tagid; ?>">
-            
-            <!-- Debug output to verify tagid -->
-            <?php if (empty($tagid)): ?>
-                <div class="alert alert-warning">
-                    No se ha seleccionado ningún animal. Por favor, busque un animal primero.
-                </div>
-            <?php endif; ?>
-
+            <input type="hidden" name="action" value="insert">
+            <input type="hidden" name="tagid" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
             <div class="row g-3">
-                <div class="col-md-4">
-                    <label class="form-label">Etapa</label>
-                    <input type="text" class="form-control" name="etapa" required>
-                </div>
                 <div class="col-md-4">
                     <label class="form-label">Producto</label>
                     <input type="text" class="form-control" name="producto" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Etapa</label>
+                    <input type="text" class="form-control" name="etapa" required>
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Ración (kg)</label>
                     <input type="number" step="0.01" class="form-control" name="racion" required>
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label">Costo ($/kg)</label>
+                    <label class="form-label">Costo ($)</label>
                     <input type="number" step="0.01" class="form-control" name="costo" required>
                 </div>
                 <div class="col-md-4">
@@ -1954,9 +2172,7 @@ $result_melaza = $conn->query($baseQuery_melaza);
                     <input type="date" class="form-control" name="fecha" required>
                 </div>
                 <div class="col-12">
-                    <button type="submit" class="btn btn-success" <?php echo empty($tagid) ? 'disabled' : ''; ?>>
-                        Guardar
-                    </button>
+                    <button type="submit" class="btn btn-success">Guardar</button>
                 </div>
             </div>
         </form>
@@ -2012,10 +2228,21 @@ $result_melaza = $conn->query($baseQuery_melaza);
                         echo "<td>" . number_format($total, 2) . "</td>";
                         echo "<td>" . htmlspecialchars($row['vh_melaza_fecha']) . "</td>";
                         echo "<td>
-                                <button class='btn btn-danger btn-sm delete-melaza' 
-                                        data-id='" . $row['id'] . "'>
-                                    <i class='fas fa-trash'></i>
-                                </button>
+                                <div class='d-flex justify-content-center gap-2'>
+                                    <button class='btn btn-sm btn-primary' onclick='openEditMelazaModal(" . 
+                                        $row['id'] . ", \"" . 
+                                        $row['vh_melaza_tagid'] . "\", \"" . 
+                                        $row['vh_melaza_racion'] . "\", \"" . 
+                                        $row['vh_melaza_costo'] . "\", \"" . 
+                                        $row['vh_melaza_etapa'] . "\", \"" . 
+                                        $row['vh_melaza_producto'] . "\", \"" . 
+                                        $row['vh_melaza_fecha'] . "\")'>
+                                        <i class='fas fa-edit'></i>
+                                    </button>
+                                    <button class='btn btn-sm btn-danger' onclick='deleteMelazaEntry(" . $row['id'] . ")'>
+                                        <i class='fas fa-trash'></i>
+                                    </button>
+                                </div>
                             </td>";
                         echo "</tr>";
                     }
@@ -2033,6 +2260,86 @@ $result_melaza = $conn->query($baseQuery_melaza);
 </div>
 </div>
         
+<!-- Edit Melaza Modal -->
+<div class="modal fade" id="editMelazaModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Editar Melaza</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="editMelazaForm" action="process_melaza.php" method="POST">
+                <div class="modal-body">
+                    <input type="hidden" name="action" value="update">
+                    <input type="hidden" name="id" id="edit_melaza_id">
+                    <input type="hidden" name="tagid" id="edit_melaza_tagid">
+                    <div class="mb-3">
+                        <label class="form-label">Producto</label>
+                        <input type="text" class="form-control" name="producto" id="edit_melaza_producto" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Etapa</label>
+                        <input type="text" class="form-control" name="etapa" id="edit_melaza_etapa" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Ración (kg)</label>
+                        <input type="number" step="0.01" class="form-control" name="racion" id="edit_melaza_racion" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Costo ($)</label>
+                        <input type="number" step="0.01" class="form-control" name="costo" id="edit_melaza_costo" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Fecha</label>
+                        <input type="date" class="form-control" name="fecha" id="edit_melaza_fecha" required>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-between">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+// Function to open edit modal for melaza entries
+function openEditMelazaModal(id, tagid, racion, costo, etapa, producto, fecha) {
+    document.getElementById('edit_melaza_id').value = id;
+    document.getElementById('edit_melaza_tagid').value = tagid;
+    document.getElementById('edit_melaza_producto').value = producto;
+    document.getElementById('edit_melaza_etapa').value = etapa;
+    document.getElementById('edit_melaza_racion').value = racion;
+    document.getElementById('edit_melaza_costo').value = costo;
+    document.getElementById('edit_melaza_fecha').value = fecha;
+    
+    var editModal = new bootstrap.Modal(document.getElementById('editMelazaModal'));
+    editModal.show();
+}
+
+// Function to delete melaza entries
+function deleteMelazaEntry(id) {
+    if (confirm('¿Está seguro de que desea eliminar este registro?')) {
+        fetch('process_melaza.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'action=delete&id=' + id
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Error al eliminar el registro');
+            }
+        });
+    }
+}
+</script>
+
 <!-- Modified JavaScript for Melaza table -->
 <script>
 $(document).ready(function() {
@@ -2124,11 +2431,12 @@ $result_sal = $conn->query($baseQuery_sal);
     
     <!-- Add New Sal Form -->
     <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addSalForm">
-        <i class="fas fa-plus"></i> Agregar Sal
+        <i class="fas fa-plus"></i> Registrar Sal
     </button>
     <div class="collapse mb-3" id="addSalForm">
     <div class="card card-body">
         <form id="salForm" action="process_sal.php" method="POST">
+        <input type="hidden" name="action" value="insert">
             <?php
             // Ensure tagid is set from either GET or SESSION
             $tagid = '';
@@ -2149,12 +2457,12 @@ $result_sal = $conn->query($baseQuery_sal);
 
             <div class="row g-3">
                 <div class="col-md-4">
-                    <label class="form-label">Etapa</label>
-                    <input type="text" class="form-control" name="etapa" required>
-                </div>
-                <div class="col-md-4">
                     <label class="form-label">Producto</label>
                     <input type="text" class="form-control" name="producto" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Etapa</label>
+                    <input type="text" class="form-control" name="etapa" required>
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Ración (kg)</label>
@@ -2202,48 +2510,52 @@ $result_sal = $conn->query($baseQuery_sal);
         <table id="salTable" class="table table-striped table-bordered">
             <thead>
                 <tr>
-                    <th>Etapa</th>
-                    <th>Producto</th>
-                    <th>Ración (kg)</th>
-                    <th>Costo ($/kg)</th>
-                    <th>Total ($)</th>
                     <th>Fecha</th>
-                    <th></th>
+                    <th>Producto</th>
+                    <th>Etapa</th>
+                    <th>Ración (kg)</th>
+                    <th>Costo ($)</th>
+                    <th>Total</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
-                $total_costo_sal = 0;
-                if ($result_sal->num_rows > 0) {
-                    while($row = $result_sal->fetch_assoc()) {
-                        $total = floatval($row['vh_sal_racion']) * floatval($row['vh_sal_costo']);
-                        $total_costo_sal += $total;
-                        
-                        echo "<tr>";
-                        echo "<td>" . htmlspecialchars($row['vh_sal_etapa']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['vh_sal_producto']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['vh_sal_racion']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['vh_sal_costo']) . "</td>";
-                        echo "<td>" . number_format($total, 2) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['vh_sal_fecha']) . "</td>";
-                        echo "<td>
-                                <button class='btn btn-danger btn-sm delete-sal' 
-                                        data-id='" . $row['id'] . "'>
-                                    <i class='fas fa-trash'></i>
-                                </button>
-                            </td>";
-                        echo "</tr>";
+                $sql = "SELECT * FROM vh_sal WHERE vh_sal_tagid = '$tagid' ORDER BY vh_sal_fecha DESC";
+                $result = $conn->query($sql);
+                
+                if ($result->num_rows > 0) {
+                    while($row = $result->fetch_assoc()) {
+                        $total = $row['vh_sal_racion'] * $row['vh_sal_costo'];
+                        echo "<tr>
+                                <td>" . date('d/m/Y', strtotime($row['vh_sal_fecha'])) . "</td>
+                                <td>" . htmlspecialchars($row['vh_sal_producto']) . "</td>
+                                <td>" . htmlspecialchars($row['vh_sal_etapa']) . "</td>
+                                <td>" . number_format($row['vh_sal_racion'], 2) . "</td>
+                                <td>$" . number_format($row['vh_sal_costo'], 2) . "</td>
+                                <td>$" . number_format($total, 2) . "</td>
+                                <td>
+                                    <div class='d-flex justify-content-center gap-2'>
+                                        <button class='btn btn-sm btn-primary' onclick='openEditSalModal(" . 
+                                            $row['id'] . ", \"" . 
+                                            htmlspecialchars($row['vh_sal_tagid'], ENT_QUOTES) . "\", \"" . 
+                                            htmlspecialchars($row['vh_sal_racion'], ENT_QUOTES) . "\", \"" . 
+                                            htmlspecialchars($row['vh_sal_costo'], ENT_QUOTES) . "\", \"" . 
+                                            htmlspecialchars($row['vh_sal_etapa'], ENT_QUOTES) . "\", \"" . 
+                                            htmlspecialchars($row['vh_sal_producto'], ENT_QUOTES) . "\", \"" . 
+                                            $row['vh_sal_fecha'] . "\")'>
+                                            <i class='fas fa-edit'></i>
+                                        </button>
+                                        <button class='btn btn-sm btn-danger' onclick='deleteSalEntry(" . $row['id'] . ")'>
+                                            <i class='fas fa-trash'></i>
+                                        </button>
+                                    </div>
+                                </td>
+                              </tr>";
                     }
                 }
                 ?>
             </tbody>
-            <tfoot>
-                <tr class="table-info">
-                    <td colspan="4"><strong>Total</strong></td>
-                    <td><strong>$<?php echo number_format($total_costo_sal, 2); ?></strong></td>
-                    <td colspan="2"></td>
-                </tr>
-            </tfoot>
         </table>
     </div>
 </div>
@@ -2315,6 +2627,86 @@ $(document).ready(function() {
 });
 </script>
 
+<!-- Edit Sal Modal -->
+<div class="modal fade" id="editSalModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Editar Sal</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="editSalForm" action="process_sal.php" method="POST">
+                <div class="modal-body">
+                    <input type="hidden" name="action" value="update">
+                    <input type="hidden" name="id" id="edit_sal_id">
+                    <input type="hidden" name="tagid" id="edit_sal_tagid">
+                    <div class="mb-3">
+                        <label class="form-label">Producto</label>
+                        <input type="text" class="form-control" name="producto" id="edit_sal_producto" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Etapa</label>
+                        <input type="text" class="form-control" name="etapa" id="edit_sal_etapa" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Ración (kg)</label>
+                        <input type="number" step="0.01" class="form-control" name="racion" id="edit_sal_racion" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Costo ($)</label>
+                        <input type="number" step="0.01" class="form-control" name="costo" id="edit_sal_costo" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Fecha</label>
+                        <input type="date" class="form-control" name="fecha" id="edit_sal_fecha" required>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-between">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script>
+// Function to open edit modal for sal entries
+function openEditSalModal(id, tagid, racion, costo, etapa, producto, fecha) {
+    document.getElementById('edit_sal_id').value = id;
+    document.getElementById('edit_sal_tagid').value = tagid;
+    document.getElementById('edit_sal_producto').value = producto;
+    document.getElementById('edit_sal_etapa').value = etapa;
+    document.getElementById('edit_sal_racion').value = racion;
+    document.getElementById('edit_sal_costo').value = costo;
+    document.getElementById('edit_sal_fecha').value = fecha;
+    
+    var editModal = new bootstrap.Modal(document.getElementById('editSalModal'));
+    editModal.show();
+}
+
+// Function to delete sal entries
+function deleteSalEntry(id) {
+    if (confirm('¿Está seguro de que desea eliminar este registro?')) {
+        fetch('process_sal.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'action=delete&id=' + id
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Error al eliminar el registro');
+            }
+        });
+    }
+}
+</script>
 <div style="max-width: 1300px; margin: 40px auto;">
     <h3 style="text-align: center;">Inversion Acumulada Sal Mineral</h3>
     <canvas id="sal-acumulado-mensual"></canvas>
@@ -2323,120 +2715,216 @@ $(document).ready(function() {
     <h3 style="text-align: center;">Distribución de Inversión en Alimentación</h3>
     <canvas id="investment-distribution-pie"></canvas>
 </div>
-<!-- SALUD AFTOSA Table -->
 
+<!-- Aftosa Table Section -->
 <?php
-// Build the base query
+// Build the base query for Aftosa
 if (isset($_GET['search']) && !empty($_GET['search'])) {
-$tagid = $conn->real_escape_string($_GET['search']);
-$baseQuery_vacuna = "SELECT * FROM vh_aftosa WHERE vh_aftosa_tagid = '$tagid'";
+    $tagid = $conn->real_escape_string($_GET['search']);
+    $baseQuery_aftosa = "SELECT * FROM vh_aftosa WHERE vh_aftosa_tagid = '$tagid'";
 } else {
-$baseQuery_vacuna = "SELECT * FROM vh_aftosa";
+    $baseQuery_aftosa = "SELECT * FROM vh_aftosa";
 }
-$result_vacuna = $conn->query($baseQuery_vacuna);
+$result_sal = $conn->query($baseQuery_aftosa);
 ?>
-<div class="container" style="display:block; justify-content: center; align-items: center;">
-<div class="table-section">
-<h3 class="section-title">REGISTROS DE SALUD</h3>
 
-<!-- Mobile version -->
-<div class="mobile-table">
-    <!-- Vacunas Table -->
-    <div class="mb-4">
-        <h4 class="sub-section-title">Vacunas Aftosa</h4>
-        
-        <!-- Add New Vacuna Form -->
-        <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addVacunaForm">
-            <i class="fas fa-plus"></i> Agregar Vacuna
-        </button>
-        
-        <div class="collapse mb-3" id="addVacunaForm">
-            <div class="card card-body">
-                <form id="vacunaForm" action="./process_aftosa.php" method="POST">
-                    <input type="hidden" name="tagid" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <label class="form-label">Producto</label>
-                            <input type="text" class="form-control" name="producto" required>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Costo por Dosis ($)</label>
-                            <input type="number" step="0.01" class="form-control" name="costo" required>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Dosis</label>
-                            <input type="number" step="0.01" class="form-control" name="dosis" required>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Fecha</label>
-                            <input type="date" class="form-control" name="fecha" required>
-                        </div>
-                        <div class="col-12">
-                            <button type="submit" class="btn btn-success">Guardar</button>
-                        </div>
-                    </div>
-                </form>
+<!-- Aftosa Table -->
+<!-- Edit Aftosa Modal -->
+<div class="modal fade" id="editAftosaModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Editar Aftosa</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-        </div>
-
-        <!-- Vacunas Table -->
-        <div class="table-responsive">
-            <table id="vacunasTable" class="table table-striped table-bordered">
-                <thead>
-                    <tr>
-                        <th>Vacuna Nombre</th>
-                        <th>Costo ($/dosis)</th>
-                        <th>Dosis</th>
-                        <th>Fecha Vacunacion</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    $total_costo = 0; // Initialize total cost
-                    if ($result_vacuna->num_rows > 0) {
-                        $result_vacuna->data_seek(0);
-                        while($row = $result_vacuna->fetch_assoc()) {
-                            // Add to total
-                            $total_costo += floatval($row['vh_aftosa_costo']) * floatval($row['vh_aftosa_dosis']);
-                            
-                            echo "<tr>";
-                            echo "<td>" . htmlspecialchars($row['vh_aftosa_producto']) . "</td>";
-                            echo "<td>" . htmlspecialchars($row['vh_aftosa_costo']) . "</td>";
-                            echo "<td>" . htmlspecialchars($row['vh_aftosa_dosis']) . "</td>";
-                            echo "<td>" . htmlspecialchars($row['vh_aftosa_fecha']) . "</td>";
-                            echo "<td>
-                                    <button class='btn btn-danger btn-sm delete-aftosa' 
-                                            data-id='" . $row['id'] . "' 
-                                            onclick='console.log(\"Delete button clicked for ID: " . $row['id'] . "\")'>
-                                        <i class='fas fa-trash'></i>
-                                    </button>
-                                </td>";
-                            echo "</tr>";
-                        }
-                    }
-                    ?>
-                </tbody>
-                <tfoot>
-                    <tr class="table-info">
-                        <td><strong>Total</strong></td>
-                        <td><strong>$<?php echo number_format($total_costo, 2); ?></strong></td>
-                        <td colspan="3"></td>
-                    </tr>
-                </tfoot>
-            </table>
+            <form id="editAftosaForm" action="process_aftosa.php" method="POST">
+                <div class="modal-body">
+                    <input type="hidden" name="action" value="update">
+                    <input type="hidden" name="id" id="edit_aftosa_id">
+                    <input type="hidden" name="tagid" id="edit_aftosa_tagid">
+                    <div class="mb-3">
+                        <label class="form-label">Producto</label>
+                        <input type="text" class="form-control" name="producto" id="edit_aftosa_producto" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Dosis (ml)</label>
+                        <input type="number" step="0.01" class="form-control" name="dosis" id="edit_aftosa_dosis" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Costo ($)</label>
+                        <input type="number" step="0.01" class="form-control" name="costo" id="edit_aftosa_costo" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Fecha</label>
+                        <input type="date" class="form-control" name="fecha" id="edit_aftosa_fecha" required>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-between">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+
+<div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
+    <h4 class="sub-section-title">Vacunas Aftosa</h4>
+    
+    <!-- Add New Aftosa Form -->
+    <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addAftosaForm">
+        <i class="fas fa-plus"></i> Registrar Vacuna  Aftosa
+    </button>
+    <div class="collapse mb-3" id="addAftosaForm">
+    <div class="card card-body">
+        <form id="aftosaForm" action="process_aftosa.php" method="POST">
+        <input type="hidden" name="action" value="insert">
+            <?php
+            // Ensure tagid is set from either GET or SESSION
+            $tagid = '';
+            if (isset($_GET['search']) && !empty($_GET['search'])) {
+                $tagid = htmlspecialchars($_GET['search']);
+            } elseif (isset($_SESSION['current_tagid']) && !empty($_SESSION['current_tagid'])) {
+                $tagid = htmlspecialchars($_SESSION['current_tagid']);
+            }
+            ?>
+            <input type="hidden" name="tagid" value="<?php echo $tagid; ?>">
+            
+            <!-- Debug output to verify tagid -->
+            <?php if (empty($tagid)): ?>
+                <div class="alert alert-warning">
+                    No se ha seleccionado ningún animal. Por favor, busque un animal primero.
+                </div>
+            <?php endif; ?>
+
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label">Producto</label>
+                    <input type="text" class="form-control" name="producto" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Dosis (ml)</label>
+                    <input type="number" step="0.01" class="form-control" name="dosis" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Costo ($/kg)</label>
+                    <input type="number" step="0.01" class="form-control" name="costo" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Fecha</label>
+                    <input type="date" class="form-control" name="fecha" required>
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-success" <?php echo empty($tagid) ? 'disabled' : ''; ?>>
+                        Guardar
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
+    <!-- Table Controls -->
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <div class="d-flex align-items-center">
+                <label class="me-2">Show entries:</label>
+                <select class="form-select form-select-sm w-auto" id="aftosaEntriesLength">
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="d-flex justify-content-end">
+                <input type="search" class="form-control form-control-sm w-auto" 
+                       placeholder="Filter results..." id="aftosaTableFilter">
+            </div>
+        </div>
+    </div>
+
+  <div class="table-responsive">
+      <table id="aftosaTable" class="table table-striped table-bordered">
+          <thead>
+              <tr>
+                  <th>Fecha</th>
+                  <th>Producto</th>
+                  <th>Dosis (ml)</th>
+                  <th>Costo ($/Dosis)</th>
+                  <th>Acciones</th>
+              </tr>
+          </thead>
+          <tbody>
+              <?php
+              $sql = "SELECT * FROM vh_aftosa WHERE vh_aftosa_tagid = '$tagid' ORDER BY vh_aftosa_fecha DESC";
+              $result = $conn->query($sql);
+              $total_costo_aftosa = 0;
+              
+              if ($result->num_rows > 0) {
+                  while($row = $result->fetch_assoc()) {
+                      $total += $row['vh_aftosa_costo'];
+                      echo "<tr>
+                              <td>" . date('d/m/Y', strtotime($row['vh_aftosa_fecha'])) . "</td>
+                              <td>" . htmlspecialchars($row['vh_aftosa_producto']) . "</td>
+                              <td>" . number_format($row['vh_aftosa_dosis'], 2) . "</td>
+                              <td>$" . number_format($row['vh_aftosa_costo'], 2) . "</td>
+                              <td>
+                                  <div class='d-flex justify-content-center gap-2'>
+                                      <button class='btn btn-sm btn-primary' onclick='openEditAftosaModal(" . 
+                                          $row['id'] . ", \"" . 
+                                          htmlspecialchars($row['vh_aftosa_tagid'], ENT_QUOTES) . "\", \"" . 
+                                          htmlspecialchars($row['vh_aftosa_dosis'], ENT_QUOTES) . "\", \"" . 
+                                          htmlspecialchars($row['vh_aftosa_costo'], ENT_QUOTES) . "\", \"" . 
+                                          htmlspecialchars($row['vh_aftosa_producto'], ENT_QUOTES) . "\", \"" . 
+                                          $row['vh_aftosa_fecha'] . "\")'>
+                                          <i class='fas fa-edit'></i>
+                                      </button>
+                                      <button class='btn btn-sm btn-danger' onclick='deleteAftosaEntry(" . $row['id'] . ")'>
+                                          <i class='fas fa-trash'></i>
+                                      </button>
+                                  </div>
+                              </td>
+                            </tr>";
+                  }
+              }
+              ?>
+          </tbody>
+      </table>
+    </div>
 </div>
 
+<!-- Modified JavaScript for Aftosa table -->
 <script>
 $(document).ready(function() {
-    // Handle delete button clicks
+    // Initialize DataTable
+    var aftosaTable = $('#aftosaTable').DataTable({
+        pageLength: 10,
+        dom: 'rt<"bottom"ip>',
+        language: {
+            paginate: {
+                previous: '‹',
+                next: '›'
+            }
+        },
+        order: [[5, 'desc']], // Order by date column descending
+        initComplete: function() {
+            // Link custom filter input
+            $('#aftosaTableFilter').keyup(function() {
+                aftosaTable.search($(this).val()).draw();
+            });
+
+            // Link custom length select
+            $('#salEntriesLength').change(function() {
+                aftosaTable.page.len($(this).val()).draw();
+            });
+        }
+    });
+
+    // Existing delete functionality
     $('.delete-aftosa').click(function(e) {
         e.preventDefault();
-        console.log('Delete button clicked');
+        console.log('Delete Aftosa button clicked');
         
         const id = $(this).data('id');
         console.log('ID to delete:', id);
@@ -2454,8 +2942,7 @@ $(document).ready(function() {
                     try {
                         const result = typeof response === 'string' ? JSON.parse(response) : response;
                         if (result.success) {
-                            // Refresh the current page
-                            window.location.reload(true); // true forces a reload from server, not cache
+                            window.location.reload(true);
                         } else {
                             alert('Error al eliminar la entrada: ' + (result.error || 'Error desconocido'));
                         }
@@ -2472,7 +2959,42 @@ $(document).ready(function() {
         }
     });
 });
-</script> 
+</script>
+<script>
+// Function to open edit modal for Aftosa entries
+function openEditAftosaModal(id, tagid, producto, dosis, costo,  fecha) {
+    document.getElementById('edit_aftosa_id').value = id;
+    document.getElementById('edit_aftosa_tagid').value = tagid;
+    document.getElementById('edit_aftosa_producto').value = producto;
+    document.getElementById('edit_aftosa_dosis').value = dosis;
+    document.getElementById('edit_aftosa_costo').value = costo;
+    document.getElementById('edit_aftosa_fecha').value = fecha;
+    
+    var editModal = new bootstrap.Modal(document.getElementById('editAftosaModal'));
+    editModal.show();
+}
+
+// Function to delete Aftosa entries
+function deleteAftosaEntry(id) {
+    if (confirm('¿Está seguro de que desea eliminar este registro?')) {
+        fetch('process_aftosa.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'action=delete&id=' + id
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Error al eliminar el registro');
+            }
+        });
+    }
+}
+</script>
 
 <!-- IBR Table Section -->
 <?php
@@ -2486,96 +3008,202 @@ if (isset($_GET['search']) && !empty($_GET['search'])) {
 $result_ibr = $conn->query($baseQuery_ibr);
 ?>
 
-<!-- IBR Table -->
+<!-- Edit IBR Modal -->
+<div class="modal fade" id="editIbrModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Editar IBR</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="editIbrForm" action="process_ibr.php" method="POST">
+                <div class="modal-body">
+                    <input type="hidden" name="action" value="update">
+                    <input type="hidden" name="id" id="edit_ibr_id">
+                    <input type="hidden" name="tagid" id="edit_ibr_tagid">
+                    <div class="mb-3">
+                        <label class="form-label">Producto</label>
+                        <input type="text" class="form-control" name="producto" id="edit_ibr_producto" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Dosis (ml)</label>
+                        <input type="number" step="0.01" class="form-control" name="dosis" id="edit_ibr_dosis" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Costo ($)</label>
+                        <input type="number" step="0.01" class="form-control" name="costo" id="edit_ibr_costo" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Fecha</label>
+                        <input type="date" class="form-control" name="fecha" id="edit_ibr_fecha" required>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-between">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
     <h4 class="sub-section-title">Vacunas IBR</h4>
     
     <!-- Add New IBR Form -->
     <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addIbrForm">
-        <i class="fas fa-plus"></i> Agregar Vacuna IBR
+        <i class="fas fa-plus"></i> Registrar Vacuna  IBR
     </button>
-    
     <div class="collapse mb-3" id="addIbrForm">
-        <div class="card card-body">
-            <form id="ibrForm" action="process_ibr.php" method="POST">
-                <input type="hidden" name="tagid" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <label class="form-label">Producto</label>
-                        <input type="text" class="form-control" name="producto" required>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Costo por Dosis ($)</label>
-                        <input type="number" step="0.01" class="form-control" name="costo" required>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Dosis</label>
-                        <input type="number" step="0.01" class="form-control" name="dosis" required>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Fecha</label>
-                        <input type="date" class="form-control" name="fecha" required>
-                    </div>
-                    <div class="col-12">
-                        <button type="submit" class="btn btn-success">Guardar</button>
-                    </div>
+    <div class="card card-body">
+        <form id="ibrForm" action="process_ibr.php" method="POST">
+        <input type="hidden" name="action" value="insert">
+            <?php
+            // Ensure tagid is set from either GET or SESSION
+            $tagid = '';
+            if (isset($_GET['search']) && !empty($_GET['search'])) {
+                $tagid = htmlspecialchars($_GET['search']);
+            } elseif (isset($_SESSION['current_tagid']) && !empty($_SESSION['current_tagid'])) {
+                $tagid = htmlspecialchars($_SESSION['current_tagid']);
+            }
+            ?>
+            <input type="hidden" name="tagid" value="<?php echo $tagid; ?>">
+            
+            <!-- Debug output to verify tagid -->
+            <?php if (empty($tagid)): ?>
+                <div class="alert alert-warning">
+                    No se ha seleccionado ningún animal. Por favor, busque un animal primero.
                 </div>
-            </form>
+            <?php endif; ?>
+
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label">Producto</label>
+                    <input type="text" class="form-control" name="producto" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Dosis (ml)</label>
+                    <input type="number" step="0.01" class="form-control" name="dosis" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Costo ($/kg)</label>
+                    <input type="number" step="0.01" class="form-control" name="costo" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Fecha</label>
+                    <input type="date" class="form-control" name="fecha" required>
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-success" <?php echo empty($tagid) ? 'disabled' : ''; ?>>
+                        Guardar
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+    <!-- Table Controls -->
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <div class="d-flex align-items-center">
+                <label class="me-2">Show entries:</label>
+                <select class="form-select form-select-sm w-auto" id="ibrEntriesLength">
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="d-flex justify-content-end">
+                <input type="search" class="form-control form-control-sm w-auto" 
+                       placeholder="Filter results..." id="ibrTableFilter">
+            </div>
         </div>
     </div>
 
-    <div class="table-responsive">
-        <table id="ibrTable" class="table table-striped table-bordered">
-            <thead>
-                <tr>
-                    <th>Vacuna Nombre</th>
-                    <th>Costo ($/dosis)</th>
-                    <th>Dosis</th>
-                    <th>Fecha Vacunacion</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                $total_costo_ibr = 0; // Initialize total cost
-                if ($result_ibr->num_rows > 0) {
-                    while($row = $result_ibr->fetch_assoc()) {
-                        // Add to total
-                        $total_costo_ibr += floatval($row['vh_ibr_costo']) * floatval($row['vh_ibr_dosis']);
-                        
-                        echo "<tr>";
-                        echo "<td>" . htmlspecialchars($row['vh_ibr_producto']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['vh_ibr_costo']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['vh_ibr_dosis']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['vh_ibr_fecha']) . "</td>";
-                        echo "<td>
-                                <button class='btn btn-danger btn-sm delete-ibr' 
-                                        data-id='" . $row['id'] . "'>
-                                    <i class='fas fa-trash'></i>
-                                </button>
-                            </td>";
-                        echo "</tr>";
-                    }
-                }
-                ?>
-            </tbody>
-            <tfoot>
-                <tr class="table-info">
-                    <td><strong>Total</strong></td>
-                    <td><strong>$<?php echo number_format($total_costo_ibr, 2); ?></strong></td>
-                    <td colspan="3"></td>
-                </tr>
-            </tfoot>
-        </table>
+  <div class="table-responsive">
+      <table id="ibrTable" class="table table-striped table-bordered">
+          <thead>
+              <tr>
+                  <th>Fecha</th>
+                  <th>Producto</th>
+                  <th>Dosis (ml)</th>
+                  <th>Costo ($/Dosis)</th>
+                  <th>Acciones</th>
+              </tr>
+          </thead>
+          <tbody>
+              <?php
+              $sql = "SELECT * FROM vh_ibr WHERE vh_ibr_tagid = '$tagid' ORDER BY vh_ibr_fecha DESC";
+              $result = $conn->query($sql);
+              $total_costo_ibr = 0;
+              
+              if ($result->num_rows > 0) {
+                  while($row = $result->fetch_assoc()) {
+                      $total += $row['vh_ibr_costo'];
+                      echo "<tr>
+                              <td>" . date('d/m/Y', strtotime($row['vh_ibr_fecha'])) . "</td>
+                              <td>" . htmlspecialchars($row['vh_ibr_producto']) . "</td>
+                              <td>" . number_format($row['vh_ibr_dosis'], 2) . "</td>
+                              <td>$" . number_format($row['vh_ibr_costo'], 2) . "</td>
+                              <td>
+                                  <div class='d-flex justify-content-center gap-2'>
+                                      <button class='btn btn-sm btn-primary' onclick='openEditIbrModal(" . 
+                                          $row['id'] . ", \"" . 
+                                          htmlspecialchars($row['vh_ibr_tagid'], ENT_QUOTES) . "\", \"" . 
+                                          htmlspecialchars($row['vh_ibr_dosis'], ENT_QUOTES) . "\", \"" . 
+                                          htmlspecialchars($row['vh_ibr_costo'], ENT_QUOTES) . "\", \"" . 
+                                          htmlspecialchars($row['vh_ibr_producto'], ENT_QUOTES) . "\", \"" . 
+                                          $row['vh_ibr_fecha'] . "\")'>
+                                          <i class='fas fa-edit'></i>
+                                      </button>
+                                      <button class='btn btn-sm btn-danger' onclick='deleteIbrEntry(" . $row['id'] . ")'>
+                                          <i class='fas fa-trash'></i>
+                                      </button>
+                                  </div>
+                              </td>
+                            </tr>";
+                  }
+              }
+              ?>
+          </tbody>
+      </table>
     </div>
 </div>
 
-<!-- Add this JavaScript for IBR table -->
+<!-- Modified JavaScript for IBR table -->
 <script>
 $(document).ready(function() {
+    // Initialize DataTable
+    var ibrTable = $('#ibrTable').DataTable({
+        pageLength: 10,
+        dom: 'rt<"bottom"ip>',
+        language: {
+            paginate: {
+                previous: '‹',
+                next: '›'
+            }
+        },
+        order: [[5, 'desc']], // Order by date column descending
+        initComplete: function() {
+            // Link custom filter input
+            $('#ibrTableFilter').keyup(function() {
+                ibrTable.search($(this).val()).draw();
+            });
+
+            // Link custom length select
+            $('#ibrEntriesLength').change(function() {
+                ibrTable.page.len($(this).val()).draw();
+            });
+        }
+    });
+
+    // Existing delete functionality
     $('.delete-ibr').click(function(e) {
         e.preventDefault();
-        console.log('Delete IBR button clicked');
+        console.log('Delete Ibr button clicked');
         
         const id = $(this).data('id');
         console.log('ID to delete:', id);
@@ -2611,6 +3239,43 @@ $(document).ready(function() {
     });
 });
 </script>
+<script>
+// Function to open edit modal for IBR entries
+function openEditIbrModal(id, tagid, producto, dosis, costo, fecha) {
+    document.getElementById('edit_ibr_id').value = id;
+    document.getElementById('edit_ibr_tagid').value = tagid;
+    document.getElementById('edit_ibr_producto').value = producto;
+    document.getElementById('edit_ibr_dosis').value = dosis;
+    document.getElementById('edit_ibr_costo').value = costo;
+    document.getElementById('edit_ibr_fecha').value = fecha;
+    
+    var editModal = new bootstrap.Modal(document.getElementById('editIbrModal'));
+    editModal.show();
+}
+
+// Function to delete IBR entries
+function deleteIbrEntry(id) {
+    if (confirm('¿Está seguro de que desea eliminar este registro?')) {
+        fetch('process_ibr.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'action=delete&id=' + id
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Error al eliminar el registro');
+            }
+        });
+    }
+}
+</script>
+<!-- CBR Table Section -->
+
 <!-- CBR Table Section -->
 <?php
 // Build the base query for CBR
@@ -2623,95 +3288,202 @@ if (isset($_GET['search']) && !empty($_GET['search'])) {
 $result_cbr = $conn->query($baseQuery_cbr);
 ?>
 
-<!-- CBR Table -->
+<!-- Edit CBR Modal -->
+<div class="modal fade" id="editCbrModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Editar CBR</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="editCbrForm" action="process_cbr.php" method="POST">
+                <div class="modal-body">
+                    <input type="hidden" name="action" value="update">
+                    <input type="hidden" name="id" id="edit_cbr_id">
+                    <input type="hidden" name="tagid" id="edit_cbr_tagid">
+                    <div class="mb-3">
+                        <label class="form-label">Producto</label>
+                        <input type="text" class="form-control" name="producto" id="edit_cbr_producto" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Dosis (ml)</label>
+                        <input type="number" step="0.01" class="form-control" name="dosis" id="edit_cbr_dosis" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Costo ($)</label>
+                        <input type="number" step="0.01" class="form-control" name="costo" id="edit_cbr_costo" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Fecha</label>
+                        <input type="date" class="form-control" name="fecha" id="edit_cbr_fecha" required>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-between">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
     <h4 class="sub-section-title">Vacunas CBR</h4>
     
     <!-- Add New CBR Form -->
     <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addCbrForm">
-        <i class="fas fa-plus"></i> Agregar Vacuna CBR
+        <i class="fas fa-plus"></i> Registrar Vacuna  CBR
     </button>
-    
     <div class="collapse mb-3" id="addCbrForm">
-        <div class="card card-body">
-            <form id="cbrForm" action="process_cbr.php" method="POST">
-                <input type="hidden" name="tagid" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <label class="form-label">Producto</label>
-                        <input type="text" class="form-control" name="producto" required>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Costo por Dosis ($)</label>
-                        <input type="number" step="0.01" class="form-control" name="costo" required>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Dosis</label>
-                        <input type="number" step="0.01" class="form-control" name="dosis" required>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Fecha</label>
-                        <input type="date" class="form-control" name="fecha" required>
-                    </div>
-                    <div class="col-12">
-                        <button type="submit" class="btn btn-success">Guardar</button>
-                    </div>
+    <div class="card card-body">
+        <form id="cbrForm" action="process_cbr.php" method="POST">
+        <input type="hidden" name="action" value="insert">
+            <?php
+            // Ensure tagid is set from either GET or SESSION
+            $tagid = '';
+            if (isset($_GET['search']) && !empty($_GET['search'])) {
+                $tagid = htmlspecialchars($_GET['search']);
+            } elseif (isset($_SESSION['current_tagid']) && !empty($_SESSION['current_tagid'])) {
+                $tagid = htmlspecialchars($_SESSION['current_tagid']);
+            }
+            ?>
+            <input type="hidden" name="tagid" value="<?php echo $tagid; ?>">
+            
+            <!-- Debug output to verify tagid -->
+            <?php if (empty($tagid)): ?>
+                <div class="alert alert-warning">
+                    No se ha seleccionado ningún animal. Por favor, busque un animal primero.
                 </div>
-            </form>
+            <?php endif; ?>
+
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label">Producto</label>
+                    <input type="text" class="form-control" name="producto" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Dosis (ml)</label>
+                    <input type="number" step="0.01" class="form-control" name="dosis" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Costo ($/kg)</label>
+                    <input type="number" step="0.01" class="form-control" name="costo" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Fecha</label>
+                    <input type="date" class="form-control" name="fecha" required>
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-success" <?php echo empty($tagid) ? 'disabled' : ''; ?>>
+                        Guardar
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+    <!-- Table Controls -->
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <div class="d-flex align-items-center">
+                <label class="me-2">Show entries:</label>
+                <select class="form-select form-select-sm w-auto" id="cbrEntriesLength">
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="d-flex justify-content-end">
+                <input type="search" class="form-control form-control-sm w-auto" 
+                       placeholder="Filter results..." id="cbrTableFilter">
+            </div>
         </div>
     </div>
 
-    <div class="table-responsive">
-        <table id="cbrTable" class="table table-striped table-bordered">
-            <thead>
-                <tr>
-                    <th>Vacuna Nombre</th>
-                    <th>Costo ($/dosis)</th>
-                    <th>Dosis</th>
-                    <th>Fecha Vacunacion</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                $total_costo_cbr = 0;
-                if ($result_cbr && $result_cbr->num_rows > 0) {
-                    while($row = $result_cbr->fetch_assoc()) {
-                        $total_costo_cbr += floatval($row['vh_cbr_costo']) * floatval($row['vh_cbr_dosis']);
-                        
-                        echo "<tr>";
-                        echo "<td>" . htmlspecialchars($row['vh_cbr_producto']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['vh_cbr_costo']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['vh_cbr_dosis']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['vh_cbr_fecha']) . "</td>";
-                        echo "<td>
-                                <button class='btn btn-danger btn-sm delete-cbr' 
-                                        data-id='" . $row['id'] . "'>
-                                    <i class='fas fa-trash'></i>
-                                </button>
-                            </td>";
-                        echo "</tr>";
-                    }
-                }
-                ?>
-            </tbody>
-            <tfoot>
-                <tr class="table-info">
-                    <td><strong>Total</strong></td>
-                    <td><strong>$<?php echo number_format($total_costo_cbr, 2); ?></strong></td>
-                    <td colspan="3"></td>
-                </tr>
-            </tfoot>
-        </table>
+  <div class="table-responsive">
+      <table id="cbrTable" class="table table-striped table-bordered">
+          <thead>
+              <tr>
+                  <th>Fecha</th>
+                  <th>Producto</th>
+                  <th>Dosis (ml)</th>
+                  <th>Costo ($/Dosis)</th>
+                  <th>Acciones</th>
+              </tr>
+          </thead>
+          <tbody>
+              <?php
+              $sql = "SELECT * FROM vh_cbr WHERE vh_cbr_tagid = '$tagid' ORDER BY vh_cbr_fecha DESC";
+              $result = $conn->query($sql);
+              $total_costo_cbr = 0;
+              
+              if ($result->num_rows > 0) {
+                  while($row = $result->fetch_assoc()) {
+                      $total += $row['vh_cbr_costo'];
+                      echo "<tr>
+                              <td>" . date('d/m/Y', strtotime($row['vh_cbr_fecha'])) . "</td>
+                              <td>" . htmlspecialchars($row['vh_cbr_producto']) . "</td>
+                              <td>" . number_format($row['vh_cbr_dosis'], 2) . "</td>
+                              <td>$" . number_format($row['vh_cbr_costo'], 2) . "</td>
+                              <td>
+                                  <div class='d-flex justify-content-center gap-2'>
+                                      <button class='btn btn-sm btn-primary' onclick='openEditCbrModal(" . 
+                                          $row['id'] . ", \"" . 
+                                          htmlspecialchars($row['vh_cbr_tagid'], ENT_QUOTES) . "\", \"" . 
+                                          htmlspecialchars($row['vh_cbr_dosis'], ENT_QUOTES) . "\", \"" . 
+                                          htmlspecialchars($row['vh_cbr_costo'], ENT_QUOTES) . "\", \"" . 
+                                          htmlspecialchars($row['vh_cbr_producto'], ENT_QUOTES) . "\", \"" . 
+                                          $row['vh_cbr_fecha'] . "\")'>
+                                          <i class='fas fa-edit'></i>
+                                      </button>
+                                      <button class='btn btn-sm btn-danger' onclick='deleteCbrEntry(" . $row['id'] . ")'>
+                                          <i class='fas fa-trash'></i>
+                                      </button>
+                                  </div>
+                              </td>
+                            </tr>";
+                  }
+              }
+              ?>
+          </tbody>
+      </table>
     </div>
 </div>
 
-<!-- Add this JavaScript for CBR table -->
+<!-- Modified JavaScript for Aftosa table -->
 <script>
 $(document).ready(function() {
+    // Initialize DataTable
+    var cbrTable = $('#cbrTable').DataTable({
+        pageLength: 10,
+        dom: 'rt<"bottom"ip>',
+        language: {
+            paginate: {
+                previous: '‹',
+                next: '›'
+            }
+        },
+        order: [[5, 'desc']], // Order by date column descending
+        initComplete: function() {
+            // Link custom filter input
+            $('#cbrTableFilter').keyup(function() {
+                cbrTable.search($(this).val()).draw();
+            });
+
+            // Link custom length select
+            $('#cbrEntriesLength').change(function() {
+                cbrTable.page.len($(this).val()).draw();
+            });
+        }
+    });
+
+    // Existing delete functionality
     $('.delete-cbr').click(function(e) {
         e.preventDefault();
-        console.log('Delete CBR button clicked');
+        console.log('Delete Cbr button clicked');
         
         const id = $(this).data('id');
         console.log('ID to delete:', id);
@@ -2747,9 +3519,45 @@ $(document).ready(function() {
     });
 });
 </script>
-<!-- Brucelosis Table Section -->
+<script>
+// Function to open edit modal for CBR entries
+function openEditCbrModal(id, tagid, producto, dosis, costo, fecha) {
+    document.getElementById('edit_cbr_id').value = id;
+    document.getElementById('edit_cbr_tagid').value = tagid;
+    document.getElementById('edit_cbr_producto').value = producto;
+    document.getElementById('edit_cbr_dosis').value = dosis;
+    document.getElementById('edit_cbr_costo').value = costo;
+    document.getElementById('edit_cbr_fecha').value = fecha;
+    
+    var editModal = new bootstrap.Modal(document.getElementById('editCbrModal'));
+    editModal.show();
+}
+
+// Function to delete CBR entries
+function deleteCbrEntry(id) {
+    if (confirm('¿Está seguro de que desea eliminar este registro?')) {
+        fetch('process_cbr.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'action=delete&id=' + id
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Error al eliminar el registro');
+            }
+        });
+    }
+}
+</script>
+
+<!-- BRUCELOSIS Table Section -->
 <?php
-// Build the base query for Brucelosis
+// Build the base query for BRUCELOSIS
 if (isset($_GET['search']) && !empty($_GET['search'])) {
     $tagid = $conn->real_escape_string($_GET['search']);
     $baseQuery_brucelosis = "SELECT * FROM vh_brucelosis WHERE vh_brucelosis_tagid = '$tagid'";
@@ -2759,92 +3567,200 @@ if (isset($_GET['search']) && !empty($_GET['search'])) {
 $result_brucelosis = $conn->query($baseQuery_brucelosis);
 ?>
 
-<!-- Brucelosis Table -->
-<div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
-    <h4 class="sub-section-title">Vacunas Brucelosis</h4>
-    
-    <!-- Add New Brucelosis Form -->
-    <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addBrucelosisForm">
-        <i class="fas fa-plus"></i> Agregar Vacuna Brucelosis
-    </button>
-    
-    <div class="collapse mb-3" id="addBrucelosisForm">
-        <div class="card card-body">
-            <form id="brucelosisForm" action="process_brucelosis.php" method="POST">
-                <input type="hidden" name="tagid" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
-                <div class="row g-3">
-                    <div class="col-md-6">
+<!-- Edit BRUCELOSIS Modal -->
+<div class="modal fade" id="editBrucelosisModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Editar BRUCELOSIS</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="editCbrForm" action="process_brucelosis.php" method="POST">
+                <div class="modal-body">
+                    <input type="hidden" name="action" value="update">
+                    <input type="hidden" name="id" id="edit_brucelosis_id">
+                    <input type="hidden" name="tagid" id="edit_brucelosis_tagid">
+                    <div class="mb-3">
                         <label class="form-label">Producto</label>
-                        <input type="text" class="form-control" name="producto" required>
+                        <input type="text" class="form-control" name="producto" id="edit_brucelosis_producto" required>
                     </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Costo por Dosis ($)</label>
-                        <input type="number" step="0.01" class="form-control" name="costo" required>
+                    <div class="mb-3">
+                        <label class="form-label">Dosis (ml)</label>
+                        <input type="number" step="0.01" class="form-control" name="dosis" id="edit_brucelosis_dosis" required>
                     </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Dosis</label>
-                        <input type="number" step="0.01" class="form-control" name="dosis" required>
+                    <div class="mb-3">
+                        <label class="form-label">Costo ($)</label>
+                        <input type="number" step="0.01" class="form-control" name="costo" id="edit_brucelosis_costo" required>
                     </div>
-                    <div class="col-md-6">
+                    <div class="mb-3">
                         <label class="form-label">Fecha</label>
-                        <input type="date" class="form-control" name="fecha" required>
+                        <input type="date" class="form-control" name="fecha" id="edit_brucelosis_fecha" required>
                     </div>
-                    <div class="col-12">
-                        <button type="submit" class="btn btn-success">Guardar</button>
-                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-between">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
                 </div>
             </form>
         </div>
     </div>
+</div>
 
-    <div class="table-responsive">
-        <table id="brucelosisTable" class="table table-striped table-bordered">
-            <thead>
-                <tr>
-                    <th>Vacuna Nombre</th>
-                    <th>Costo ($/dosis)</th>
-                    <th>Dosis</th>
-                    <th>Fecha Vacunacion</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                $total_costo_brucelosis = 0;
-                if ($result_brucelosis && $result_brucelosis->num_rows > 0) {
-                    while($row = $result_brucelosis->fetch_assoc()) {
-                        $total_costo_brucelosis += floatval($row['vh_brucelosis_costo']) * floatval($row['vh_brucelosis_dosis']);
-                        
-                        echo "<tr>";
-                        echo "<td>" . htmlspecialchars($row['vh_brucelosis_producto']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['vh_brucelosis_costo']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['vh_brucelosis_dosis']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['vh_brucelosis_fecha']) . "</td>";
-                        echo "<td>
-                                <button class='btn btn-danger btn-sm delete-brucelosis' 
-                                        data-id='" . $row['id'] . "'>
-                                    <i class='fas fa-trash'></i>
-                                </button>
-                            </td>";
-                        echo "</tr>";
-                    }
-                }
-                ?>
-            </tbody>
-            <tfoot>
-                <tr class="table-info">
-                    <td><strong>Total</strong></td>
-                    <td><strong>$<?php echo number_format($total_costo_brucelosis, 2); ?></strong></td>
-                    <td colspan="3"></td>
-                </tr>
-            </tfoot>
-        </table>
+<div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
+    <h4 class="sub-section-title">Vacunas BRUCELOSIS</h4>
+    
+    <!-- Add New BRUCELOSIS Form -->
+    <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addBrucelosisForm">
+        <i class="fas fa-plus"></i> Registrar Vacuna  BRUCELOSIS
+    </button>
+    <div class="collapse mb-3" id="addBrucelosisForm">
+    <div class="card card-body">
+        <form id="brucelosisForm" action="process_brucelosis.php" method="POST">
+        <input type="hidden" name="action" value="insert">
+            <?php
+            // Ensure tagid is set from either GET or SESSION
+            $tagid = '';
+            if (isset($_GET['search']) && !empty($_GET['search'])) {
+                $tagid = htmlspecialchars($_GET['search']);
+            } elseif (isset($_SESSION['current_tagid']) && !empty($_SESSION['current_tagid'])) {
+                $tagid = htmlspecialchars($_SESSION['current_tagid']);
+            }
+            ?>
+            <input type="hidden" name="tagid" value="<?php echo $tagid; ?>">
+            
+            <!-- Debug output to verify tagid -->
+            <?php if (empty($tagid)): ?>
+                <div class="alert alert-warning">
+                    No se ha seleccionado ningún animal. Por favor, busque un animal primero.
+                </div>
+            <?php endif; ?>
+
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label">Producto</label>
+                    <input type="text" class="form-control" name="producto" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Dosis (ml)</label>
+                    <input type="number" step="0.01" class="form-control" name="dosis" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Costo ($/kg)</label>
+                    <input type="number" step="0.01" class="form-control" name="costo" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Fecha</label>
+                    <input type="date" class="form-control" name="fecha" required>
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-success" <?php echo empty($tagid) ? 'disabled' : ''; ?>>
+                        Guardar
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+    <!-- Table Controls -->
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <div class="d-flex align-items-center">
+                <label class="me-2">Show entries:</label>
+                <select class="form-select form-select-sm w-auto" id="brucelosisEntriesLength">
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="d-flex justify-content-end">
+                <input type="search" class="form-control form-control-sm w-auto" 
+                       placeholder="Filter results..." id="brucelosisTableFilter">
+            </div>
+        </div>
+    </div>
+
+  <div class="table-responsive">
+      <table id="brucelosisTable" class="table table-striped table-bordered">
+          <thead>
+              <tr>
+                  <th>Fecha</th>
+                  <th>Producto</th>
+                  <th>Dosis (ml)</th>
+                  <th>Costo ($/Dosis)</th>
+                  <th>Acciones</th>
+              </tr>
+          </thead>
+          <tbody>
+              <?php
+              $sql = "SELECT * FROM vh_brucelosis WHERE vh_brucelosis_tagid = '$tagid' ORDER BY vh_brucelosis_fecha DESC";
+              $result = $conn->query($sql);
+              $total_costo_brucelosis = 0;
+              
+              if ($result->num_rows > 0) {
+                  while($row = $result->fetch_assoc()) {
+                      $total += $row['vh_brucelosis_costo'];
+                      echo "<tr>
+                              <td>" . date('d/m/Y', strtotime($row['vh_brucelosis_fecha'])) . "</td>
+                              <td>" . htmlspecialchars($row['vh_brucelosis_producto']) . "</td>
+                              <td>" . number_format($row['vh_brucelosis_dosis'], 2) . "</td>
+                              <td>$" . number_format($row['vh_brucelosis_costo'], 2) . "</td>
+                              <td>
+                                  <div class='d-flex justify-content-center gap-2'>
+                                      <button class='btn btn-sm btn-primary' onclick='openEditBrucelosisModal(" . 
+                                          $row['id'] . ", \"" . 
+                                          htmlspecialchars($row['vh_brucelosis_tagid'],
+                                          ENT_QUOTES) . "\", \"" . 
+                                          htmlspecialchars($row['vh_brucelosis_producto'], ENT_QUOTES) . "\", \"" . 
+                                          htmlspecialchars($row['vh_brucelosis_dosis'], ENT_QUOTES) . "\", \"" . 
+                                          htmlspecialchars($row['vh_brucelosis_costo'], ENT_QUOTES) . "\", \"" . 
+                                          $row['vh_brucelosis_fecha'] . "\")'>
+                                          <i class='fas fa-edit'></i>
+                                      </button>
+                                      <button class='btn btn-sm btn-danger' onclick='deleteBrucelosisEntry(" . $row['id'] . ")'>
+                                          <i class='fas fa-trash'></i>
+                                      </button>
+                                  </div>
+                              </td>
+                            </tr>";
+                  }
+              }
+              ?>
+          </tbody>
+      </table>
     </div>
 </div>
 
-<!-- Add this JavaScript for Brucelosis table -->
+<!-- Modified JavaScript for Brucelosistable -->
 <script>
 $(document).ready(function() {
+    // Initialize DataTable
+    var brucelosisTable = $('#brucelosisTable').DataTable({
+        pageLength: 10,
+        dom: 'rt<"bottom"ip>',
+        language: {
+            paginate: {
+                previous: '‹',
+                next: '›'
+            }
+        },
+        order: [[5, 'desc']], // Order by date column descending
+        initComplete: function() {
+            // Link custom filter input
+            $('#brucelosisTableFilter').keyup(function() {
+                brucelosisTable.search($(this).val()).draw();
+            });
+
+            // Link custom length select
+            $('#brucelosisEntriesLength').change(function() {
+                brucelosisTable.page.len($(this).val()).draw();
+            });
+        }
+    });
+
+    // Existing delete functionality
     $('.delete-brucelosis').click(function(e) {
         e.preventDefault();
         console.log('Delete Brucelosis button clicked');
@@ -2883,9 +3799,46 @@ $(document).ready(function() {
     });
 });
 </script>
+<script>
+// Function to open edit modal for BRUCELOSIS entries
+function openEditBrucelosisModal(id, tagid, producto, dosis, costo, fecha) {
+    document.getElementById('edit_brucelosis_id').value = id;
+    document.getElementById('edit_brucelosis_tagid').value = tagid;
+    document.getElementById('edit_brucelosis_producto').value = producto;
+    document.getElementById('edit_brucelosis_dosis').value = dosis
+    document.getElementById('edit_brucelosis_costo').value = costo;
+    document.getElementById('edit_brucelosis_fecha').value = fecha;
+    
+    var editModal = new bootstrap.Modal(document.getElementById('editBrucelosisModal'));
+    editModal.show();
+}
+
+// Function to delete BRUCELOSIS entries
+function deleteBrucelosisEntry(id) {
+    if (confirm('¿Está seguro de que desea eliminar este registro?')) {
+        fetch('process_brucelosis.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'action=delete&id=' + id
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Error al eliminar el registro');
+            }
+        });
+    }
+}
+</script>
+
 <!-- Carbunco Table Section -->
+
 <?php
-// Build the base query for Carbunco
+// Build the base query for CARBUNCO
 if (isset($_GET['search']) && !empty($_GET['search'])) {
     $tagid = $conn->real_escape_string($_GET['search']);
     $baseQuery_carbunco = "SELECT * FROM vh_carbunco WHERE vh_carbunco_tagid = '$tagid'";
@@ -2895,93 +3848,199 @@ if (isset($_GET['search']) && !empty($_GET['search'])) {
 $result_carbunco = $conn->query($baseQuery_carbunco);
 ?>
 
-<!-- Carbunco Table -->
-<div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
-    <h4 class="sub-section-title">Vacunas Carbunco</h4>
-    
-    <!-- Add New Carbunco Form -->
-    <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addCarbuncoForm">
-        <i class="fas fa-plus"></i> Agregar Vacuna Carbunco
-    </button>
-    
-    <div class="collapse mb-3" id="addCarbuncoForm">
-        <div class="card card-body">
-            <form id="carbuncoForm" action="process_carbunco.php" method="POST">
-                <input type="hidden" name="tagid" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
-                <div class="row g-3">
-                    <div class="col-md-6">
+<!-- Edit CARBUNCO Modal -->
+<div class="modal fade" id="editCarbuncoModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Editar CARBUNCO</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="editCbrForm" action="process_carbunco.php" method="POST">
+                <div class="modal-body">
+                    <input type="hidden" name="action" value="update">
+                    <input type="hidden" name="id" id="edit_carbunco_id">
+                    <input type="hidden" name="tagid" id="edit_carbunco_tagid">
+                    <div class="mb-3">
                         <label class="form-label">Producto</label>
-                        <input type="text" class="form-control" name="producto" required>
+                        <input type="text" class="form-control" name="producto" id="edit_carbunco_producto" required>
                     </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Costo por Dosis ($)</label>
-                        <input type="number" step="0.01" class="form-control" name="costo" required>
+                    <div class="mb-3">
+                        <label class="form-label">Dosis (ml)</label>
+                        <input type="number" step="0.01" class="form-control" name="dosis" id="edit_carbunco_dosis" required>
                     </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Dosis</label>
-                        <input type="number" step="0.01" class="form-control" name="dosis" required>
+                    <div class="mb-3">
+                        <label class="form-label">Costo ($)</label>
+                        <input type="number" step="0.01" class="form-control" name="costo" id="edit_carbunco_costo" required>
                     </div>
-                    <div class="col-md-6">
+                    <div class="mb-3">
                         <label class="form-label">Fecha</label>
-                        <input type="date" class="form-control" name="fecha" required>
+                        <input type="date" class="form-control" name="fecha" id="edit_carbunco_fecha" required>
                     </div>
-                    <div class="col-12">
-                        <button type="submit" class="btn btn-success">Guardar</button>
-                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-between">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
                 </div>
             </form>
         </div>
     </div>
+</div>
 
-    <div class="table-responsive">
-        <table id="carbuncoTable" class="table table-striped table-bordered">
-            <thead>
-                <tr>
-                    <th>Vacuna Nombre</th>
-                    <th>Costo ($/dosis)</th>
-                    <th>Dosis</th>
-                    <th>Fecha Vacunacion</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                $total_costo_carbunco = 0; // Initialize total cost
-                if ($result_carbunco->num_rows > 0) {
-                    while($row = $result_carbunco->fetch_assoc()) {
-                        // Add to total
-                        $total_costo_carbunco += floatval($row['vh_carbunco_costo']) * floatval($row['vh_carbunco_dosis']);
-                        
-                        echo "<tr>";
-                        echo "<td>" . htmlspecialchars($row['vh_carbunco_producto']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['vh_carbunco_costo']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['vh_carbunco_dosis']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['vh_carbunco_fecha']) . "</td>";
-                        echo "<td>
-                                <button class='btn btn-danger btn-sm delete-carbunco' 
-                                        data-id='" . $row['id'] . "'>
-                                    <i class='fas fa-trash'></i>
-                                </button>
-                            </td>";
-                        echo "</tr>";
-                    }
-                }
-                ?>
-            </tbody>
-            <tfoot>
-                <tr class="table-info">
-                    <td><strong>Total</strong></td>
-                    <td><strong>$<?php echo number_format($total_costo_carbunco, 2); ?></strong></td>
-                    <td colspan="3"></td>
-                </tr>
-            </tfoot>
-        </table>
+<div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
+    <h4 class="sub-section-title">Vacunas CARBUNCO</h4>
+    
+    <!-- Add New CARBUNCO Form -->
+    <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addCarbuncoForm">
+        <i class="fas fa-plus"></i> Registrar Vacuna  CARBUNCO
+    </button>
+    <div class="collapse mb-3" id="addCarbuncoForm">
+    <div class="card card-body">
+        <form id="carbuncoForm" action="process_carbunco.php" method="POST">
+        <input type="hidden" name="action" value="insert">
+            <?php
+            // Ensure tagid is set from either GET or SESSION
+            $tagid = '';
+            if (isset($_GET['search']) && !empty($_GET['search'])) {
+                $tagid = htmlspecialchars($_GET['search']);
+            } elseif (isset($_SESSION['current_tagid']) && !empty($_SESSION['current_tagid'])) {
+                $tagid = htmlspecialchars($_SESSION['current_tagid']);
+            }
+            ?>
+            <input type="hidden" name="tagid" value="<?php echo $tagid; ?>">
+            
+            <!-- Debug output to verify tagid -->
+            <?php if (empty($tagid)): ?>
+                <div class="alert alert-warning">
+                    No se ha seleccionado ningún animal. Por favor, busque un animal primero.
+                </div>
+            <?php endif; ?>
+
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label">Producto</label>
+                    <input type="text" class="form-control" name="producto" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Dosis (ml)</label>
+                    <input type="number" step="0.01" class="form-control" name="dosis" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Costo ($/kg)</label>
+                    <input type="number" step="0.01" class="form-control" name="costo" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Fecha</label>
+                    <input type="date" class="form-control" name="fecha" required>
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-success" <?php echo empty($tagid) ? 'disabled' : ''; ?>>
+                        Guardar
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+    <!-- Table Controls -->
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <div class="d-flex align-items-center">
+                <label class="me-2">Show entries:</label>
+                <select class="form-select form-select-sm w-auto" id="carbuncoEntriesLength">
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="d-flex justify-content-end">
+                <input type="search" class="form-control form-control-sm w-auto" 
+                       placeholder="Filter results..." id="carbuncoTableFilter">
+            </div>
+        </div>
+    </div>
+
+  <div class="table-responsive">
+      <table id="carbuncoTable" class="table table-striped table-bordered">
+          <thead>
+              <tr>
+                  <th>Fecha</th>
+                  <th>Producto</th>
+                  <th>Dosis (ml)</th>
+                  <th>Costo ($/Dosis)</th>
+                  <th>Acciones</th>
+              </tr>
+          </thead>
+          <tbody>
+              <?php
+              $sql = "SELECT * FROM vh_carbunco WHERE vh_carbunco_tagid = '$tagid' ORDER BY vh_carbunco_fecha DESC";
+              $result = $conn->query($sql);
+              $total_costo_carbunco = 0;
+              
+              if ($result->num_rows > 0) {
+                  while($row = $result->fetch_assoc()) {
+                      $total += $row['vh_carbunco_costo'];
+                      echo "<tr>
+                              <td>" . date('d/m/Y', strtotime($row['vh_carbunco_fecha'])) . "</td>
+                              <td>" . htmlspecialchars($row['vh_carbunco_producto']) . "</td>
+                              <td>" . number_format($row['vh_carbunco_dosis'], 2) . "</td>
+                              <td>$" . number_format($row['vh_carbunco_costo'], 2) . "</td>
+                              <td>
+                                  <div class='d-flex justify-content-center gap-2'>
+                                      <button class='btn btn-sm btn-primary' onclick='openEditCarbuncoModal(" . 
+                                          $row['id'] . ", \"" . 
+                                          htmlspecialchars($row['vh_carbunco_tagid'], ENT_QUOTES) . "\", \"" .
+					                                htmlspecialchars($row['vh_carbunco_producto'], ENT_QUOTES) . "\", \"" . 
+                                          htmlspecialchars($row['vh_carbunco_dosis'], ENT_QUOTES) . "\", \"" . 
+                                          htmlspecialchars($row['vh_carbunco_costo'], ENT_QUOTES) . "\", \"" .                                          
+                                          $row['vh_carbunco_fecha'] . "\")'>
+                                          <i class='fas fa-edit'></i>
+                                      </button>
+                                      <button class='btn btn-sm btn-danger' onclick='deleteCarbuncoEntry(" . $row['id'] . ")'>
+                                          <i class='fas fa-trash'></i>
+                                      </button>
+                                  </div>
+                              </td>
+                            </tr>";
+                  }
+              }
+              ?>
+          </tbody>
+      </table>
     </div>
 </div>
 
-<!-- Add this JavaScript for Carbunco table -->
+<!-- Modified JavaScript for Brucelosistable -->
 <script>
 $(document).ready(function() {
+    // Initialize DataTable
+    var carbuncoTable = $('#carbuncoTable').DataTable({
+        pageLength: 10,
+        dom: 'rt<"bottom"ip>',
+        language: {
+            paginate: {
+                previous: '‹',
+                next: '›'
+            }
+        },
+        order: [[5, 'desc']], // Order by date column descending
+        initComplete: function() {
+            // Link custom filter input
+            $('#carbuncoTableFilter').keyup(function() {
+                carbuncoTable.search($(this).val()).draw();
+            });
+
+            // Link custom length select
+            $('#carbuncoEntriesLength').change(function() {
+                carbuncoTable.page.len($(this).val()).draw();
+            });
+        }
+    });
+
+    // Existing delete functionality
     $('.delete-carbunco').click(function(e) {
         e.preventDefault();
         console.log('Delete Carbunco button clicked');
@@ -3020,10 +4079,45 @@ $(document).ready(function() {
     });
 });
 </script>
+<script>
+// Function to open edit modal for CARBUNCO entries
+function openEditCarbuncoModal(id, tagid, producto, dosis, costo, fecha) {
+    document.getElementById('edit_carbunco_id').value = id;
+    document.getElementById('edit_carbunco_tagid').value = tagid;
+    document.getElementById('edit_carbunco_producto').value = producto;
+    document.getElementById('edit_carbunco_dosis').value = dosis
+    document.getElementById('edit_carbunco_costo').value = costo;
+    document.getElementById('edit_carbunco_fecha').value = fecha;
+    
+    var editModal = new bootstrap.Modal(document.getElementById('editCarbuncoModal'));
+    editModal.show();
+}
 
-<!-- garrapatas Table Section -->
+// Function to delete CARBUNCO entries
+function deleteCarbuncoEntry(id) {
+    if (confirm('¿Está seguro de que desea eliminar este registro?')) {
+        fetch('process_carbunco.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'action=delete&id=' + id
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Error al eliminar el registro');
+            }
+        });
+    }
+}
+</script>
+
+<!-- Garrapatas Table Section -->
 <?php
-// Build the base query for garrapatas
+// Build the base query for Garrapatas
 if (isset($_GET['search']) && !empty($_GET['search'])) {
     $tagid = $conn->real_escape_string($_GET['search']);
     $baseQuery_garrapatas = "SELECT * FROM vh_garrapatas WHERE vh_garrapatas_tagid = '$tagid'";
@@ -3033,96 +4127,202 @@ if (isset($_GET['search']) && !empty($_GET['search'])) {
 $result_garrapatas = $conn->query($baseQuery_garrapatas);
 ?>
 
-<!-- garrapatas Table -->
-<div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
-    <h4 class="sub-section-title">Tratamiento Garrapatas</h4>
-    
-    <!-- Add New garrapatas Form -->
-    <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addgarrapatasForm">
-        <i class="fas fa-plus"></i> Agregar Tratamiento garrapatas
-    </button>
-    
-    <div class="collapse mb-3" id="addgarrapatasForm">
-        <div class="card card-body">
-            <form id="garrapatasForm" action="process_garrapatas.php" method="POST">
-                <input type="hidden" name="tagid" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
-                <div class="row g-3">
-                    <div class="col-md-6">
+<!-- Edit Garrapatas Modal -->
+<div class="modal fade" id="editGarrapatasModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Editar Garrapatas</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="editCbrForm" action="process_garrapatas.php" method="POST">
+                <div class="modal-body">
+                    <input type="hidden" name="action" value="update">
+                    <input type="hidden" name="id" id="edit_garrapatas_id">
+                    <input type="hidden" name="tagid" id="edit_garrapatas_tagid">
+                    <div class="mb-3">
                         <label class="form-label">Producto</label>
-                        <input type="text" class="form-control" name="producto" required>
+                        <input type="text" class="form-control" name="producto" id="edit_garrapatas_producto" required>
                     </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Costo por Dosis ($)</label>
-                        <input type="number" step="0.01" class="form-control" name="costo" required>
+                    <div class="mb-3">
+                        <label class="form-label">Dosis (ml)</label>
+                        <input type="number" step="0.01" class="form-control" name="dosis" id="edit_garrapatas_dosis" required>
                     </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Dosis</label>
-                        <input type="number" step="0.01" class="form-control" name="dosis" required>
+                    <div class="mb-3">
+                        <label class="form-label">Costo ($)</label>
+                        <input type="number" step="0.01" class="form-control" name="costo" id="edit_garrapatas_costo" required>
                     </div>
-                    <div class="col-md-6">
+                    <div class="mb-3">
                         <label class="form-label">Fecha</label>
-                        <input type="date" class="form-control" name="fecha" required>
+                        <input type="date" class="form-control" name="fecha" id="edit_garrapatas_fecha" required>
                     </div>
-                    <div class="col-12">
-                        <button type="submit" class="btn btn-success">Guardar</button>
-                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-between">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
                 </div>
             </form>
         </div>
     </div>
+</div>
 
-    <div class="table-responsive">
-        <table id="garrapatasTable" class="table table-striped table-bordered">
-            <thead>
-                <tr>
-                    <th>Producto Nombre</th>
-                    <th>Costo ($/dosis)</th>
-                    <th>Dosis</th>
-                    <th>Fecha Tratamiento</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                $total_costo_garrapatas = 0; // Initialize total cost
-                if ($result_garrapatas->num_rows > 0) {
-                    while($row = $result_garrapatas->fetch_assoc()) {
-                        // Add to total
-                        $total_costo_garrapatas += floatval($row['vh_garrapatas_costo']) * floatval($row['vh_garrapatas_dosis']);
-                        
-                        echo "<tr>";
-                        echo "<td>" . htmlspecialchars($row['vh_garrapatas_producto']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['vh_garrapatas_costo']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['vh_garrapatas_dosis']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['vh_garrapatas_fecha']) . "</td>";
-                        echo "<td>
-                                <button class='btn btn-danger btn-sm delete-garrapatas' 
-                                        data-id='" . $row['id'] . "'>
-                                    <i class='fas fa-trash'></i>
-                                </button>
-                            </td>";
-                        echo "</tr>";
-                    }
-                }
-                ?>
-            </tbody>
-            <tfoot>
-                <tr class="table-info">
-                    <td><strong>Total</strong></td>
-                    <td><strong>$<?php echo number_format($total_costo_garrapatas, 2); ?></strong></td>
-                    <td colspan="3"></td>
-                </tr>
-            </tfoot>
-        </table>
+<div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
+    <h4 class="sub-section-title">Vacunas Garrapatas</h4>
+    
+    <!-- Add New Garrapatas Form -->
+    <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addGarrapatasForm">
+        <i class="fas fa-plus"></i> Registrar Vacuna  Garrapatas
+    </button>
+    <div class="collapse mb-3" id="addGarrapatasForm">
+    <div class="card card-body">
+        <form id="garrapatasForm" action="process_garrapatas.php" method="POST">
+        <input type="hidden" name="action" value="insert">
+            <?php
+            // Ensure tagid is set from either GET or SESSION
+            $tagid = '';
+            if (isset($_GET['search']) && !empty($_GET['search'])) {
+                $tagid = htmlspecialchars($_GET['search']);
+            } elseif (isset($_SESSION['current_tagid']) && !empty($_SESSION['current_tagid'])) {
+                $tagid = htmlspecialchars($_SESSION['current_tagid']);
+            }
+            ?>
+            <input type="hidden" name="tagid" value="<?php echo $tagid; ?>">
+            
+            <!-- Debug output to verify tagid -->
+            <?php if (empty($tagid)): ?>
+                <div class="alert alert-warning">
+                    No se ha seleccionado ningún animal. Por favor, busque un animal primero.
+                </div>
+            <?php endif; ?>
+
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label">Producto</label>
+                    <input type="text" class="form-control" name="producto" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Dosis (ml)</label>
+                    <input type="number" step="0.01" class="form-control" name="dosis" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Costo ($/kg)</label>
+                    <input type="number" step="0.01" class="form-control" name="costo" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Fecha</label>
+                    <input type="date" class="form-control" name="fecha" required>
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-success" <?php echo empty($tagid) ? 'disabled' : ''; ?>>
+                        Guardar
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+    <!-- Table Controls -->
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <div class="d-flex align-items-center">
+                <label class="me-2">Show entries:</label>
+                <select class="form-select form-select-sm w-auto" id="garrapatasEntriesLength">
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="d-flex justify-content-end">
+                <input type="search" class="form-control form-control-sm w-auto" 
+                       placeholder="Filter results..." id="garrapatasTableFilter">
+            </div>
+        </div>
+    </div>
+
+  <div class="table-responsive">
+      <table id="garrapatasTable" class="table table-striped table-bordered">
+          <thead>
+              <tr>
+                  <th>Fecha</th>
+                  <th>Producto</th>
+                  <th>Dosis (ml)</th>
+                  <th>Costo ($/Dosis)</th>
+                  <th>Acciones</th>
+              </tr>
+          </thead>
+          <tbody>
+              <?php
+              $sql = "SELECT * FROM vh_garrapatas WHERE vh_garrapatas_tagid = '$tagid' ORDER BY vh_garrapatas_fecha DESC";
+              $result = $conn->query($sql);
+              $total_costo_garrapatas = 0;
+              
+              if ($result->num_rows > 0) {
+                  while($row = $result->fetch_assoc()) {
+                      $total += $row['vh_garrapatas_costo'];
+                      echo "<tr>
+                              <td>" . date('d/m/Y', strtotime($row['vh_garrapatas_fecha'])) . "</td>
+                              <td>" . htmlspecialchars($row['vh_garrapatas_producto']) . "</td>
+                              <td>" . number_format($row['vh_garrapatas_dosis'], 2) . "</td>
+                              <td>$" . number_format($row['vh_garrapatas_costo'], 2) . "</td>
+                              <td>
+                                  <div class='d-flex justify-content-center gap-2'>
+                                      <button class='btn btn-sm btn-primary' onclick='openEditGarrapatasModal(" . 
+                                          $row['id'] . ", \"" . 
+                                          htmlspecialchars($row['vh_garrapatas_tagid'], ENT_QUOTES) . "\", \"" .
+					  htmlspecialchars($row['vh_garrapatas_producto'], ENT_QUOTES) . "\", \"" . 
+                                          htmlspecialchars($row['vh_garrapatas_dosis'], ENT_QUOTES) . "\", \"" . 
+                                          htmlspecialchars($row['vh_garrapatas_costo'], ENT_QUOTES) . "\", \"" .                                          
+                                          $row['vh_garrapatas_fecha'] . "\")'>
+                                          <i class='fas fa-edit'></i>
+                                      </button>
+                                      <button class='btn btn-sm btn-danger' onclick='deleteGarrapatasEntry(" . $row['id'] . ")'>
+                                          <i class='fas fa-trash'></i>
+                                      </button>
+                                  </div>
+                              </td>
+                            </tr>";
+                  }
+              }
+              ?>
+          </tbody>
+      </table>
     </div>
 </div>
 
-<!-- Add this JavaScript for garrapatas table -->
+<!-- Modified JavaScript for Garrapatas table -->
 <script>
 $(document).ready(function() {
+    // Initialize DataTable
+    var garrapatasTable = $('#garrapatasTable').DataTable({
+        pageLength: 10,
+        dom: 'rt<"bottom"ip>',
+        language: {
+            paginate: {
+                previous: '‹',
+                next: '›'
+            }
+        },
+        order: [[5, 'desc']], // Order by date column descending
+        initComplete: function() {
+            // Link custom filter input
+            $('#garrapatasTableFilter').keyup(function() {
+                garrapatasTable.search($(this).val()).draw();
+            });
+
+            // Link custom length select
+            $('#garrapatasEntriesLength').change(function() {
+                garrapatasTable.page.len($(this).val()).draw();
+            });
+        }
+    });
+
+    // Existing delete functionality
     $('.delete-garrapatas').click(function(e) {
         e.preventDefault();
-        console.log('Delete garrapatas button clicked');
+        console.log('Delete Garrapatas button clicked');
         
         const id = $(this).data('id');
         console.log('ID to delete:', id);
@@ -3158,7 +4358,42 @@ $(document).ready(function() {
     });
 });
 </script>
+<script>
+// Function to open edit modal for Garrapatas entries
+function openEditGarrapatasModal(id, tagid, producto, dosis, costo, fecha) {
+    document.getElementById('edit_garrapatas_id').value = id;
+    document.getElementById('edit_garrapatas_tagid').value = tagid;
+    document.getElementById('edit_garrapatas_producto').value = producto;
+    document.getElementById('edit_garrapatas_dosis').value = dosis
+    document.getElementById('edit_garrapatas_costo').value = costo;
+    document.getElementById('edit_garrapatas_fecha').value = fecha;
+    
+    var editModal = new bootstrap.Modal(document.getElementById('editGarrapatasModal'));
+    editModal.show();
+}
 
+// Function to delete Garrapatas entries
+function deleteGarrapatasEntry(id) {
+    if (confirm('¿Está seguro de que desea eliminar este registro?')) {
+        fetch('process_garrapatas.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'action=delete&id=' + id
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Error al eliminar el registro');
+            }
+        });
+    }
+}
+</script>
+<!-- Mastitis Table Section -->
 <!-- Mastitis Table Section -->
 <?php
 // Build the base query for Mastitis
@@ -3171,93 +4406,199 @@ if (isset($_GET['search']) && !empty($_GET['search'])) {
 $result_mastitis = $conn->query($baseQuery_mastitis);
 ?>
 
-<!-- Mastitis Table -->
-<div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
-    <h4 class="sub-section-title">Tratamiento Mastitis</h4>
-    
-    <!-- Add New Mastitis Form -->
-    <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addMastitisForm">
-        <i class="fas fa-plus"></i> Agregar Tratamiento Mastitis
-    </button>
-    
-    <div class="collapse mb-3" id="addMastitisForm">
-        <div class="card card-body">
-            <form id="mastitisForm" action="process_mastitis.php" method="POST">
-                <input type="hidden" name="tagid" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
-                <div class="row g-3">
-                    <div class="col-md-6">
+<!-- Edit Mastitis Modal -->
+<div class="modal fade" id="editMastitisModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Editar Mastitis</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="editCbrForm" action="process_mastitis.php" method="POST">
+                <div class="modal-body">
+                    <input type="hidden" name="action" value="update">
+                    <input type="hidden" name="id" id="edit_mastitis_id">
+                    <input type="hidden" name="tagid" id="edit_mastitis_tagid">
+                    <div class="mb-3">
                         <label class="form-label">Producto</label>
-                        <input type="text" class="form-control" name="producto" required>
+                        <input type="text" class="form-control" name="producto" id="edit_mastitis_producto" required>
                     </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Costo por Dosis ($)</label>
-                        <input type="number" step="0.01" class="form-control" name="costo" required>
+                    <div class="mb-3">
+                        <label class="form-label">Dosis (ml)</label>
+                        <input type="number" step="0.01" class="form-control" name="dosis" id="edit_mastitis_dosis" required>
                     </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Dosis</label>
-                        <input type="number" step="0.01" class="form-control" name="dosis" required>
+                    <div class="mb-3">
+                        <label class="form-label">Costo ($)</label>
+                        <input type="number" step="0.01" class="form-control" name="costo" id="edit_mastitis_costo" required>
                     </div>
-                    <div class="col-md-6">
+                    <div class="mb-3">
                         <label class="form-label">Fecha</label>
-                        <input type="date" class="form-control" name="fecha" required>
+                        <input type="date" class="form-control" name="fecha" id="edit_mastitis_fecha" required>
                     </div>
-                    <div class="col-12">
-                        <button type="submit" class="btn btn-success">Guardar</button>
-                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-between">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
                 </div>
             </form>
         </div>
     </div>
+</div>
 
-    <div class="table-responsive">
-        <table id="mastitisTable" class="table table-striped table-bordered">
-            <thead>
-                <tr>
-                    <th>Producto Nombre</th>
-                    <th>Costo ($/dosis)</th>
-                    <th>Dosis</th>
-                    <th>Fecha Tratamiento</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                $total_costo_mastitis = 0; // Initialize total cost
-                if ($result_mastitis->num_rows > 0) {
-                    while($row = $result_mastitis->fetch_assoc()) {
-                        // Add to total
-                        $total_costo_mastitis += floatval($row['vh_mastitis_costo']) * floatval($row['vh_mastitis_dosis']);
-                        
-                        echo "<tr>";
-                        echo "<td>" . htmlspecialchars($row['vh_mastitis_producto']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['vh_mastitis_costo']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['vh_mastitis_dosis']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['vh_mastitis_fecha']) . "</td>";
-                        echo "<td>
-                                <button class='btn btn-danger btn-sm delete-mastitis' 
-                                        data-id='" . $row['id'] . "'>
-                                    <i class='fas fa-trash'></i>
-                                </button>
-                            </td>";
-                        echo "</tr>";
-                    }
-                }
-                ?>
-            </tbody>
-            <tfoot>
-                <tr class="table-info">
-                    <td><strong>Total</strong></td>
-                    <td><strong>$<?php echo number_format($total_costo_mastitis, 2); ?></strong></td>
-                    <td colspan="3"></td>
-                </tr>
-            </tfoot>
-        </table>
+<div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
+    <h4 class="sub-section-title">Vacunas Mastitis</h4>
+    
+    <!-- Add New Mastitis Form -->
+    <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addMastitisForm">
+        <i class="fas fa-plus"></i> Registrar Vacuna  Mastitis
+    </button>
+    <div class="collapse mb-3" id="addMastitisForm">
+    <div class="card card-body">
+        <form id="mastitisForm" action="process_mastitis.php" method="POST">
+        <input type="hidden" name="action" value="insert">
+            <?php
+            // Ensure tagid is set from either GET or SESSION
+            $tagid = '';
+            if (isset($_GET['search']) && !empty($_GET['search'])) {
+                $tagid = htmlspecialchars($_GET['search']);
+            } elseif (isset($_SESSION['current_tagid']) && !empty($_SESSION['current_tagid'])) {
+                $tagid = htmlspecialchars($_SESSION['current_tagid']);
+            }
+            ?>
+            <input type="hidden" name="tagid" value="<?php echo $tagid; ?>">
+            
+            <!-- Debug output to verify tagid -->
+            <?php if (empty($tagid)): ?>
+                <div class="alert alert-warning">
+                    No se ha seleccionado ningún animal. Por favor, busque un animal primero.
+                </div>
+            <?php endif; ?>
+
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label">Producto</label>
+                    <input type="text" class="form-control" name="producto" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Dosis (ml)</label>
+                    <input type="number" step="0.01" class="form-control" name="dosis" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Costo ($/kg)</label>
+                    <input type="number" step="0.01" class="form-control" name="costo" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Fecha</label>
+                    <input type="date" class="form-control" name="fecha" required>
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-success" <?php echo empty($tagid) ? 'disabled' : ''; ?>>
+                        Guardar
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+    <!-- Table Controls -->
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <div class="d-flex align-items-center">
+                <label class="me-2">Show entries:</label>
+                <select class="form-select form-select-sm w-auto" id="mastitisEntriesLength">
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="d-flex justify-content-end">
+                <input type="search" class="form-control form-control-sm w-auto" 
+                       placeholder="Filter results..." id="mastitisTableFilter">
+            </div>
+        </div>
+    </div>
+
+  <div class="table-responsive">
+      <table id="mastitisTable" class="table table-striped table-bordered">
+          <thead>
+              <tr>
+                  <th>Fecha</th>
+                  <th>Producto</th>
+                  <th>Dosis (ml)</th>
+                  <th>Costo ($/Dosis)</th>
+                  <th>Acciones</th>
+              </tr>
+          </thead>
+          <tbody>
+              <?php
+              $sql = "SELECT * FROM vh_mastitis WHERE vh_mastitis_tagid = '$tagid' ORDER BY vh_mastitis_fecha DESC";
+              $result = $conn->query($sql);
+              $total_costo_mastitis = 0;
+              
+              if ($result->num_rows > 0) {
+                  while($row = $result->fetch_assoc()) {
+                      $total += $row['vh_mastitis_costo'];
+                      echo "<tr>
+                              <td>" . date('d/m/Y', strtotime($row['vh_mastitis_fecha'])) . "</td>
+                              <td>" . htmlspecialchars($row['vh_mastitis_producto']) . "</td>
+                              <td>" . number_format($row['vh_mastitis_dosis'], 2) . "</td>
+                              <td>$" . number_format($row['vh_mastitis_costo'], 2) . "</td>
+                              <td>
+                                  <div class='d-flex justify-content-center gap-2'>
+                                      <button class='btn btn-sm btn-primary' onclick='openEditMastitisModal(" . 
+                                          $row['id'] . ", \"" . 
+                                          htmlspecialchars($row['vh_mastitis_tagid'], ENT_QUOTES) . "\", \"" .
+					  htmlspecialchars($row['vh_mastitis_producto'], ENT_QUOTES) . "\", \"" . 
+                                          htmlspecialchars($row['vh_mastitis_dosis'], ENT_QUOTES) . "\", \"" . 
+                                          htmlspecialchars($row['vh_mastitis_costo'], ENT_QUOTES) . "\", \"" .                                          
+                                          $row['vh_mastitis_fecha'] . "\")'>
+                                          <i class='fas fa-edit'></i>
+                                      </button>
+                                      <button class='btn btn-sm btn-danger' onclick='deleteMastitisEntry(" . $row['id'] . ")'>
+                                          <i class='fas fa-trash'></i>
+                                      </button>
+                                  </div>
+                              </td>
+                            </tr>";
+                  }
+              }
+              ?>
+          </tbody>
+      </table>
     </div>
 </div>
 
-<!-- Add this JavaScript for Mastitis table -->
+<!-- Modified JavaScript for Mastitis table -->
 <script>
 $(document).ready(function() {
+    // Initialize DataTable
+    var mastitisTable = $('#mastitisTable').DataTable({
+        pageLength: 10,
+        dom: 'rt<"bottom"ip>',
+        language: {
+            paginate: {
+                previous: '‹',
+                next: '›'
+            }
+        },
+        order: [[5, 'desc']], // Order by date column descending
+        initComplete: function() {
+            // Link custom filter input
+            $('#mastitisTableFilter').keyup(function() {
+                mastitisTable.search($(this).val()).draw();
+            });
+
+            // Link custom length select
+            $('#mastitisEntriesLength').change(function() {
+                mastitisTable.page.len($(this).val()).draw();
+            });
+        }
+    });
+
+    // Existing delete functionality
     $('.delete-mastitis').click(function(e) {
         e.preventDefault();
         console.log('Delete Mastitis button clicked');
@@ -3296,7 +4637,43 @@ $(document).ready(function() {
     });
 });
 </script>
+<script>
+// Function to open edit modal for Mastitis entries
+function openEditMastitisModal(id, tagid, producto, dosis, costo, fecha) {
+    document.getElementById('edit_mastitis_id').value = id;
+    document.getElementById('edit_mastitis_tagid').value = tagid;
+    document.getElementById('edit_mastitis_producto').value = producto;
+    document.getElementById('edit_mastitis_dosis').value = dosis
+    document.getElementById('edit_mastitis_costo').value = costo;
+    document.getElementById('edit_mastitis_fecha').value = fecha;
+    
+    var editModal = new bootstrap.Modal(document.getElementById('editMastitisModal'));
+    editModal.show();
+}
 
+// Function to delete Mastitis entries
+function deleteMastitisEntry(id) {
+    if (confirm('¿Está seguro de que desea eliminar este registro?')) {
+        fetch('process_mastitis.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'action=delete&id=' + id
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Error al eliminar el registro');
+            }
+        });
+    }
+}
+</script>
+
+<!-- Lombrices Table Section -->
 <!-- Lombrices Table Section -->
 <?php
 // Build the base query for Lombrices
@@ -3309,93 +4686,199 @@ if (isset($_GET['search']) && !empty($_GET['search'])) {
 $result_lombrices = $conn->query($baseQuery_lombrices);
 ?>
 
-<!-- Lombrices Table -->
-<div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
-    <h4 class="sub-section-title">Tratamiento Lombrices</h4>
-    
-    <!-- Add New Lombrices Form -->
-    <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addLombricesForm">
-        <i class="fas fa-plus"></i> Agregar Tratamiento Lombrices
-    </button>
-    
-    <div class="collapse mb-3" id="addLombricesForm">
-        <div class="card card-body">
-            <form id="lombricesForm" action="process_lombrices.php" method="POST">
-                <input type="hidden" name="tagid" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
-                <div class="row g-3">
-                    <div class="col-md-6">
+<!-- Edit Lombrices Modal -->
+<div class="modal fade" id="editLombricesModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Editar Lombrices</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="editLombricesForm" action="process_lombrices.php" method="POST">
+                <div class="modal-body">
+                    <input type="hidden" name="action" value="update">
+                    <input type="hidden" name="id" id="edit_lombrices_id">
+                    <input type="hidden" name="tagid" id="edit_lombrices_tagid">
+                    <div class="mb-3">
                         <label class="form-label">Producto</label>
-                        <input type="text" class="form-control" name="producto" required>
+                        <input type="text" class="form-control" name="producto" id="edit_lombrices_producto" required>
                     </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Costo por Dosis ($)</label>
-                        <input type="number" step="0.01" class="form-control" name="costo" required>
+                    <div class="mb-3">
+                        <label class="form-label">Dosis (ml)</label>
+                        <input type="number" step="0.01" class="form-control" name="dosis" id="edit_lombrices_dosis" required>
                     </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Dosis</label>
-                        <input type="number" step="0.01" class="form-control" name="dosis" required>
+                    <div class="mb-3">
+                        <label class="form-label">Costo ($)</label>
+                        <input type="number" step="0.01" class="form-control" name="costo" id="edit_lombrices_costo" required>
                     </div>
-                    <div class="col-md-6">
+                    <div class="mb-3">
                         <label class="form-label">Fecha</label>
-                        <input type="date" class="form-control" name="fecha" required>
+                        <input type="date" class="form-control" name="fecha" id="edit_lombrices_fecha" required>
                     </div>
-                    <div class="col-12">
-                        <button type="submit" class="btn btn-success">Guardar</button>
-                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-between">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
                 </div>
             </form>
         </div>
     </div>
+</div>
 
-    <div class="table-responsive">
-        <table id="lombricesTable" class="table table-striped table-bordered">
-            <thead>
-                <tr>
-                    <th>Producto Nombre</th>
-                    <th>Costo ($/dosis)</th>
-                    <th>Dosis</th>
-                    <th>Fecha Tratamiento</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                $total_costo_lombrices = 0; // Initialize total cost
-                if ($result_lombrices->num_rows > 0) {
-                    while($row = $result_lombrices->fetch_assoc()) {
-                        // Add to total
-                        $total_costo_lombrices += floatval($row['vh_lombrices_costo']) * floatval($row['vh_lombrices_dosis']);
-                        
-                        echo "<tr>";
-                        echo "<td>" . htmlspecialchars($row['vh_lombrices_producto']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['vh_lombrices_costo']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['vh_lombrices_dosis']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['vh_lombrices_fecha']) . "</td>";
-                        echo "<td>
-                                <button class='btn btn-danger btn-sm delete-lombrices' 
-                                        data-id='" . $row['id'] . "'>
-                                    <i class='fas fa-trash'></i>
-                                </button>
-                            </td>";
-                        echo "</tr>";
-                    }
-                }
-                ?>
-            </tbody>
-            <tfoot>
-                <tr class="table-info">
-                    <td><strong>Total</strong></td>
-                    <td><strong>$<?php echo number_format($total_costo_lombrices, 2); ?></strong></td>
-                    <td colspan="3"></td>
-                </tr>
-            </tfoot>
-        </table>
+<div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
+    <h4 class="sub-section-title">Vacunas Lombrices</h4>
+    
+    <!-- Add New Lombrices Form -->
+    <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addLombricesForm">
+        <i class="fas fa-plus"></i> Registrar Vacuna  Lombrices
+    </button>
+    <div class="collapse mb-3" id="addLombricesForm">
+    <div class="card card-body">
+        <form id="lombricesForm" action="process_lombrices.php" method="POST">
+        <input type="hidden" name="action" value="insert">
+            <?php
+            // Ensure tagid is set from either GET or SESSION
+            $tagid = '';
+            if (isset($_GET['search']) && !empty($_GET['search'])) {
+                $tagid = htmlspecialchars($_GET['search']);
+            } elseif (isset($_SESSION['current_tagid']) && !empty($_SESSION['current_tagid'])) {
+                $tagid = htmlspecialchars($_SESSION['current_tagid']);
+            }
+            ?>
+            <input type="hidden" name="tagid" value="<?php echo $tagid; ?>">
+            
+            <!-- Debug output to verify tagid -->
+            <?php if (empty($tagid)): ?>
+                <div class="alert alert-warning">
+                    No se ha seleccionado ningún animal. Por favor, busque un animal primero.
+                </div>
+            <?php endif; ?>
+
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label">Producto</label>
+                    <input type="text" class="form-control" name="producto" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Dosis (ml)</label>
+                    <input type="number" step="0.01" class="form-control" name="dosis" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Costo ($/kg)</label>
+                    <input type="number" step="0.01" class="form-control" name="costo" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Fecha</label>
+                    <input type="date" class="form-control" name="fecha" required>
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-success" <?php echo empty($tagid) ? 'disabled' : ''; ?>>
+                        Guardar
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+    <!-- Table Controls -->
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <div class="d-flex align-items-center">
+                <label class="me-2">Show entries:</label>
+                <select class="form-select form-select-sm w-auto" id="lombricesEntriesLength">
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="d-flex justify-content-end">
+                <input type="search" class="form-control form-control-sm w-auto" 
+                       placeholder="Filter results..." id="lombricesTableFilter">
+            </div>
+        </div>
+    </div>
+
+  <div class="table-responsive">
+      <table id="lombricesTable" class="table table-striped table-bordered">
+          <thead>
+              <tr>
+                  <th>Fecha</th>
+                  <th>Producto</th>
+                  <th>Dosis (ml)</th>
+                  <th>Costo ($/Dosis)</th>
+                  <th>Acciones</th>
+              </tr>
+          </thead>
+          <tbody>
+              <?php
+              $sql = "SELECT * FROM vh_lombrices WHERE vh_lombrices_tagid = '$tagid' ORDER BY vh_lombrices_fecha DESC";
+              $result = $conn->query($sql);
+              $total_costo_lombrices = 0;
+              
+              if ($result->num_rows > 0) {
+                  while($row = $result->fetch_assoc()) {
+                      $total += $row['vh_lombrices_costo'];
+                      echo "<tr>
+                              <td>" . date('d/m/Y', strtotime($row['vh_lombrices_fecha'])) . "</td>
+                              <td>" . htmlspecialchars($row['vh_lombrices_producto']) . "</td>
+                              <td>" . number_format($row['vh_lombrices_dosis'], 2) . "</td>
+                              <td>$" . number_format($row['vh_lombrices_costo'], 2) . "</td>
+                              <td>
+                                  <div class='d-flex justify-content-center gap-2'>
+                                      <button class='btn btn-sm btn-primary' onclick='openEditLombricesModal(" . 
+                                          $row['id'] . ", \"" . 
+                                          htmlspecialchars($row['vh_lombrices_tagid'], ENT_QUOTES) . "\", \"" .
+					  htmlspecialchars($row['vh_lombrices_producto'], ENT_QUOTES) . "\", \"" . 
+                                          htmlspecialchars($row['vh_lombrices_dosis'], ENT_QUOTES) . "\", \"" . 
+                                          htmlspecialchars($row['vh_lombrices_costo'], ENT_QUOTES) . "\", \"" .                                          
+                                          $row['vh_lombrices_fecha'] . "\")'>
+                                          <i class='fas fa-edit'></i>
+                                      </button>
+                                      <button class='btn btn-sm btn-danger' onclick='deleteLombricesEntry(" . $row['id'] . ")'>
+                                          <i class='fas fa-trash'></i>
+                                      </button>
+                                  </div>
+                              </td>
+                            </tr>";
+                  }
+              }
+              ?>
+          </tbody>
+      </table>
     </div>
 </div>
 
-<!-- Add this JavaScript for Lombrices table -->
+<!-- Modified JavaScript for Lombrices table -->
 <script>
 $(document).ready(function() {
+    // Initialize DataTable
+    var lombricesTable = $('#lombricesTable').DataTable({
+        pageLength: 10,
+        dom: 'rt<"bottom"ip>',
+        language: {
+            paginate: {
+                previous: '‹',
+                next: '›'
+            }
+        },
+        order: [[5, 'desc']], // Order by date column descending
+        initComplete: function() {
+            // Link custom filter input
+            $('#lombricesTableFilter').keyup(function() {
+                lombricesTable.search($(this).val()).draw();
+            });
+
+            // Link custom length select
+            $('#lombricesEntriesLength').change(function() {
+                lombricesTable.page.len($(this).val()).draw();
+            });
+        }
+    });
+
+    // Existing delete functionality
     $('.delete-lombrices').click(function(e) {
         e.preventDefault();
         console.log('Delete Lombrices button clicked');
@@ -3434,9 +4917,41 @@ $(document).ready(function() {
     });
 });
 </script>
+<script>
+// Function to open edit modal for Lombrices entries
+function openEditLombricesModal(id, tagid, producto, dosis, costo, fecha) {
+    document.getElementById('edit_lombrices_id').value = id;
+    document.getElementById('edit_lombrices_tagid').value = tagid;
+    document.getElementById('edit_lombrices_producto').value = producto;
+    document.getElementById('edit_lombrices_dosis').value = dosis
+    document.getElementById('edit_lombrices_costo').value = costo;
+    document.getElementById('edit_lombrices_fecha').value = fecha;
+    
+    var editModal = new bootstrap.Modal(document.getElementById('editLombricesModal'));
+    editModal.show();
+}
 
-<!-- Caulculo Estructura de Costos -->
-
+// Function to delete Lombrices entries
+function deleteLombricesEntry(id) {
+    if (confirm('¿Está seguro de que desea eliminar este registro?')) {
+        fetch('process_lombrices.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'action=delete&id=' + id
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Error al eliminar el registro');
+            }
+        });
+    }
+}
+</script>
 <!-- Scripts -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -3984,7 +5499,7 @@ $(document).ready(function() {
 </script> 
 
 <div class="container table-section" style="display:block; justify-content: center; align-items: center;">
-<h3 class="section-title">REGISTROS DE REPRODUCCION</h3>
+<h3 id="section-reproduccion" style="text-align: center;">REGISTROS DE REPRODUCCION</h3>
 
 <!-- Inseminacion Table Section -->
 <?php
@@ -4004,7 +5519,7 @@ $result_inseminacion = $conn->query($baseQuery_inseminacion);
     
     <!-- Add New Inseminacion Form -->
     <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addInseminacionForm">
-        <i class="fas fa-plus"></i> Agregar Inseminación
+        <i class="fas fa-plus"></i> Registrar  Inseminación
     </button>
     
     <div class="collapse mb-3" id="addInseminacionForm">
@@ -4137,7 +5652,7 @@ $result_gestacion = $conn->query($baseQuery_gestacion);
     
     <!-- Add New Gestacion Form -->
     <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addGestacionForm">
-        <i class="fas fa-plus"></i> Agregar Gestación
+        <i class="fas fa-plus"></i> Registrar  Gestación
     </button>
     
     <div class="collapse mb-3" id="addGestacionForm">
@@ -4148,7 +5663,8 @@ $result_gestacion = $conn->query($baseQuery_gestacion);
                     <div class="col-md-6">
                         <label class="form-label">Numero</label>
                         <input type="text" class="form-control" name="numero" required>
-                    </div>
+                    </div>                    
+                    <div class="col-md-6">
                         <label class="form-label">Fecha</label>
                         <input type="date" class="form-control" name="fecha" required>
                     </div>
@@ -4158,6 +5674,7 @@ $result_gestacion = $conn->query($baseQuery_gestacion);
                 </div>
             </form>
         </div>
+    </div>
 
     <div class="table-responsive">
         <table id="gestacionTable" class="table table-striped table-bordered">
@@ -4252,7 +5769,7 @@ $result_parto = $conn->query($baseQuery_parto);
     
     <!-- Add New Parto Form -->
     <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addPartoForm">
-        <i class="fas fa-plus"></i> Agregar Parto
+        <i class="fas fa-plus"></i> Registrar  Parto
     </button>
     
     <div class="collapse mb-3" id="addPartoForm">
@@ -4367,7 +5884,7 @@ $result_aborto = $conn->query($baseQuery_aborto);
     
     <!-- Add New Aborto Form -->
     <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addAbortoForm">
-        <i class="fas fa-plus"></i> Agregar Aborto
+        <i class="fas fa-plus"></i> Registrar  Aborto
     </button>
     
     <div class="collapse mb-3" id="addAbortoForm">
@@ -4464,7 +5981,7 @@ $(document).ready(function() {
 });
 </script>
 <div class="container table-section" style="display:block; justify-content: center; align-items: center;">
-<h3 class="section-title">OTROS REGISTROS</h3>
+<h3 id="section-otros" style="text-align: center;">OTROS REGISTROS</h3>
 <!-- Venta Table Section -->
 <?php
 // Build the base query for Venta
@@ -4483,7 +6000,7 @@ $result_venta = $conn->query($baseQuery_venta);
     
     <!-- Add New Venta Form -->
     <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addVentaForm">
-        <i class="fas fa-plus"></i> Agregar Venta
+        <i class="fas fa-plus"></i> Registrar  Venta
     </button>
     
     <div class="collapse mb-3" id="addVentaForm">
@@ -4619,7 +6136,7 @@ $result_destete = $conn->query($baseQuery_destete);
     
     <!-- Add New Destete Form -->
     <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addDesteteForm">
-        <i class="fas fa-plus"></i> Agregar Destete
+        <i class="fas fa-plus"></i> Registrar  Destete
     </button>
     
     <div class="collapse mb-3" id="addDesteteForm">
@@ -4738,7 +6255,7 @@ $result_descarte = $conn->query($baseQuery_descarte);
     
     <!-- Add New Descarte Button -->
     <button class="btn btn-primary mb-3" type="button" data-bs-toggle="modal" data-bs-target="#descarteModal">
-        <i class="fas fa-plus"></i> Agregar Descarte
+        <i class="fas fa-plus"></i> Registrar  Descarte
     </button>
     
     <div class="table-responsive">
@@ -4792,7 +6309,7 @@ $result_descarte = $conn->query($baseQuery_descarte);
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="descarteModalTitle">Agregar Descarte</h5>
+                <h5 class="modal-title" id="descarteModalTitle">Registrar  Descarte</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -4870,7 +6387,7 @@ $(document).ready(function() {
             modal.find('#descarte_peso').val(button.data('peso'));
             modal.find('#descarte_fecha').val(button.data('fecha'));
         } else {
-            modal.find('.modal-title').text('Agregar Descarte');
+            modal.find('.modal-title').text('Registrar  Descarte');
             modal.find('[name="action"]').val('create');
             modal.find('#descarte_id').val('');
         }
@@ -5026,3 +6543,146 @@ if ($result_leche && $result_leche->num_rows > 0) {
 <?php
 $conn->close();
 ?>
+
+<script>
+function scrollToSection(sectionId) {
+    // Find the section element
+    const section = document.getElementById(sectionId);
+    
+    if (section) {
+        // Get any fixed header height
+        const header = document.querySelector('header'); // Adjust selector if needed
+        const headerHeight = header ? header.offsetHeight : 0;
+        
+        // Get the element's position
+        const elementPosition = section.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerHeight - 20; // 20px extra padding
+        
+        // Smooth scroll to the section
+        window.scrollTo({
+            top: offsetPosition,
+            behavior: "smooth"
+        });
+        
+        // Optional: Add highlight effect
+        section.style.backgroundColor = '#f0f9f0'; // Light green background
+        setTimeout(() => {
+            section.style.backgroundColor = 'transparent';
+            section.style.transition = 'background-color 0.5s ease';
+        }, 1000);
+    } else {
+        console.error(`Section with ID "${sectionId}" not found`);
+    }
+}
+
+// Back to top functionality
+window.onscroll = function() {
+    const backToTopButton = document.getElementById("backToTop");
+    if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+        backToTopButton.style.display = "flex";
+    } else {
+        backToTopButton.style.display = "none";
+    }
+};
+
+function scrollToTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}
+
+// Optional: Add scroll offset adjustment for fixed header
+document.addEventListener('DOMContentLoaded', function() {
+    // Adjust scroll position for anchor links
+    if (window.location.hash) {
+        const header = document.querySelector('header');
+        const headerHeight = header ? header.offsetHeight : 0;
+        
+        setTimeout(function() {
+            window.scrollTo({
+                top: window.pageYOffset - headerHeight - 20,
+                behavior: 'smooth'
+            });
+        }, 1);
+    }
+});
+</script>
+
+<!-- Back to top button -->
+<button id="backToTop" class="back-to-top" onclick="scrollToTop()" title="Volver arriba">
+    <div class="arrow-up"></div>
+</button>
+<style>
+.back-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 45px;
+    height: 45px;
+    background-color: #ffffff;
+    border: 2px solid #4caf50;
+    border-radius: 50%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 9999;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+.arrow-up {
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 12px solid #4caf50;
+}
+
+.back-to-top:hover {
+    background-color: #4caf50;
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.back-to-top:hover .arrow-up {
+    border-bottom-color: #ffffff;
+}
+
+@media (max-width: 768px) {
+    .back-to-top {
+        bottom: 20px;
+        right: 20px;
+        width: 40px;
+        height: 40px;
+    }
+    
+    .arrow-up {
+        border-left-width: 6px;
+        border-right-width: 6px;
+        border-bottom-width: 10px;
+    }
+}
+</style>
+
+<script>
+window.onscroll = function() {
+    const backToTopButton = document.getElementById("backToTop");
+    if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+        backToTopButton.style.display = "flex";
+    } else {
+        backToTopButton.style.display = "none";
+    }
+};
+
+function scrollToTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}
+</script>
+
+
+

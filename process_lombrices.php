@@ -1,28 +1,5 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-header('Content-Type: application/json');
-header("Access-Control-Allow-Headers:*");
-// local Credentials
-// header("Access-Control-Allow-Headers:*");
-// $servername = "localhost";
-// $username = "root";
-// $password = "";
-// $dbname = "ganagram";
-
-// Hostinger credentials
-// $servername = "localhost";
-// $username = "u568157883_root";
-// $password = "Sebastian7754*";
-// $dbname = "u568157883_ganagram";
-
-// local Credentials
-header("Access-Control-Allow-Headers:*");
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "ganagram";
+require_once '../conexion.php';
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -30,41 +7,105 @@ if ($conn->connect_error) {
     die(json_encode(['success' => false, 'error' => 'Connection failed: ' . $conn->connect_error]));
 }
 
-// Handle DELETE requests
-if (isset($_POST['action']) && $_POST['action'] === 'delete') {
-    error_log('Delete request received for ID: ' . $_POST['id']);
+// Debug incoming request
+error_log('Request Method: ' . $_SERVER['REQUEST_METHOD']);
+error_log('POST Data: ' . print_r($_POST, true));
+
+// Handle different actions
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $action = isset($_POST['action']) ? $_POST['action'] : '';
+    error_log('Action: ' . $action); // Debug log
     
+    switch($action) {
+        case 'delete':
+            handleDelete($conn);
+            break;
+        case 'update':
+            handleUpdate($conn);
+            break;
+        case 'insert':
+            handleInsert($conn);
+            break;
+        default:
+            error_log('Invalid action: ' . $action); // Debug log
+            echo json_encode(['success' => false, 'error' => 'Invalid action: ' . $action]);
+            break;
+    }
+}
+
+function handleDelete($conn) {
     $id = $conn->real_escape_string($_POST['id']);
     $query = "DELETE FROM vh_lombrices WHERE id = '$id'";
-    
-    error_log('Executing query: ' . $query);
     
     if ($conn->query($query)) {
         echo json_encode(['success' => true]);
     } else {
         echo json_encode(['success' => false, 'error' => $conn->error]);
     }
-    exit;
 }
 
-// Handle INSERT requests
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['action'])) {
-    $tagid = $conn->real_escape_string($_POST['tagid']);
-    $producto = $conn->real_escape_string($_POST['producto']);
-    $costo = $conn->real_escape_string($_POST['costo']);
-    $dosis = $conn->real_escape_string($_POST['dosis']);
-    $fecha = $conn->real_escape_string($_POST['fecha']);
-    
-    $query = "INSERT INTO vh_lombrices (vh_lombrices_tagid, vh_lombrices_producto, vh_lombrices_costo, vh_lombrices_dosis, vh_lombrices_fecha) 
-              VALUES ('$tagid', '$producto', '$costo', '$dosis', '$fecha')";
-    
-    if ($conn->query($query)) {
-        header('Location: ' . $_SERVER['HTTP_REFERER']);
-    } else {
-        echo json_encode(['success' => false, 'error' => $conn->error]);
+function handleUpdate($conn) {
+    try {
+        $id = $conn->real_escape_string($_POST['id']);
+        $tagid = $conn->real_escape_string($_POST['tagid']);
+        $dosis = $conn->real_escape_string($_POST['dosis']);
+        $costo = $conn->real_escape_string($_POST['costo']);
+        $producto = $conn->real_escape_string($_POST['producto']);
+        $fecha = $conn->real_escape_string($_POST['fecha']);
+        
+        // Validate inputs
+        if (!is_numeric($dosis) || !is_numeric($costo)) {
+            throw new Exception('Invalid input values');
+        }
+        
+        $query = "UPDATE vh_lombrices SET 
+                  vh_lombrices_tagid = '$tagid',
+                  vh_lombrices_producto = '$producto',
+                  vh_lombrices_dosis = '$dosis',
+                  vh_lombrices_costo = '$costo',                  
+                  vh_lombrices_fecha = '$fecha'
+                  WHERE id = '$id'";
+        
+        if ($conn->query($query)) {
+            header('Location: ' . $_SERVER['HTTP_REFERER']);
+            exit();
+        } else {
+            throw new Exception($conn->error);
+        }
+    } catch (Exception $e) {
+        echo json_encode(['success' => false, 'error' => $e->getMessage()]);
     }
-    exit;
+}
+
+function handleInsert($conn) {
+    try {
+        $tagid = $conn->real_escape_string($_POST['tagid']);
+        $producto = $conn->real_escape_string($_POST['producto']);
+        $dosis = $conn->real_escape_string($_POST['dosis']);
+        $costo = $conn->real_escape_string($_POST['costo']);        
+        $fecha = $conn->real_escape_string($_POST['fecha']);
+        
+        // Validate inputs
+        if (!is_numeric($dosis) || !is_numeric($costo)) {
+            throw new Exception('Invalid input values');
+        }
+        
+        $query = "INSERT INTO vh_lombrices 
+                  (vh_lombrices_tagid, vh_lombrices_producto, vh_lombrices_dosis, vh_lombrices_costo, 
+                    vh_lombrices_fecha) 
+                  VALUES 
+                  ('$tagid', '$producto', '$dosis', '$costo',  '$fecha')";
+        
+        if ($conn->query($query)) {
+            header('Location: ' . $_SERVER['HTTP_REFERER']);
+            exit();
+        } else {
+            throw new Exception($conn->error);
+        }
+    } catch (Exception $e) {
+        echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+    }
 }
 
 $conn->close();
-?> 
+?>
