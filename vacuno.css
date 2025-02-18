@@ -1,42 +1,113 @@
-/* Root and Typography */
 :root {
     font-size: 12px;
 }
 
-.nav-icons-container{
+
+/* Icon Navigation Buttons */
+.icon-nav-container {
     display: flex;
     justify-content: center;
-    width: 100%;
-    border: none;
-    margin: 20px 10px;
-}
-.nav-icons-container button{
-    margin: 0 10px;
-    gap: 10px;
-    border: none;
-}
-.nav-icon{
-    width: 40px;
-    height: 40px;
-    border: none;
-}
-.scroll-Icons-container{
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    margin: 10px 10px;
-    gap: 10px;
-    border: none;
-}
-.scroll-icons-container button{
-    border: none;
-}
-.scroll-icon{
-    width: 30px;
-    height: 30px;
-    border: none;
+    gap: 20px;
+    margin: 0px;
+    padding-top: 0px;
+    margin-top: 0px;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+    padding-left: 0px;
+    margin-left: 0px;
+    padding-right: 0px;
+    margin-right: 0px;
 }
 
+.icon-button {
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    padding: 0;
+}
+
+.nav-icon {
+    width: 24px;
+    height: 24px;
+    transition: all 0.3s ease;
+}
+
+.icon-button:hover .nav-icon {
+    transform: scale(1.2);
+}
+
+.icon-button:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Tooltip Styles */
+.icon-button::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 4px 8px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    font-size: 12px;
+    border-radius: 4px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.icon-button:hover::before {
+    opacity: 1;
+    visibility: visible;
+}
+.scroll-Icons-container{
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+@media (max-width: 768px) {
+    .icon-nav-container {
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+    
+    .icon-button {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .nav-icon {
+        width: 20px;
+        height: 20px;
+    }
+}
+.nav-icons-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0;
+    gap: 50px;
+    flex-wrap: wrap;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    margin: 10px 0;
+}
 
 /* Tooltips for both icon types */
 [data-tooltip] {
@@ -106,9 +177,16 @@
     top: 20px;
     left: 20px;
     padding: 10px;
-    background: #4a6741;
-    color: white;
+    background: #a5ada2;
+    color: rgb(255, 251, 251);
     border-radius: 4px;
+}
+.back-btn:hover{
+    background: #3d5635;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    opacity: 1;
+    color: rgb(255, 255, 255);
 }
 .table-responsive{
     margin: 0px 0px;
@@ -255,6 +333,28 @@ table.dataTable tbody td {
         margin-bottom: 10px;
     }
 }
+.page-title{
+    font-size: 2.5rem;
+    text-align: center;
+    color: rgb(62, 61, 61);
+    font-family: 'Poppins', sans-serif;
+}
+.animal-name{
+    font-size: 1.5rem;
+    text-align: center;
+    color: rgb(62, 61, 61);
+    font-family: 'Poppins', sans-serif;
+}
+.input-group{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+h5{
+    font-size: 0.8rem;
+    text-align: left;
+    color: rgb(62, 61, 61);
+}
 
 /* Original h6 style */
 h6 {
@@ -263,6 +363,12 @@ h6 {
     color: red;
 }
 
+h6:hover{
+    background: #3d5635;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    opacity: 1;
+}
 h3 {
     font-size: 1.5rem;
     font-weight: 600;

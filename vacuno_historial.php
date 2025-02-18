@@ -161,9 +161,9 @@ if ($conn->connect_error) {
 
 
 
-<div class="container mt-4" style="display:block; justify-content: center; align-items: center;">
+<div class="container mt-4">
         <div>
-            <h1 class="page-title">REGISTROS</h1>
+            <h2 class="page-title">REGISTROS</h2>
             <?php if (!empty($animalName)): ?>
                 <div class="animal-name">(<?php echo htmlspecialchars(strtoupper($animalName)); ?>)</div>
             <?php endif; ?>
@@ -636,7 +636,7 @@ REGISTROS DE PRODUCCION
 <!-- Peso: Nuevo Registro Form -->
 <div class="container table-section" style="display: block;">
 
-    <h4 class="container">Control de Peso</h4>
+    <h5 class="container">Control Pesaje Animal</h5>
 
 
     <!-- NEW PESO FORM -->
@@ -959,7 +959,7 @@ $result_leche = $conn->query($baseQuery_leche);
 <!-- Leche: Nuevo Registro Form -->
 <div class="container table-section" style="display: block;">
 
-    <h4 class="container">Control de Leche</h4>
+    <h5 class="container">Control Pesaje Leche</h5>
     <!-- Add New Leche Form -->
     <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addLecheForm">
         <i class="fas fa-plus"></i> Registrar
@@ -1391,7 +1391,7 @@ $result_concentrado = $conn->query($baseQuery_concentrado);
 <!-- concentrado Table -->
 
 <div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
-    <h4 class="container">Control de concentrado</h4>
+    <h5 class="container">Control Concentrado</h5>
 
 <!-- Add New concentrado Form -->
 <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addconcentradoForm">
@@ -1691,7 +1691,7 @@ $result_melaza = $conn->query($baseQuery_melaza);
     <h4 id="section-registros-concentrado" style="text-align: center;">REGISTROS MELAZA</h4>
 </div>
 <div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
-    <h4 class="container">Control de Melaza</h4>
+    <h5 class="container">Control Melaza</h5>
     <!-- Add New Melaza Form -->
     <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addMelazaForm">
         <i class="fas fa-plus"></i> Registrar
@@ -1968,7 +1968,7 @@ function deleteMelazaEntry(id) {
 
 
 <div style="max-width: 1300px; margin: 40px auto;">
-<h2>Inversion Acumulada Melaza</h2>
+<h4>Inversion Acumulada Melaza</h4>
 <canvas id="melaza-acumulado-mensual"></canvas>
 </div>
 
@@ -1991,7 +1991,7 @@ $result_sal = $conn->query($baseQuery_sal);
 </div>
 
 <div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
-    <h4 class="container">Control de Sal</h4>
+    <h5 class="container">Control Sal</h5>
 
     <!-- Add New Sal Form -->
     <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addSalForm">
@@ -2294,11 +2294,11 @@ function deleteSalEntry(id) {
 }
 </script>
 <div style="max-width: 1300px; margin: 40px auto;">
-    <h2>Inversion Acumulada Sal Mineral</h2>
+    <h4>Inversion Acumulada Sal Mineral</h4>
     <canvas id="sal-acumulado-mensual"></canvas>
 </div>
 <div style="max-width: 800px; margin: 40px auto;">
-    <h2>Distribución de Inversión en Alimentación</h2>
+    <h4>Distribución de Inversión en Alimentación</h4>
     <canvas id="investment-distribution-pie"></canvas>
 </div>
 
@@ -2328,7 +2328,7 @@ $result_aftosa = $conn->query($baseQuery_aftosa);
 <!-- Aftosa: Nuevo Registro Form -->
 <div class="container table-section" style="display: block;">
 
-    <h4 class="container">Control de Vacunacion Aftosa</h4>
+    <h5 class="container">Control Aftosa</h5>
     <!-- Add New Aftosa Form -->
     <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addAftosaForm">
         <i class="fas fa-plus"></i> Registrar
@@ -2666,7 +2666,7 @@ $result_ibr = $conn->query($baseQuery_ibr);
 <!-- Ibr: Nuevo Registro Form -->
 <div class="container table-section" style="display: block;">
 
-    <h4 class="container">Control de Vacunacion IBR</h4>
+    <h5 class="container">Control IBR</h5>
     <!-- Add New Ibr Form -->
     <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addAftosaForm">
         <i class="fas fa-plus"></i> Registrar
@@ -3003,7 +3003,7 @@ $result_cbr = $conn->query($baseQuery_cbr);
 <!-- CBR: Nuevo Registro Form -->
 <div class="container table-section" style="display: block;">
 
-    <h4 class="container">Control de Vacunacion CBR</h4>
+    <h5 class="container">Control CBR</h5>
     <!-- Add New CBR Form -->
     <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addCbrForm">
         <i class="fas fa-plus"></i> Registrar
@@ -3341,7 +3341,7 @@ $result_brucelosis = $conn->query($baseQuery_brucelosis);
 <!-- BRUCELOSIS: Nuevo Registro Form -->
 <div class="container table-section" style="display: block;">
 
-    <h4 class="container">Control de Vacunacion BRUCELOSIS</h4>
+    <h5 class="container">Control Brucelosis</h5>
     <!-- Add New BRUCELOSIS Form -->
     <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addBrucelosisForm">
         <i class="fas fa-plus"></i> Registrar
@@ -3678,7 +3678,7 @@ $result_carbunco = $conn->query($baseQuery_carbunco);
 <!-- CARBUNCO: Nuevo Registro Form -->
 <div class="container table-section" style="display: block;">
 
-    <h4 class="container">Control de Vacunacion Carbunco</h4>
+    <h5 class="container">Control Carbunco</h5>
     <!-- Add New Carbunco Form -->
     <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addCarbuncoForm">
         <i class="fas fa-plus"></i> Registrar
@@ -4015,7 +4015,7 @@ $result_garrapatas = $conn->query($baseQuery_garrapatas);
 <!-- Garrapatas: Nuevo Registro Form -->
 <div class="container table-section" style="display: block;">
 
-    <h4 class="container">Control de Vacunacion Garrapatas</h4>
+    <h5 class="container">Control Garrapatas</h5>
     <!-- Add New Garrapatas Form -->
     <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addGarrapatasForm">
         <i class="fas fa-plus"></i> Registrar
@@ -4353,7 +4353,7 @@ $result_mastitis = $conn->query($baseQuery_mastitis);
 <!-- Mastitis: Nuevo Registro Form -->
 <div class="container table-section" style="display: block;">
 
-    <h4 class="container">Control de Vacunacion Mastitis</h4>
+    <h5 class="container">Control Mastitis</h5>
     <!-- Add New Mastitis Form -->
     <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addMastitisForm">
         <i class="fas fa-plus"></i> Registrar
@@ -4689,7 +4689,7 @@ $result_lombrices = $conn->query($baseQuery_lombrices);
 <!-- Lombrices: Nuevo Registro Form -->
 <div class="container table-section" style="display: block;">
 
-    <h4 class="container">Control de Vacunacion Lombrices</h4>
+    <h5 class="container">Control Lombrices</h5>
     <!-- Add New Lombrices Form -->
     <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addLombricesForm">
         <i class="fas fa-plus"></i> Registrar
@@ -5577,7 +5577,7 @@ $result_inseminacion = $conn->query($baseQuery_inseminacion);
 </div>
 
 <div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
-    <h4 class="container">Inseminaciones</h4>
+    <h5 class="container">Control Inseminaciones</h5>
 
     <!-- Add New Inseminacion Form -->
     <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addInseminacionForm">
@@ -5869,7 +5869,7 @@ $result_gestacion = $conn->query($baseQuery_gestacion);
 </div>
 
 <div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
-    <h4 class="container">Gestaciones</h4>
+    <h5 class="container">Control Gestaciones</h5>
 
     <!-- Add New Gestacion Form -->
     <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addGestacionForm">
@@ -6138,7 +6138,7 @@ $result_parto = $conn->query($baseQuery_parto);
 </div>
 
 <div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
-    <h4 class="container">Partos</h4>
+    <h5 class="container">Control Partos</h5>
 
     <!-- Add New Parto Form -->
     <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addPartoForm">
@@ -6414,7 +6414,7 @@ $result_aborto = $conn->query($baseQuery_aborto);
 </div>
 
 <div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
-    <h4 class="container">Abortos</h4>
+    <h5 class="container">Control Abortos</h5>
 
     <!-- Add New Aborto Form -->
     <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addAbortoForm">
@@ -6697,7 +6697,7 @@ $result_venta = $conn->query($baseQuery_venta);
 </div>
 
 <div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
-    <h4 class="container">Ventas</h4>
+    <h5 class="container">Control Ventas</h5>
 
     <!-- Add New Venta Form -->
     <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addVentaForm">
@@ -6983,7 +6983,7 @@ $result_destete = $conn->query($baseQuery_destete);
 </div>
 
 <div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
-    <h4 class="container">Destetes</h4>
+    <h5 class="container">Control Destetes</h5>
 
     <!-- Add New Destete Form -->
     <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addDesteteForm">
@@ -7260,7 +7260,7 @@ $result_descarte = $conn->query($baseQuery_descarte);
 </div>
 
 <div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
-    <h4 class="container">Descartes</h4>
+    <h5 class="container">Control Descartes</h5>
 
     <!-- Add New Descarte Form -->
     <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addDescarteForm">

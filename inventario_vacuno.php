@@ -496,50 +496,50 @@ $partoDatasetsJson = json_encode($datasets);
 </head>
 <body>
 <!-- Icon Navigation Buttons -->
-<div class="container nav-icons-container" id="nav-buttons">
-    <button onclick="window.location.href='../inicio.php'" class="icon-button" data-tooltip="Inicio">
-        <img src="./images/Ganagram_New_Logo-png.png" alt="Inicio" class="nav-icon">
-    </button>
-    
-    <button onclick="window.location.href='./vacuno_historial.php'" class="icon-button" data-tooltip="Registrar Ganado">
-        <img src="./images/registros.png" alt="Inicio" class="nav-icon">
-    </button>
-    
-    <button onclick="window.location.href='./vacuno_indices.php'" class="icon-button" data-tooltip="Indices Vacunos">
-        <img src="./images/fondo-indexado.png" alt="Inicio" class="nav-icon">
-    </button>
-    
-    <button onclick="window.location.href='./vacuno_configuracion.php'" class="icon-button" data-tooltip="Configurar Tablas">
-        <img src="./images/configuracion.png" alt="Inicio" class="nav-icon">
-    </button>
+<div class="container" id="nav-buttons">
+    <div class="container nav-icons-container" id="nav-buttons">
+        <button onclick="window.location.href='../inicio.php'" class="icon-button" data-tooltip="Inicio">
+            <img src="./images/Ganagram_New_Logo-png.png" alt="Inicio" class="nav-icon">
+        </button>
+        
+        <button onclick="window.location.href='./vacuno_historial.php'" class="icon-button" data-tooltip="Registrar Ganado">
+            <img src="./images/registros.png" alt="Inicio" class="nav-icon">
+        </button>
+        
+        <button onclick="window.location.href='./vacuno_indices.php'" class="icon-button" data-tooltip="Indices Vacunos">
+            <img src="./images/fondo-indexado.png" alt="Inicio" class="nav-icon">
+        </button>
+        
+        <button onclick="window.location.href='./vacuno_configuracion.php'" class="icon-button" data-tooltip="Configurar Tablas">
+            <img src="./images/configuracion.png" alt="Inicio" class="nav-icon">
+        </button>
+    </div>
 </div>
 
 <!-- Scroll Icons Container -->
 <div class="container scroll-Icons-container">
     <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-target="#section-inventario-poblacion-vacuno" data-tooltip="Produccion">
-        <img src="./images/bascula-de-comestibles.png" alt="Alimentacion" class="scroll-icon">
+        <img src="./images/vaca.png" alt="Alimentacion" class="nav-icon">
     </button>
 
     <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-target="#section-inventario-alimentacion-vacuno" data-tooltip="Alimentacion">
-        <img src="./images/bolso.png" alt="Alimentacion" class="scroll-icon">
+        <img src="./images/bolso.png" alt="Alimentacion" class="nav-icon">
     </button>
 
     <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-target="#section-inventario-salud-vacuno" data-tooltip="Salud">
-        <img src="./images/vacunacion.png" alt="Salud" class="scroll-icon">
+        <img src="./images/vacunacion.png" alt="Salud" class="nav-icon">
     </button>
        
     <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-target="#section-inventario-reproduccion-vacuno" data-tooltip="reproduccion">
-        <img src="./images/matriz.png" alt="Razas" class="scroll-icon">
+        <img src="./images/matriz.png" alt="Razas" class="nav-icon">
     </button>
 
     <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-target="#section-inventario-otros-vacuno" data-tooltip="reproduccion">
-        <img src="./images/compra.png" alt="Razas" class="scroll-icon">
+        <img src="./images/compra.png" alt="Razas" class="nav-icon">
     </button>
 </div>
 <!-- Poblacion Vacuno -->
-<h3  class="container mt-3" id="section-inventario-poblacion-vacuno">
-POBLACION
-</h3>
+
 <div class="container mt-3 mb-4 text-center">
     <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#newEntryModal">
         <i class="fas fa-plus"></i>
@@ -955,6 +955,9 @@ function previewImage(event) {
     reader.readAsDataURL(event.target.files[0]); // Read the uploaded file
 }
 </script>
+<h3  class="container mt-3" id="section-inventario-poblacion-vacuno">
+POBLACION
+</h3>
 
 <h4 class="container">Animales Registrados</h4>
 
