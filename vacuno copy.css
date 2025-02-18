@@ -1,0 +1,449 @@
+/* DataTable container */
+.dataTables_wrapper {
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+}
+
+/* Table styling */
+table.dataTable {
+    width: 100% !important;
+    margin: 15px 0 !important;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+/* Header styling */
+table.dataTable thead th {
+    background-color: #f8f9fa;
+    color: #495057;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    padding: 12px 15px;
+    border-bottom: 2px solid #83956e;
+    text-align: center;
+}
+
+/* Cell styling */
+table.dataTable tbody td {
+    padding: 12px 15px;
+    vertical-align: middle;
+    border-bottom: 1px solid #e9ecef;
+    font-size: 0.875rem;
+    text-align: center;
+}
+
+/* Responsive control arrow */
+table.dataTable.dtr-inline.collapsed > tbody > tr > td.dtr-control:before,
+table.dataTable.dtr-inline.collapsed > tbody > tr > th.dtr-control:before {
+    content: '►';
+    background-color: transparent;
+    color: #83956e;
+    border: none;
+    box-shadow: none;
+    font-size: 0.8rem;
+}
+
+table.dataTable.dtr-inline.collapsed > tbody > tr.parent > td.dtr-control:before,
+table.dataTable.dtr-inline.collapsed > tbody > tr.parent > th.dtr-control:before {
+    content: '▼';
+}
+
+/* Search box styling */
+.dataTables_filter {
+    margin-bottom: 15px;
+    float: right;
+}
+
+.dataTables_filter input {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 8px 12px;
+    margin-left: 8px;
+    width: 200px;
+}
+
+/* Length menu styling */
+.dataTables_length {
+    margin-bottom: 15px;
+    float: left;
+}
+
+.dataTables_length select {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 6px 24px 6px 12px;
+    margin: 0 8px;
+}
+
+/* Pagination styling */
+.dataTables_paginate {
+    margin-top: 15px;
+    float: right;
+}
+
+.dataTables_paginate .paginate_button {
+    padding: 6px 12px;
+    margin: 0 3px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    cursor: pointer;
+}
+
+.dataTables_paginate .paginate_button.current {
+    background: #83956e !important;
+    color: white !important;
+    border-color: #83956e;
+}
+
+.dataTables_paginate .paginate_button:hover {
+    background: #83956e !important;
+    color: white !important;
+    border-color: #83956e;
+}
+
+/* Info text styling */
+.dataTables_info {
+    margin-top: 15px;
+    color: #6c757d;
+}
+
+/* Responsive child row styling */
+table.dataTable > tbody > tr.child ul.dtr-details {
+    display: block;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .dataTables_filter input {
+        width: 150px;
+    }
+    
+    .dataTables_length,
+    .dataTables_filter {
+        float: none;
+        text-align: center;
+    }
+    
+    .dataTables_paginate .paginate_button {
+        padding: 4px 8px;
+        font-size: 0.8rem;
+    }
+}
+
+
+
+
+/* INCORPORANDO ESTILOS AQUI*/
+
+/* globales*/
+
+:root {
+  --primary-color: #e0e8dc;
+  --secondary-color: #4a5d23;
+  --background-color: #f8f9fa;
+  --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  * {
+    box-sizing: border-box;
+    margin: 0rem;
+    padding: 0;
+  
+  }
+  body {
+    background-color: var(--background-color);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 0.5;
+    color: #333;
+    padding: 10px;
+  }
+
+  /* Heading styles */
+h2 {
+  color: rgb(73, 73, 73) !important;
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin: 20px 0;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 1.2rem;
+  text-align: center;
+  width: 100%;
+  display: block;
+}
+
+h3 {
+  color: white !important;
+  background-color: #83956e;
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin: 20px 0;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 1.2rem;
+  text-align: center;
+  width: 100%;
+  display: block;
+}
+
+  h6 {
+    font-size: 0.8rem;
+    text-align: center;
+    color: red;
+  }
+  
+  /* Navbar */
+  
+  .nav-icons-container {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px 0;
+      gap: 50px;
+      flex-wrap: wrap;
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+      margin: 10px 0;
+  }
+  .scroll-Icons-container{
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  
+  .icon-nav-container {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin: 0px;
+      padding-top: 0px;
+      margin-top: 0px;
+      padding-bottom: 0px;
+      margin-bottom: 0px;
+      padding-left: 0px;
+      margin-left: 0px;
+      padding-right: 0px;
+      margin-right: 0px;
+  }
+  
+  .icon-button {
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      padding: 0;
+  }
+  
+  .nav-icon {
+      width: 24px;
+      height: 24px;
+      transition: all 0.3s ease;
+  }
+  
+  .icon-button:hover .nav-icon {
+      transform: scale(1.2);
+  }
+  
+  .icon-button:hover {
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  
+  /* Tooltip Styles */
+  .icon-button::before {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 4px 8px;
+      background-color: rgba(0, 0, 0, 0.8);
+      color: white;
+      font-size: 12px;
+      border-radius: 4px;
+      white-space: nowrap;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+  }
+  
+  .icon-button:hover::before {
+      opacity: 1;
+      visibility: visible;
+  }
+  
+/* Custom tooltip styling */
+.tooltip {
+  font-size: 1rem !important;
+}
+
+.tooltip-inner {
+  max-width: 200px;
+  padding: 0.25rem 0.5rem;
+  font-size: 1rem;
+  line-height: 1.2;
+}
+
+/* Active/selected page styling */
+.dataTables_wrapper .paginate_button.current,
+.dataTables_wrapper .paginate_button.current:hover,
+.page-item.active .page-link,
+.pagination > .active > a,
+.pagination > .active > span,
+.pagination > .active > a:hover,
+.pagination > .active > span:hover,
+.pagination > .active > a:focus,
+.pagination > .active > span:focus {
+  background-color: #689260 !important;
+  border-color: #689260 !important;
+  color: white !important;
+}
+
+/* Inactive pagination links styling */
+.dataTables_wrapper .paginate_button,
+.page-link,
+.pagination > li > a,
+.pagination > li > span {
+  color: #999 !important; /* Light grey color */
+}
+
+.dataTables_wrapper .paginate_button:hover {
+  background: #689260 !important;
+  color: white !important;
+  border: 1px solid #689260 !important;
+}
+
+.back-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 45px;
+  height: 45px;
+  background-color: #ffffff;
+  border: 2px solid #4caf50;
+  border-radius: 50%;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 9999;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+.arrow-up {
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 12px solid #4caf50;
+}
+.back-to-top:hover {
+  background-color: #4caf50;
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+.back-to-top:hover .arrow-up {
+  border-bottom-color: #ffffff;
+}
+/* Cards Container Grid Layout */
+.cards-container {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+  width: 100%;
+}
+
+/* Laptops and larger screens (5 cards per row) */
+@media screen and (min-width: 1024px) {
+  .cards-container {
+      grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+/* Tablets (4 cards per row) */
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+  .cards-container {
+      grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Mobile (1 card per row) */
+@media screen and (max-width: 767px) {
+  .cards-container {
+      grid-template-columns: 1fr;
+  }
+}
+
+/* Action Buttons Container */
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+/* Individual Action Button */
+.action-btn {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  border: none;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Button Icons */
+.action-btn i {
+  font-size: 14px;
+  transition: transform 0.3s ease;
+}
+
+/* Delete Button Specific Styling */
+.action-btn.delete-btn i {
+  color: #dc3545; /* Red color for trash icon */
+}
+
+.action-btn.delete-btn:hover {
+  background-color: #fff5f5;
+}
+
+/* Hover Effects */
+.action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.action-btn:hover i {
+  transform: scale(1.1);
+}
+
+/* Active State */
+.action-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}

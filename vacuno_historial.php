@@ -31,637 +31,32 @@ if ($conn->connect_error) {
 <script type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
 
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Bootstrap JS Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
 <!-- In your <head> section -->
 <!-- DataTables CSS -->
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css">
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="./vacuno.css">
 
-<!-- DataTables JS -->
+<!-- jQuery and DataTables JS -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+<!-- For PDF export -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-<style>
-            :root {
-            --primary-color: #e0e8dc;
-            --secondary-color: #4a5d23;
-            --background-color: #f8f9fa;
-            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
 
-        * {
-            box-sizing: border-box;
-            margin: 0rem;
-            padding: 0;
-
-        }
-
-        .container {
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            height: 100%;
-            gap: 0.1rem;
-            padding: 0.3rem;
-        }
-
-        body {
-            background-color: var(--background-color);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 0.5;
-            color: #333;
-            padding: 10px;
-        }
-        .info-card-container{
-            background: white;
-            border-radius: 15px;
-            box-shadow: var(--card-shadow);
-            padding: 0.5rem;
-            margin: 1rem;            
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            height: 100%;
-            gap: 0.5rem;
-        }
-
-        .info-card {
-            background: white;
-            border-radius: 15px;
-            box-shadow: var(--card-shadow);
-            padding: 0.1rem;
-            margin: 0.1rem;
-            transition: transform 0.3s ease;
-        }
-
-        .info-card:hover {
-          background-color: var(--primary-color);
-            transform: translateY(-5px);
-            font-size: x-small;
-        }
-
-        .card-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 0.1rem;
-            padding-bottom: 0.1rem;
-            border-bottom: 2px solid #eee;
-        }
-
-        .icon-wrapper {
-            width: 7rem;
-            height: 4rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: 0.5rem;
-            margin-bottom: 0.5rem;
-            margin-left: 1rem;
-            margin-right: 1rem;
-        }
-
-        .icon-wrapper img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 8px;
-            margin-top: 0.5rem;
-            margin-bottom: 0.5rem;
-            margin-left: 1rem;
-            margin-right: 1rem;
-        }
-
-        .card-content {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            width: 100%;
-        }
-       
-        .additional-info {
-            margin-top: 1rem;
-            padding-top: 0.3rem;
-            border-top: 1px solid #eee;
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 1rem;
-        }
-
-        .info-item {
-            text-align: center;
-            flex: 1;
-        }
-
-        .info-item:not(:last-child) {
-            border-right: 1px solid #eee;
-        }
-
-        .info-label {
-            font-size: 1rem;
-            font-weight: 600;
-            color: #666;
-            margin: 0.25rem;
-        }
-
-        .info-value {
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--secondary-color);
-            margin: 0.5rem;
-            text-align: center;
-            font-weight: 500;
-        }
-        .numero-label{
-            font-size: 2rem;
-            font-weight: 600;
-            color: #666;
-            margin-left: 1rem;    
-        }
-        .numero-unidad{
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--secondary-color);
-            margin-left: 1rem;
-            margin-top: 1rem;
-        }
-
-        @media (max-width: 480px) {
-            .container {
-                flex-direction: column;
-                gap: 1rem;
-            }
-            
-            .info-card {
-                margin: 0;
-                padding: 0rem;
-            }
-
-            .icon-wrapper {
-                border-radius: 12px;
-                margin-right: 0.5rem;
-                width: 20px;
-                height: 20px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }            
-        }
-
-        /* Custom tooltip styling */
-        .tooltip {
-            font-size: 1rem !important;
-        }
-        
-        .tooltip-inner {
-            max-width: 200px;
-            padding: 0.25rem 0.5rem;
-            font-size: 1rem;
-            line-height: 1.2;
-        }
-
-    
-    .table-section {
-        margin-bottom: 40px;
-    }
-    .section-title {
-        background-color: #f8f9fa;
-        padding: 10px;
-        margin-bottom: 20px;
-        border-radius: 5px;
-        font-weight: bold;
-    }
-    .page-title {
-        text-align: center;
-        margin-bottom: 30px;
-        font-size: 48px;
-        font-weight:bolder;
-        color: #83956e;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-        text-transform: uppercase;
-    }
-    
-    /* Responsive font sizes */
-    @media screen and (max-width: 768px) {
-        .page-title {
-            font-size: 36px;
-        }
-    }
-    
-    @media screen and (max-width: 480px) {
-        .page-title {
-            font-size: 24px;
-        }
-        .section-title {
-            font-size: 18px;
-        }
-        .desktop-table {
-            display: none;
-        }
-        .mobile-table {
-            display: block;
-        }
-    }
-    @media screen and (min-width: 320) {
-        .desktop-table {
-            display: block;
-        }
-        .mobile-table {
-            display: none;
-        }
-    }
-    .dtr-details {
-        width: 100%;
-    }
-    
-    /* Specific styles for Carne table */
-    #pesoTable {
-        width: 100% !important;
-    }
-    
-    /* Desktop */
-    @media screen and (min-width: 1024px) {
-        #pesoTable th, 
-        #pesoTable td {
-            min-width: 150px;
-        }
-    }
-    
-    /* Tablet */
-    @media screen and (max-width: 768px) {
-        #pesoTable th, 
-        #pesoTable td {
-            min-width: 100px;
-            font-size: 14px;
-            padding: 8px 4px;
-        }
-    }
-    
-    /* Mobile */
-    @media screen and (max-width: 480px) {
-        #pesoTable th, 
-        #pesoTable td {
-            min-width: 80px;
-            font-size: 12px;
-            padding: 6px 3px;
-        }
-    }
-    
-    /* Center align all content in Carne table */
-    #pesoTable th,
-    #pesoTable td {
-        text-align: center !important;
-        vertical-align: middle !important;
-    }
-    
-    /* Center align DataTables controls for Carne table */
-    #pesoTable_wrapper .dataTables_filter,
-    #pesoTable_wrapper .dataTables_length,
-    #pesoTable_wrapper .dataTables_info,
-    #pesoTable_wrapper .dataTables_paginate {
-        text-align: center !important;
-    }
-    
-    /* Specific styles for Leche table */
-    #lecheTable {
-        width: 100% !important;
-    }
-    
-    /* Desktop */
-    @media screen and (min-width: 1024px) {
-        #lecheTable th, 
-        #lecheTable td {
-            min-width: 150px;
-        }
-    }
-    
-    /* Tablet */
-    @media screen and (max-width: 768px) {
-        #lecheTable th, 
-        #lecheTable td {
-            min-width: 100px;
-            font-size: 14px;
-            padding: 8px 4px;
-        }
-    }
-    
-    /* Mobile */
-    @media screen and (max-width: 480px) {
-        #lecheTable th, 
-        #lecheTable td {
-            min-width: 80px;
-            font-size: 12px;
-            padding: 6px 3px;
-        }
-    }
-    
-    /* Center align all content in Leche table */
-    #lecheTable th,
-    #lecheTable td {
-        text-align: center !important;
-        vertical-align: middle !important;
-    }
-    
-    /* Center align DataTables controls for Leche table */
-    #lecheTable_wrapper .dataTables_filter,
-    #lecheTable_wrapper .dataTables_length,
-    #lecheTable_wrapper .dataTables_info,
-    #lecheTable_wrapper .dataTables_paginate {
-        text-align: center !important;
-    }
-    
-    /* Specific styles for Alimentacion table */
-    #alimentacionTable {
-        width: 100% !important;
-    }
-    
-    /* Desktop */
-    @media screen and (min-width: 1024px) {
-        #alimentacionTable th, 
-        #alimentacionTable td {
-            min-width: 150px;
-        }
-    }
-    
-    /* Tablet */
-    @media screen and (max-width: 768px) {
-        #alimentacionTable th, 
-        #alimentacionTable td {
-            min-width: 100px;
-            font-size: 14px;
-            padding: 8px 4px;
-        }
-    }
-    
-    /* Mobile */
-    @media screen and (max-width: 480px) {
-        #alimentacionTable th, 
-        #alimentacionTable td {
-            min-width: 80px;
-            font-size: 12px;
-            padding: 6px 3px;
-        }
-    }
-    
-    /* Center align all content in Alimentacion table */
-    #alimentacionTable th,
-    #alimentacionTable td {
-        text-align: center !important;
-        vertical-align: middle !important;
-    }
-    
-    /* Center align DataTables controls for Alimentacion table */
-    #alimentacionTable_wrapper .dataTables_filter,
-    #alimentacionTable_wrapper .dataTables_length,
-    #alimentacionTable_wrapper .dataTables_info,
-    #alimentacionTable_wrapper .dataTables_paginate {
-        text-align: center !important;
-    }
-    
-    /* Styles for Vacunas, Baños, Parasitos, Reproduccion, and Preñez y Parto tables */
-    #aftosaTable, #banosTable, #parasitosTable, #reproduccionTable, #prenezTable, #partoTable {
-        width: 100% !important;
-    }
-
-    /* Desktop */
-    @media screen and (min-width: 1024px) {
-        #aftosaTable th, #aftosaTable td,
-        #banosTable th, #banosTable td,
-        #parasitosTable th, #parasitosTable td,
-        #reproduccionTable th, #reproduccionTable td,
-        #prenezTable th, #prenezTable td,
-        #partoTable th, #partoTable td {
-            min-width: 150px;
-        }
-    }
-
-    /* Tablet */
-    @media screen and (max-width: 768px) {
-        #aftosaTable th, #aftosaTable td,
-        #banosTable th, #banosTable td,
-        #parasitosTable th, #parasitosTable td,
-        #reproduccionTable th, #reproduccionTable td,
-        #prenezTable th, #prenezTable td,
-        #partoTable th, #partoTable td {
-            min-width: 100px;
-            font-size: 14px;
-            padding: 8px 4px;
-        }
-    }
-
-    /* Mobile */
-    @media screen and (max-width: 480px) {
-        #aftosaTable th, #aftosaTable td,
-        #banosTable th, #banosTable td,
-        #parasitosTable th, #parasitosTable td,
-        #reproduccionTable th, #reproduccionTable td,
-        #prenezTable th, #prenezTable td,
-        #partoTable th, #partoTable td {
-            min-width: 80px;
-            font-size: 12px;
-            padding: 6px 3px;
-        }
-    }
-
-    /* Center align all content */
-    #aftosaTable th, #aftosaTable td,
-    #banosTable th, #banosTable td,
-    #parasitosTable th, #parasitosTable td,
-    #reproduccionTable th, #reproduccionTable td,
-    #prenezTable th, #prenezTable td,
-    #partoTable th, #partoTable td {
-        text-align: center !important;
-        vertical-align: middle !important;
-    }
-
-    /* Center align DataTables controls */
-    #aftosaTable_wrapper .dataTables_filter,
-    #aftosaTable_wrapper .dataTables_length,
-    #aftosaTable_wrapper .dataTables_info,
-    #aftosaTable_wrapper .dataTables_paginate,
-    #banosTable_wrapper .dataTables_filter,
-    #banosTable_wrapper .dataTables_length,
-    #banosTable_wrapper .dataTables_info,
-    #banosTable_wrapper .dataTables_paginate,
-    #parasitosTable_wrapper .dataTables_filter,
-    #parasitosTable_wrapper .dataTables_length,
-    #parasitosTable_wrapper .dataTables_info,
-    #parasitosTable_wrapper .dataTables_paginate,
-    #reproduccionTable_wrapper .dataTables_filter,
-    #reproduccionTable_wrapper .dataTables_length,
-    #reproduccionTable_wrapper .dataTables_info,
-    #reproduccionTable_wrapper .dataTables_paginate,
-    #prenezTable_wrapper .dataTables_filter,
-    #prenezTable_wrapper .dataTables_length,
-    #prenezTable_wrapper .dataTables_info,
-    #prenezTable_wrapper .dataTables_paginate,
-    #partoTable_wrapper .dataTables_filter,
-    #partoTable_wrapper .dataTables_length,
-    #partoTable_wrapper .dataTables_info,
-    #partoTable_wrapper .dataTables_paginate {
-        text-align: center !important;
-    }
-
-    .section-title {
-        background-color: #83956e;
-        color: white;
-        padding: 10px;
-        margin-bottom: 20px;
-        border-radius: 5px;
-        font-weight: bold;
-    }
-
-    .sub-section-title {
-        color: #689260;
-        font-weight: bold;
-        margin-bottom: 15px;
-    }
-
-    .btn-primary {
-        background-color: #83956e;
-        border-color: #83956e;
-    }
-
-    .btn-primary:hover {
-        background-color: #689260;
-        border-color: #689260;
-    }
-
-    /* DataTables custom styling */
-    .dataTables_wrapper .dataTables_filter input {
-        border: 1px solid #83956e;
-        border-radius: 4px;
-    }
-
-    .dataTables_wrapper .paginate_button.current {
-        background: #83956e !important;
-        color: white !important;
-        border: 1px solid #83956e !important;
-    }
-
-    .dataTables_wrapper .paginate_button:hover {
-        background: #689260 !important;
-        color: white !important;
-        border: 1px solid #689260 !important;
-    }
-
-    /* Add these styles within the existing <style> tag */
-    .header-container {
-        display: flex;
-        justify-content: center;
-        margin-bottom: 30px;
-    }
-
-    .animal-name {
-        text-align: center;
-        color: #689260;
-        font-size: 24px;
-        margin-bottom: 20px;
-        font-weight: bold;
-    }
-
-    @media screen and (max-width: 768px) {
-        .animal-name {
-            font-size: 20px;
-        }
-    }
-
-    @media screen and (max-width: 480px) {
-        .animal-name {
-            font-size: 18px;
-        }
-    }
-
-    .back-btn {
-        position: fixed;
-        top: 20px;
-        left: 20px;
-        font-size: 64px;
-        color: #83956e;
-        text-decoration: none;
-        transition: color 0.3s;
-        z-index: 10000;
-    }
-
-    .back-btn:hover {
-        color: #689260;
-    }
-
-    @media screen and (max-width: 768px) {
-        .back-btn {
-            font-size: 56px;
-            left: 15px;
-            top: 15px;
-        }
-    }
-
-    @media screen and (max-width: 480px) {
-        .back-btn {
-            font-size: 48px;
-            left: 10px;
-            top: 10px;
-        }
-    }
-
-    /* Remove the margin-left from input-group */
-    /*.input-group {
-        margin-left: 100px;
-    }*/
-
-    #concentradoTable th,
-    #concentradoTable td {
-        text-align: center !important;
-        vertical-align: middle !important;
-    }
-
-    .delete-aftosa {
-        padding: 0.25rem 0.5rem;
-    }
-
-    .delete-aftosa i {
-        color: white;
-    }
-
-    #addVacunaForm {
-        background-color: #f8f9fa;
-        border-radius: 0.25rem;
-        padding: 1rem;
-    }
-
-    #addVacunaForm .form-label {
-        font-weight: 500;
-        color: #212529;
-    }
-
-    #addVacunaForm .btn-success {
-        background-color: #83956e;
-        border-color: #83956e;
-    }
-
-    #addVacunaForm .btn-success:hover {
-        background-color: #689260;
-        border-color: #689260;
-    }
-
-    /* Add spacing between action buttons */
-    .table td .btn-primary {
-        margin-right: 10px;
-    }
-
-    /* For better mobile responsiveness */
-    @media (max-width: 768px) {
-        .table td .btn-primary {
-            margin-right: 5px;
-        }
-    }
-</style>
+<!-- For Excel/CSV export -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 </head>
 <body>
 
@@ -689,15 +84,15 @@ if ($conn->connect_error) {
     <button onclick="window.location.href='../inicio.php'" class="icon-button" data-tooltip="Inicio">
         <img src="./images/Ganagram_New_Logo-png.png" alt="Inicio" class="nav-icon">
     </button>
-    
+
     <button onclick="window.location.href='./inventario_vacuno.php'" class="icon-button" data-tooltip="Inventario Vacuno">
         <img src="./images/vacas.png" alt="Inventario Vacuno" class="nav-icon">
     </button>
-    
+
     <button onclick="window.location.href='./vacuno_indices.php'" class="icon-button" data-tooltip="Indices Vacunos">
         <img src="./images/fondo-indexado.png" alt="Inicio" class="nav-icon">
     </button>
-    
+
     <button onclick="window.location.href='./vacuno_configuracion.php'" class="icon-button" data-tooltip="Configurar Tablas">
         <img src="./images/configuracion.png" alt="Inicio" class="nav-icon">
     </button>
@@ -705,144 +100,30 @@ if ($conn->connect_error) {
 </div>
 
 <!-- Scroll Icons Container -->
-<div class="container scroll-Icons-container">      
-    <button onclick="scrollToSection('section-registros-produccion')" class="icon-button" data-tooltip="Registros Producción">
-        <img src="./images/bascula-de-comestibles.png" alt="Producción" class="nav-icon">
+<div class="container scroll-Icons-container">
+    <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-target="#section-historial-produccion-vacuno" data-tooltip="Produccion">
+        <img src="./images/bascula-de-comestibles.png" alt="Alimentacion" class="nav-icon">
     </button>
-    
-    <button onclick="scrollToSection('section-registros-alimentacion')" class="icon-button" data-tooltip="Registros Alimentación">
+
+    <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-target="#section-historial-alimentacion-vacuno" data-tooltip="Alimentacion">
         <img src="./images/bolso.png" alt="Alimentacion" class="nav-icon">
     </button>
-    
-    <button onclick="scrollToSection('section-registros-salud')" class="icon-button" data-tooltip="Registros Salud">
-        <img src="./images/vacunacion.png" alt="Vacunación" class="nav-icon">
+
+    <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-target="#section-historial-salud-vacuno" data-tooltip="Salud">
+        <img src="./images/vacunacion.png" alt="Salud" class="nav-icon">
     </button>
-    
-    <buttonon onclick="scrollToSection('section-registros-reproduccion')"  class="icon-button" data-tooltip="Registros Reproducción">
-        <img src="./images/matriz.png" alt="Reproduccion" class="nav-icon">
-    </buttonon>
-    
-    <button onclick="scrollToSection('section-registros-otros')" class="icon-button" data-tooltip="Otros">
-        <img src="./images/compra.png" alt="Venta" class="nav-icon">
+
+    <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-target="#section-historial-reproduccion-vacuno" data-tooltip="reproduccion">
+        <img src="./images/matriz.png" alt="Razas" class="nav-icon">
+    </button>
+
+    <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-target="#section-historial-otros-vacuno" data-tooltip="Otros">
+        <img src="./images/compra.png" alt="Razas" class="nav-icon">
     </button>
 </div>
 
-<style>
-.nav-icons-container {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px 0;
-    gap: 50px;
-    flex-wrap: wrap;
-    background-color: #f8f9fa;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
-    margin: 10px 0;
-}
-.scroll-Icons-container{
-  width: 90%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px 0;
-  gap: 10px;
-  flex-wrap: wrap;
-}
 
-@media (max-width: 768px) {
-    .icon-nav-container {
-        gap: 15px;
-    }
-}
-</style>
 
-<style>
-.icon-nav-container {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin: 0px;
-    padding-top: 0px;
-    margin-top: 0px;
-    padding-bottom: 0px;
-    margin-bottom: 0px;
-    padding-left: 0px;
-    margin-left: 0px;
-    padding-right: 0px;
-    margin-right: 0px;
-}
-
-.icon-button {
-    background: white;
-    border: 1px solid #ccc;
-    border-radius: 50%;
-    width: 45px;
-    height: 45px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
-    padding: 0;
-}
-
-.nav-icon {
-    width: 24px;
-    height: 24px;
-    transition: all 0.3s ease;
-}
-
-.icon-button:hover .nav-icon {
-    transform: scale(1.2);
-}
-
-.icon-button:hover {
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-
-/* Tooltip Styles */
-.icon-button::before {
-    content: attr(data-tooltip);
-    position: absolute;
-    bottom: -30px;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 4px 8px;
-    background-color: rgba(0, 0, 0, 0.8);
-    color: white;
-    font-size: 12px;
-    border-radius: 4px;
-    white-space: nowrap;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
-}
-
-.icon-button:hover::before {
-    opacity: 1;
-    visibility: visible;
-}
-
-@media (max-width: 768px) {
-    .icon-nav-container {
-        flex-wrap: wrap;
-        gap: 15px;
-    }
-    
-    .icon-button {
-        width: 40px;
-        height: 40px;
-    }
-    
-    .nav-icon {
-        width: 20px;
-        height: 20px;
-    }
-}
-</style>
 
 <div class="container mt-4" style="display:block; justify-content: center; align-items: center;">
         <div>
@@ -854,7 +135,7 @@ if ($conn->connect_error) {
 </div>
 
 <?php
-// PESAJE ANIMAL 
+// PESAJE ANIMAL
 if (isset($_GET['search']) && !empty($_GET['search'])) {
     $tagid = $conn->real_escape_string($_GET['search']);
     $baseQuery_peso = "SELECT * FROM vh_peso WHERE vh_peso_tagid = '$tagid' ORDER BY vh_peso_fecha ASC";
@@ -873,31 +154,31 @@ if ($result_peso->num_rows > 0) {
     while ($row = $result_peso->fetch_assoc()) {
         $date = new DateTime($row['vh_peso_fecha']);
         $monthKey = $date->format('Y-m');
-        
+
         if (!isset($monthlyWeights[$monthKey])) {
             $monthlyWeights[$monthKey] = [];
         }
         $monthlyWeights[$monthKey][] = floatval($row['vh_peso_animal']);
         $pesoFechaLabels[] = $row['vh_peso_fecha'];
     }
-    
+
     // Initialize array for monthly data
     $monthlyData = array_fill(0, count($pesoFechaLabels), null);
-    
+
     // Calculate monthly weights
     foreach ($pesoFechaLabels as $index => $date) {
         $month = (new DateTime($date))->format('Y-m');
-        
+
         if (isset($monthlyWeights[$month])) {
             $monthlyData[$index] = end($monthlyWeights[$month]);
         }
     }
-    
+
     // Calculate linear regression
     $x = [];
     $y = [];
     $n = 0;
-    
+
     // Collect points for regression (excluding null values)
     foreach ($monthlyData as $index => $weight) {
         if ($weight !== null) {
@@ -906,28 +187,28 @@ if ($result_peso->num_rows > 0) {
             $n++;
         }
     }
-    
+
     if (count($x) > 1) { // Need at least 2 points for regression
         // Calculate means
         $x_mean = array_sum($x) / count($x);
         $y_mean = array_sum($y) / count($y);
-        
+
         // Calculate slope (m) and y-intercept (b)
         $numerator = 0;
         $denominator = 0;
-        
+
         for ($i = 0; $i < count($x); $i++) {
             $numerator += ($x[$i] - $x_mean) * ($y[$i] - $y_mean);
             $denominator += pow($x[$i] - $x_mean, 2);
         }
-        
+
         $slope = $denominator != 0 ? $numerator / $denominator : 0;
         $y_intercept = $y_mean - ($slope * $x_mean);
-        
+
         // Generate regression line points
         $regressionLine = array_fill(0, count($monthlyData), null);
         $point_count = 0;
-        
+
         foreach ($monthlyData as $index => $weight) {
             if ($weight !== null) {
                 $regressionLine[$index] = $y_intercept + ($slope * $point_count);
@@ -943,30 +224,30 @@ $monthlyPriceData = [];
 
 if ($result_peso->num_rows > 0) {
     $result_peso->data_seek(0); // Reset pointer to start of result set
-    
+
     // First, collect all prices by month
     while ($row = $result_peso->fetch_assoc()) {
         $date = new DateTime($row['vh_peso_fecha']);
         $monthKey = $date->format('Y-m');
-        
+
         if (!isset($monthlyPrices[$monthKey])) {
             $monthlyPrices[$monthKey] = [
                 'sum' => 0,
                 'count' => 0
             ];
         }
-        
+
         $monthlyPrices[$monthKey]['sum'] += floatval($row['vh_peso_precio']);
         $monthlyPrices[$monthKey]['count']++;
     }
-    
+
     // Initialize array for monthly price data
     $monthlyPriceData = array_fill(0, count($pesoFechaLabels), null);
-    
+
     // Calculate and assign monthly averages
     foreach ($pesoFechaLabels as $index => $date) {
         $month = (new DateTime($date))->format('Y-m');
-        
+
         if (isset($monthlyPrices[$month]) && $monthlyPrices[$month]['count'] > 0) {
             $monthlyPriceData[$index] = $monthlyPrices[$month]['sum'] / $monthlyPrices[$month]['count'];
         }
@@ -979,32 +260,32 @@ $monthlyValueData = [];
 
 if ($result_peso->num_rows > 0) {
     $result_peso->data_seek(0); // Reset pointer to start of result set
-    
+
     // First, collect all values by month
     while ($row = $result_peso->fetch_assoc()) {
         $date = new DateTime($row['vh_peso_fecha']);
         $monthKey = $date->format('Y-m');
-        
+
         if (!isset($monthlyValues[$monthKey])) {
             $monthlyValues[$monthKey] = [
                 'sum' => 0,
                 'count' => 0
             ];
         }
-        
+
         // Calculate total value for each measurement
         $totalValue = floatval($row['vh_peso_animal']) * floatval($row['vh_peso_precio']);
         $monthlyValues[$monthKey]['sum'] += $totalValue;
         $monthlyValues[$monthKey]['count']++;
     }
-    
+
     // Initialize array for monthly value data
     $monthlyValueData = array_fill(0, count($pesoFechaLabels), null);
-    
+
     // Calculate and assign monthly averages
     foreach ($pesoFechaLabels as $index => $date) {
         $month = (new DateTime($date))->format('Y-m');
-        
+
         if (isset($monthlyValues[$month]) && $monthlyValues[$month]['count'] > 0) {
             $monthlyValueData[$index] = $monthlyValues[$month]['sum'] / $monthlyValues[$month]['count'];
         }
@@ -1054,19 +335,19 @@ if ($result_leche->num_rows > 0) {
     while ($row = $result_leche->fetch_assoc()) {
         $date = new DateTime($row['vh_leche_fecha']);
         $monthKey = $date->format('Y-m');
-        
+
         if (!isset($monthlyMilk[$monthKey])) {
             $monthlyMilk[$monthKey] = 0;
         }
-        
+
         $monthlyMilk[$monthKey] += floatval($row['vh_leche_peso']);
         $lecheFechaLabels[] = $row['vh_leche_fecha'];
     }
-    
+
     // Calculate cumulative sum
     $cumulativeSum = 0;
     $cumulativeMilkData = array_fill(0, count($lecheFechaLabels), null);
-    
+
     foreach ($lecheFechaLabels as $index => $date) {
         $month = (new DateTime($date))->format('Y-m');
         if (isset($monthlyMilk[$month])) {
@@ -1101,41 +382,41 @@ if ($result_racion->num_rows > 0) {
     $previousCosto = null;
     $today = new DateTime(); // Get today's date for final period calculation
     $runningTotal = 0;
-    
+
     while ($row = $result_racion->fetch_assoc()) {
         $currentDate = new DateTime($row['vh_concentrado_fecha']);
         $racionFechaLabels[] = $row['vh_concentrado_fecha'];
-        
+
         if ($previousDate !== null) {
             // Calculate days between previous and current record
             $interval = $previousDate->diff($currentDate);
             $days = $interval->days;
-            
+
             // Calculate investment for this period
             $dailyInvestment = $previousRacion * $previousCosto;
             $periodInvestment = $dailyInvestment * $days;
-            
+
             // Add to running total
             $runningTotal += $periodInvestment;
         }
-        
+
         // Store the cumulative total for this period
         $cumulativeInvestment[] = $runningTotal;
-        
+
         // Store current values for next iteration
         $previousDate = $currentDate;
         $previousRacion = floatval($row['vh_concentrado_racion']);
         $previousCosto = floatval($row['vh_concentrado_costo']);
     }
-    
+
     // Calculate final period up to today
     if ($previousDate !== null) {
         $interval = $previousDate->diff($today);
         $days = $interval->days;
-        
+
         $dailyInvestment = $previousRacion * $previousCosto;
         $periodInvestment = $dailyInvestment * $days;
-        
+
         // Add final period to running total
         $runningTotal += $periodInvestment;
         $cumulativeInvestment[] = $runningTotal;
@@ -1163,41 +444,41 @@ if ($result_melaza->num_rows > 0) {
     $previousCosto = null;
     $today = new DateTime(); // Get today's date for final period calculation
     $runningTotal = 0;
-    
+
     while ($row = $result_melaza->fetch_assoc()) {
         $currentDate = new DateTime($row['vh_melaza_fecha']);
         $melazaFechaLabels[] = $row['vh_melaza_fecha'];
-        
+
         if ($previousDate !== null) {
             // Calculate days between previous and current record
             $interval = $previousDate->diff($currentDate);
             $days = $interval->days;
-            
+
             // Calculate investment for this period
             $dailyInvestment = $previousRacion * $previousCosto;
             $periodInvestment = $dailyInvestment * $days;
-            
+
             // Add to running total
             $runningTotal += $periodInvestment;
         }
-        
+
         // Store the cumulative total for this period
         $cumulativeMelazaInvestment[] = $runningTotal;
-        
+
         // Store current values for next iteration
         $previousDate = $currentDate;
         $previousRacion = floatval($row['vh_melaza_racion']);
         $previousCosto = floatval($row['vh_melaza_costo']);
     }
-    
+
     // Calculate final period up to today
     if ($previousDate !== null) {
         $interval = $previousDate->diff($today);
         $days = $interval->days;
-        
+
         $dailyInvestment = $previousRacion * $previousCosto;
         $periodInvestment = $dailyInvestment * $days;
-        
+
         // Add final period to running total
         $runningTotal += $periodInvestment;
         $cumulativeMelazaInvestment[] = $runningTotal;
@@ -1225,41 +506,41 @@ if ($result_sal->num_rows > 0) {
     $previousCosto = null;
     $today = new DateTime(); // Get today's date for final period calculation
     $runningTotal = 0;
-    
+
     while ($row = $result_sal->fetch_assoc()) {
         $currentDate = new DateTime($row['vh_sal_fecha']);
         $salFechaLabels[] = $row['vh_sal_fecha'];
-        
+
         if ($previousDate !== null) {
             // Calculate days between previous and current record
             $interval = $previousDate->diff($currentDate);
             $days = $interval->days;
-            
+
             // Calculate investment for this period
             $dailyInvestment = $previousRacion * $previousCosto;
             $periodInvestment = $dailyInvestment * $days;
-            
+
             // Add to running total
             $runningTotal += $periodInvestment;
         }
-        
+
         // Store the cumulative total for this period
         $cumulativeSalInvestment[] = $runningTotal;
-        
+
         // Store current values for next iteration
         $previousDate = $currentDate;
         $previousRacion = floatval($row['vh_sal_racion']);
         $previousCosto = floatval($row['vh_sal_costo']);
     }
-    
+
     // Calculate final period up to today
     if ($previousDate !== null) {
         $interval = $previousDate->diff($today);
         $days = $interval->days;
-        
+
         $dailyInvestment = $previousRacion * $previousCosto;
         $periodInvestment = $dailyInvestment * $days;
-        
+
         // Add final period to running total
         $runningTotal += $periodInvestment;
         $cumulativeSalInvestment[] = $runningTotal;
@@ -1286,44 +567,47 @@ $concentradoPercentage = ($totalInvestment > 0) ? round(($totalConcentradoInvest
 // First, update the query to include the JOIN
 if (isset($_GET['search']) && !empty($_GET['search'])) {
     $tagid = $conn->real_escape_string($_GET['search']);
-    $baseQuery_peso = "SELECT p.*, v.nombre 
-                      FROM vh_peso p 
-                      LEFT JOIN vacuno v ON p.vh_peso_tagid = v.tagid 
+    $baseQuery_peso = "SELECT p.*, v.nombre
+                      FROM vh_peso p
+                      LEFT JOIN vacuno v ON p.vh_peso_tagid = v.tagid
                       WHERE p.vh_peso_tagid = '$tagid'";
 } else {
-    $baseQuery_peso = "SELECT p.*, v.nombre 
-                      FROM vh_peso p 
+    $baseQuery_peso = "SELECT p.*, v.nombre
+                      FROM vh_peso p
                       LEFT JOIN vacuno v ON p.vh_peso_tagid = v.tagid";
 }
 $result_peso = $conn->query($baseQuery_peso);
 ?>
-<div class="container">
+<div class="container text-center">
     <!-- Search Form -->
-<form method="GET" class="mb-4">
-        <div class="input-group">
-            <input type="text" id="search" name="search" placeholder="Buscar por Tag ID..." 
+    <form method="GET" class="text-center mb-4">
+        <div class="input-group text-center">
+            <input type="text" id="search" name="search" placeholder="Buscar por Tag ID..."
                 value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
-            <button type="submit" class="btn btn-primary">Buscar</button>
+            <button type="submit" class="btn btn-success">Buscar</button>
         </div>
     </form>
 </div>
-<div class="container mt-4">
-    <h3 id="section-registros-produccion" style="text-align: center;">REGISTROS DE PRODUCCION</h3>
-</div>
+
+<h3  class="container mt-4" class="collapse" id="section-historial-produccion-vacuno">
+REGISTROS DE PRODUCCION
+</h3>
 
 <!-- Registros de Peso -->
+<div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
+    <h4 class="sub-section-title text-center">REGISTROS PRODUCCION CARNE</h4>
 
 <!-- Peso: Nuevo Registro Form -->
 <div class="container table-section" style="display: block;">
 
-    <h4 class="sub-section-title">Control de Peso</h4>    
+    <h4 class="sub-section-title">Control de Peso</h4>
     <!-- Add New Peso Form -->
-    <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addPesoForm">
-        <i class="fas fa-plus"></i> Registrar  Pesaje Animal
+    <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addPesoForm">
+        <i class="fas fa-plus"></i> Registrar
     </button>
 
     <!-- NEW PESO FORM -->
-    
+
     <div class="collapse mb-3" id="addPesoForm">
         <div class="card card-body">
 
@@ -1332,7 +616,7 @@ $result_peso = $conn->query($baseQuery_peso);
                 <input type="hidden" name="tagid" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
                 <div class="row g-3">
                     <div class="col-md-4">
-                        <label class="form-label">Peso Animal (kg)</label>
+                        <label class="form-label">Peso (kg)</label>
                         <input type="number" step="0.01" class="form-control" name="peso" required>
                     </div>
                     <div class="col-md-4">
@@ -1350,21 +634,21 @@ $result_peso = $conn->query($baseQuery_peso);
             </form>
         </div>
     </div>
-    
+
     <!-- PESO DataTable -->
-    
+
     <div class="table-responsive">
-        <table id="pesoTable" class="table table-striped table-bordered">
+        <table id="pesosTable" class="table table-striped table-bordered">
             <thead>
 
                 <tr>
-                    <th style="text-align: center;">Tag ID</th>
-                    <th style="text-align: center;">Nombre</th>
-                    <th style="text-align: center;">Peso Animal (kg)</th>
-                    <th style="text-align: center;">Precio ($/kg)</th>
-                    <th style="text-align: center;">Valor Total ($)</th>
-                    <th style="text-align: center;">Fecha</th>
-                    <th style="text-align: center;">Acciones</th>
+                    <th>Tag ID</th>
+                    <th>Nombre</th>
+                    <th>Peso (kg)</th>
+                    <th>Precio</th>
+                    <th>Total ($)</th>
+                    <th>Fecha</th>
+                    <th>Acciones</th>
 
                 </tr>
             </thead>
@@ -1373,7 +657,7 @@ $result_peso = $conn->query($baseQuery_peso);
                 if ($result_peso->num_rows > 0) {
                     while($row = $result_peso->fetch_assoc()) {
                         $valor_total = floatval($row['vh_peso_animal']) * floatval($row['vh_peso_precio']);
-                        
+
                         echo "<tr>";
                         echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_peso_tagid']) . "</td>";
                         echo "<td style='text-align: center;'>" . htmlspecialchars($row['nombre'] ?? 'N/A') . "</td>";
@@ -1383,7 +667,7 @@ $result_peso = $conn->query($baseQuery_peso);
                         echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_peso_fecha']) . "</td>";
                         echo "<td style='text-align: center;'>
                                 <div class='btn-group' role='group'>
-                                    <button class='btn btn-primary text-center btn-sm edit-peso' 
+                                    <button class='btn btn-success text-center btn-sm edit-peso'
                                             data-bs-toggle='modal'
                                             data-bs-target='#editPesoModal'
                                             data-id='" . htmlspecialchars($row['id']) . "'
@@ -1393,7 +677,7 @@ $result_peso = $conn->query($baseQuery_peso);
                                             data-fecha='" . htmlspecialchars($row['vh_peso_fecha']) . "'>
                                         <i class='fas fa-edit'></i>
                                     </button>
-                                    <button class='btn btn-danger btn-sm delete-peso' 
+                                    <button class='btn btn-danger btn-sm delete-peso'
                                             data-id='" . htmlspecialchars($row['id']) . "'>
                                         <i class='fas fa-trash'></i>
                                     </button>
@@ -1411,19 +695,19 @@ $result_peso = $conn->query($baseQuery_peso);
 <!--  Peso Inicializacion DataTable -->
 <script>
 $(document).ready(function() {
-    $('#pesoTable').DataTable({
+    $('#pesosTable').DataTable({
         // Set initial page length to 5
         pageLength: 5,
-        
+
         // Configure length menu options
         lengthMenu: [
             [5, 10, 25, 50, 100, -1],
             [5, 10, 25, 50, 100, "Todos"]
         ],
-        
+
         // Order by fecha (date) column descending
         order: [[5, 'desc']],
-        
+
         // Spanish language
         language: {
             url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json',
@@ -1440,16 +724,16 @@ $(document).ready(function() {
                 previous: "Anterior"
             }
         },
-        
+
         // Enable responsive features
         responsive: true,
-        
+
         // Configure DOM layout and buttons
         dom: '<"row"<"col-sm-12 col-md-6"B><"col-sm-12 col-md-6"f>>' +
              '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"p>>' +
              '<"row"<"col-sm-12"tr>>' +
              '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
-        
+
         buttons: [
             {
                 extend: 'collection',
@@ -1463,7 +747,7 @@ $(document).ready(function() {
                 ]
             }
         ],
-        
+
         // Column specific settings
         columnDefs: [
             {
@@ -1496,7 +780,7 @@ $(document).ready(function() {
     });
 });
 </script>
-
+</div>
 <!-- Edit Peso Modal -->
 
 <div class="modal fade" id="editPesoModal" tabindex="-1">
@@ -1512,7 +796,7 @@ $(document).ready(function() {
                     <input type="hidden" name="id" id="edit_id">
                     <input type="hidden" name="tagid" id="edit_tagid">
                     <div class="mb-3">
-                        <label class="form-label">Peso Animal (kg)</label>
+                        <label class="form-label">Peso (kg)</label>
                         <input type="number" step="0.01" class="form-control" name="peso" id="edit_peso" required>
                     </div>
                     <div class="mb-3">
@@ -1526,7 +810,7 @@ $(document).ready(function() {
                 </div>
                 <div class="modal-footer d-flex justify-content-between">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    <button type="submit" class="btn btn-success">Guardar Cambios</button>
                 </div>
             </form>
         </div>
@@ -1539,7 +823,7 @@ $(document).ready(function() {
     // Handle edit button click
     $('.edit-peso').click(function() {
         const button = $(this);
-        
+
         // Get data from data attributes
         const id = button.data('id');
         const peso = button.data('peso');
@@ -1556,7 +840,7 @@ $(document).ready(function() {
     // Handle save changes
     $('#saveEditPeso').click(function() {
         const form = $('#editPesoForm');
-        
+
         // Validate form
         if (!form[0].checkValidity()) {
             form[0].reportValidity();
@@ -1609,13 +893,13 @@ $(document).ready(function() {
 // First, update the query to include the JOIN
 if (isset($_GET['search']) && !empty($_GET['search'])) {
     $tagid = $conn->real_escape_string($_GET['search']);
-    $baseQuery_leche = "SELECT p.*, v.nombre 
-                      FROM vh_leche p 
-                      LEFT JOIN vacuno v ON p.vh_leche_tagid = v.tagid 
+    $baseQuery_leche = "SELECT p.*, v.nombre
+                      FROM vh_leche p
+                      LEFT JOIN vacuno v ON p.vh_leche_tagid = v.tagid
                       WHERE p.vh_leche_tagid = '$tagid'";
 } else {
-    $baseQuery_leche = "SELECT p.*, v.nombre 
-                      FROM vh_leche p 
+    $baseQuery_leche = "SELECT p.*, v.nombre
+                      FROM vh_leche p
                       LEFT JOIN vacuno v ON p.vh_leche_tagid = v.tagid";
 }
 $result_leche = $conn->query($baseQuery_leche);
@@ -1624,14 +908,14 @@ $result_leche = $conn->query($baseQuery_leche);
     <!-- Search Form -->
 <form method="GET" class="mb-4">
         <div class="input-group">
-            <input type="text" id="search" name="search" placeholder="Buscar por Tag ID..." 
+            <input type="text" id="search" name="search" placeholder="Buscar por Tag ID..."
                 value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
-            <button type="submit" class="btn btn-primary">Buscar</button>
+            <button type="submit" class="btn btn-success">Buscar</button>
         </div>
     </form>
 </div>
 <div class="container mt-4">
-    <h3 id="section-registros-produccion-leche" style="text-align: center;">REGISTROS PRODUCCION LECHE</h3>
+<h4 class="container mt-4" style="text-align: center;">REGISTROS PRODUCCION LECHE</h4>
 </div>
 
 <!-- Registros de leche -->
@@ -1639,14 +923,14 @@ $result_leche = $conn->query($baseQuery_leche);
 <!-- Leche: Nuevo Registro Form -->
 <div class="container table-section" style="display: block;">
 
-    <h4 class="sub-section-title">Control de Leche</h4>    
+    <h4 class="sub-section-title">Control de Leche</h4>
     <!-- Add New Leche Form -->
-    <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addLecheForm">
-        <i class="fas fa-plus"></i> Registrar  Pesaje Animal
+    <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addLecheForm">
+        <i class="fas fa-plus"></i> Registrar
     </button>
 
     <!-- NEW Leche FORM -->
-    
+
     <div class="collapse mb-3" id="addLecheForm">
         <div class="card card-body">
 
@@ -1673,9 +957,9 @@ $result_leche = $conn->query($baseQuery_leche);
             </form>
         </div>
     </div>
-    
+
     <!-- Leche DataTable -->
-    
+
     <div class="table-responsive">
         <table id="lecheTable" class="table table-striped table-bordered">
             <thead>
@@ -1684,7 +968,7 @@ $result_leche = $conn->query($baseQuery_leche);
                     <th style="text-align: center;">Tag ID</th>
                     <th style="text-align: center;">Nombre</th>
                     <th style="text-align: center;">Leche (kg)</th>
-                    <th style="text-align: center;">Precio ($/kg)</th>
+                    <th style="text-align: center;">Precio</th>
                     <th style="text-align: center;">Total ($)</th>
                     <th style="text-align: center;">Fecha</th>
                     <th style="text-align: center;">Acciones</th>
@@ -1696,7 +980,7 @@ $result_leche = $conn->query($baseQuery_leche);
                 if ($result_leche->num_rows > 0) {
                     while($row = $result_leche->fetch_assoc()) {
                         $valor_total = floatval($row['vh_leche_peso']) * floatval($row['vh_leche_precio']);
-                        
+
                         echo "<tr>";
                         echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_leche_tagid']) . "</td>";
                         echo "<td style='text-align: center;'>" . htmlspecialchars($row['nombre'] ?? 'N/A') . "</td>";
@@ -1706,7 +990,7 @@ $result_leche = $conn->query($baseQuery_leche);
                         echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_leche_fecha']) . "</td>";
                         echo "<td style='text-align: center;'>
                                 <div class='btn-group' role='group'>
-                                    <button class='btn btn-primary text-center btn-sm edit-Leche' 
+                                    <button class='btn btn-success text-center btn-sm edit-Leche'
                                             data-bs-toggle='modal'
                                             data-bs-target='#editLecheModal'
                                             data-id='" . htmlspecialchars($row['id']) . "'
@@ -1716,7 +1000,7 @@ $result_leche = $conn->query($baseQuery_leche);
                                             data-fecha='" . htmlspecialchars($row['vh_leche_fecha']) . "'>
                                         <i class='fas fa-edit'></i>
                                     </button>
-                                    <button class='btn btn-danger btn-sm delete-Leche' 
+                                    <button class='btn btn-danger btn-sm delete-Leche'
                                             data-id='" . htmlspecialchars($row['id']) . "'>
                                         <i class='fas fa-trash'></i>
                                     </button>
@@ -1737,16 +1021,16 @@ $(document).ready(function() {
     $('#lecheTable').DataTable({
         // Set initial page length to 5
         pageLength: 5,
-        
+
         // Configure length menu options
         lengthMenu: [
             [5, 10, 25, 50, 100, -1],
             [5, 10, 25, 50, 100, "Todos"]
         ],
-        
+
         // Order by fecha (date) column descending
         order: [[5, 'desc']],
-        
+
         // Spanish language
         language: {
             url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json',
@@ -1763,16 +1047,16 @@ $(document).ready(function() {
                 previous: "Anterior"
             }
         },
-        
+
         // Enable responsive features
         responsive: true,
-        
+
         // Configure DOM layout and buttons
         dom: '<"row"<"col-sm-12 col-md-6"B><"col-sm-12 col-md-6"f>>' +
              '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"p>>' +
              '<"row"<"col-sm-12"tr>>' +
              '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
-        
+
         buttons: [
             {
                 extend: 'collection',
@@ -1786,7 +1070,7 @@ $(document).ready(function() {
                 ]
             }
         ],
-        
+
         // Column specific settings
         columnDefs: [
             {
@@ -1849,7 +1133,7 @@ $(document).ready(function() {
                 </div>
                 <div class="modal-footer d-flex justify-content-between">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    <button type="submit" class="btn btn-success">Guardar Cambios</button>
                 </div>
             </form>
         </div>
@@ -1865,7 +1149,7 @@ $(document).ready(function() {
     // Handle edit button click
     $('.edit-leche').click(function() {
         const button = $(this);
-        
+
         // Get data from data attributes
         const id = button.data('id');
         const peso = button.data('peso');
@@ -1882,7 +1166,7 @@ $(document).ready(function() {
     // Handle save changes
     $('#saveEditLeche').click(function() {
         const form = $('#editLecheForm');
-        
+
         // Validate form
         if (!form[0].checkValidity()) {
             form[0].reportValidity();
@@ -1932,21 +1216,21 @@ $(document).ready(function() {
     <?php
     // Query to get monthly averages
     $sql_monthly_milk = "
-        SELECT 
+        SELECT
             DATE_FORMAT(vh_leche_fecha, '%Y-%m') as month,
             AVG(vh_leche_peso * vh_leche_precio) as average_revenue,
             COUNT(*) as count
-        FROM vh_leche 
+        FROM vh_leche
         WHERE vh_leche_tagid = '$tagid'
         GROUP BY DATE_FORMAT(vh_leche_fecha, '%Y-%m')
         ORDER BY month ASC
     ";
-    
+
     $result_monthly_milk = $conn->query($sql_monthly_milk);
-    
+
     $months = [];
     $revenues = [];
-    
+
     if ($result_monthly_milk->num_rows > 0) {
         while($row = $result_monthly_milk->fetch_assoc()) {
             // Format date for display
@@ -2005,38 +1289,40 @@ $(document).ready(function() {
     });
 });
 </script>
+
 <!-- Leche: Graficos Canvas -->
 <div style="max-width: 1300px; margin: 40px auto;">
-    <h3 style="text-align: center;">Produccion Leche</h3>
+    <h4 style="text-align: center;">Produccion Leche</h4>
     <canvas id="lecheLineChart"></canvas>
 </div>
 
 <div style="max-width: 1300px; margin: 40px auto;">
-    <h3 style="text-align: center;">Produccion Acumulada Leche</h3>
+    <h4 style="text-align: center;">Produccion Acumulada Leche</h4>
     <canvas id="lecheCumulativeChart"></canvas>
 </div>
 <div style="max-width: 1300px; margin: 40px auto;">
-    <h3 style="text-align: center;">Ingresos Acumulados Leche</h3>
+    <h4 style="text-align: center;">Ingresos Acumulados Leche</h4>
     <canvas id="lecheRevenueChart"></canvas>
 </div>
 
-<div class="container table-section" style="display:block; justify-content: center; align-items: center;">
-<h3 id="section-registros-alimentacion" style="text-align: center;">REGISTROS DE ALIMENTACION</h3>
+<h3  class="container mt-4" class="collapse" id="section-historial-alimentacion-vacuno">
+REGISTROS DE ALIMENTACION
+</h3>
 
 <!-- Registros de Concentrado -->
-
+<h4 class="container mt-4" style="text-align: center;">REGISTROS ALIMENTO CONCENTRADO</h4>
 <!-- Concentrado Table Section -->
 <?php
 // First, update the query to include the JOIN
 if (isset($_GET['search']) && !empty($_GET['search'])) {
     $tagid = $conn->real_escape_string($_GET['search']);
-    $baseQuery_concentrado = "SELECT c.*, v.nombre 
-                      FROM vh_concentrado c 
-                      LEFT JOIN vacuno v ON c.vh_concentrado_tagid = v.tagid 
+    $baseQuery_concentrado = "SELECT c.*, v.nombre
+                      FROM vh_concentrado c
+                      LEFT JOIN vacuno v ON c.vh_concentrado_tagid = v.tagid
                       WHERE c.vh_concentrado_tagid = '$tagid'";
 } else {
-    $baseQuery_concentrado = "SELECT c.*, v.nombre 
-                      FROM vh_concentrado c 
+    $baseQuery_concentrado = "SELECT c.*, v.nombre
+                      FROM vh_concentrado c
                       LEFT JOIN vacuno v ON c.vh_concentrado_tagid = v.tagid";
 }
 $result_concentrado = $conn->query($baseQuery_concentrado);
@@ -2045,14 +1331,11 @@ $result_concentrado = $conn->query($baseQuery_concentrado);
     <!-- Search Form -->
 <form method="GET" class="mb-4">
         <div class="input-group">
-            <input type="text" id="search" name="search" placeholder="Buscar por Tag ID..." 
+            <input type="text" id="search" name="search" placeholder="Buscar por Tag ID..."
                 value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
-            <button type="submit" class="btn btn-primary">Buscar</button>
+            <button type="submit" class="btn btn-success">Buscar</button>
         </div>
     </form>
-</div>
-<div class="container mt-4">
-    <h3 id="section-registros-concentrado" style="text-align: center;">REGISTROS ALIMENTO CONCENTRADO</h3>
 </div>
 
 <!-- Registros de Concentrado -->
@@ -2073,10 +1356,10 @@ $result_concentrado = $conn->query($baseQuery_concentrado);
 
 <div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
     <h4 class="sub-section-title">Control de concentrado</h4>
-    
+
 <!-- Add New concentrado Form -->
-<button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addconcentradoForm">
-    <i class="fas fa-plus"></i> Registrar  concentrado
+<button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addconcentradoForm">
+    <i class="fas fa-plus"></i> Registrar
 </button>
 
 <div class="collapse mb-3" id="addconcentradoForm">
@@ -2098,7 +1381,7 @@ $result_concentrado = $conn->query($baseQuery_concentrado);
                     <input type="number" step="0.01" class="form-control" name="racion" required>
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label">Costo ($)</label>
+                    <label class="form-label">Costo</label>
                     <input type="number" step="0.01" class="form-control" name="costo" required>
                 </div>
                 <div class="col-md-4">
@@ -2111,7 +1394,7 @@ $result_concentrado = $conn->query($baseQuery_concentrado);
             </div>
         </form>
     </div>
-</div>    
+</div>
 
 
     <div class="table-responsive">
@@ -2123,7 +1406,7 @@ $result_concentrado = $conn->query($baseQuery_concentrado);
                     <th style="text-align: center;">Producto</th>
                     <th style="text-align: center;">Ración (kg)</th>
                     <th style="text-align: center;">Costo ($/kg)</th>
-                    <th style="text-align: center;">Total ($)</th>                    
+                    <th style="text-align: center;">Total ($)</th>
                     <th style="text-align: center;"></th>
 
                 </tr>
@@ -2135,7 +1418,7 @@ $result_concentrado = $conn->query($baseQuery_concentrado);
                     while($row = $result_concentrado->fetch_assoc()) {
                         $total = floatval($row['vh_concentrado_racion']) * floatval($row['vh_concentrado_costo']);
                         $total_costo_concentrado += $total;
-                        
+
                         echo "<tr>";
                         echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_concentrado_fecha']) . "</td>";
                         echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_concentrado_etapa']) . "</td>";
@@ -2143,16 +1426,16 @@ $result_concentrado = $conn->query($baseQuery_concentrado);
                         echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_concentrado_racion']) . "</td>";
                         echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_concentrado_costo']) . "</td>";
                         echo "<td style='text-align: center;'>" . number_format($total, 2) . "</td>";
-                        
+
                         echo "<td style='text-align: center;'>
                                 <div class='d-flex text-center justify-content-center gap-2'>
-                                    <button class='btn btn-sm btn-primary' onclick='openEditConcentradoModal(" . 
-                                    $row['id'] . ", \"" . 
-                                    $row['vh_concentrado_fecha'] . "\", \"" . 
-                                    $row['vh_concentrado_tagid'] . "\", \"" . 
-                                    $row['vh_concentrado_racion'] . "\", \"" . 
-                                    $row['vh_concentrado_costo'] . "\", \"" . 
-                                    $row['vh_concentrado_etapa'] . "\", \"" . 
+                                    <button class='btn btn-sm btn-success' onclick='openEditConcentradoModal(" .
+                                    $row['id'] . ", \"" .
+                                    $row['vh_concentrado_fecha'] . "\", \"" .
+                                    $row['vh_concentrado_tagid'] . "\", \"" .
+                                    $row['vh_concentrado_racion'] . "\", \"" .
+                                    $row['vh_concentrado_costo'] . "\", \"" .
+                                    $row['vh_concentrado_etapa'] . "\", \"" .
                                     $row['vh_concentrado_producto']. "\")'>
                                     <i class='fas fa-edit'></i>
                                     </button>
@@ -2166,30 +1449,21 @@ $result_concentrado = $conn->query($baseQuery_concentrado);
                 }
                 ?>
             </tbody>
-            <tfoot>
-                <tr class="table-info">
-                    <td colspan="5"><strong>Total</strong></td>
-                    <td><strong>$<?php echo number_format($total_costo_concentrado, 2); ?></strong></td>
-                    <td colspan="2"></td>
-                </tr>
-            </tfoot>
         </table>
-        <script>
-$(document).ready(function() {
+</div>
+</div>
+<script>
+    $(document).ready(function() {
     $('#concentradoTable').DataTable({
-        // Set initial page length to 5
+        // Basic configuration
         pageLength: 5,
-        
-        // Configure length menu options
         lengthMenu: [
             [5, 10, 25, 50, 100, -1],
             [5, 10, 25, 50, 100, "Todos"]
         ],
-        
-        // Order by fecha (date) column descending
         order: [[0, 'desc']],
         
-        // Spanish language
+        // Spanish language configuration
         language: {
             url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json',
             lengthMenu: "Mostrar _MENU_ registros por página",
@@ -2205,16 +1479,22 @@ $(document).ready(function() {
                 previous: "Anterior"
             }
         },
-        
-        // Enable responsive features
-        responsive: true,
-        
-        // Configure DOM layout and buttons
+
+        // Responsive configuration
+        responsive: {
+            details: {
+                display: $.fn.dataTable.Responsive.display.childRow,
+                type: 'column',
+                target: 'tr'
+            }
+        },
+
+        // DOM and button configuration
         dom: '<"row"<"col-sm-12 col-md-6"B><"col-sm-12 col-md-6"f>>' +
              '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"p>>' +
              '<"row"<"col-sm-12"tr>>' +
              '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
-        
+
         buttons: [
             {
                 extend: 'collection',
@@ -2228,11 +1508,41 @@ $(document).ready(function() {
                 ]
             }
         ],
-        
-        // Column specific settings
+
+        // Column definitions
         columnDefs: [
             {
-                targets: [6], // Acciones column
+                // Control column for expand/collapse
+                className: 'control',
+                orderable: false,
+                targets: 0
+            },
+            {
+                // Format numeric columns
+                targets: [3, 4, 5], // Ración, Costo, Total columns
+                render: function(data, type, row) {
+                    if (type === 'display') {
+                        return parseFloat(data).toLocaleString('es-ES', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        });
+                    }
+                    return data;
+                }
+            },
+            {
+                // Format date column
+                targets: [0],
+                render: function(data, type, row) {
+                    if (type === 'display') {
+                        return new Date(data).toLocaleDateString('es-ES');
+                    }
+                    return data;
+                }
+            },
+            {
+                // Actions column
+                targets: -1,
                 orderable: false,
                 searchable: false
             }
@@ -2240,9 +1550,6 @@ $(document).ready(function() {
     });
 });
 </script>
-</div>
-</div>
-        
 <!-- Edit concentrado Modal -->
 <div class="modal fade" id="editConcentradoModal" tabindex="-1">
     <div class="modal-dialog">
@@ -2269,7 +1576,7 @@ $(document).ready(function() {
                         <input type="number" step="0.01" class="form-control" name="racion" id="edit_concentrado_racion" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Costo ($)</label>
+                        <label class="form-label">Costo</label>
                         <input type="number" step="0.01" class="form-control" name="costo" id="edit_concentrado_costo" required>
                     </div>
                     <div class="mb-3">
@@ -2279,7 +1586,7 @@ $(document).ready(function() {
                 </div>
                 <div class="modal-footer d-flex justify-content-between">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    <button type="submit" class="btn btn-success">Guardar Cambios</button>
                 </div>
             </form>
         </div>
@@ -2294,10 +1601,10 @@ function openEditConcentradoModal(id, fecha, tagid, racion, costo, etapa, produc
     document.getElementById('edit_concentrado_tagid').value = tagid;
     document.getElementById('edit_concentrado_racion').value = racion;
     document.getElementById('edit_concentrado_costo').value = costo;
-    document.getElementById('edit_concentrado_etapa').value = etapa;    
-    document.getElementById('edit_concentrado_producto').value = producto;    
-    
-    
+    document.getElementById('edit_concentrado_etapa').value = etapa;
+    document.getElementById('edit_concentrado_producto').value = producto;
+
+
     var editModal = new bootstrap.Modal(document.getElementById('editConcentradoModal'));
     editModal.show();
 }
@@ -2326,8 +1633,8 @@ function deleteconcentradoEntry(id) {
 
 
 <div style="max-width: 1300px; margin: 40px auto;">
-<h3 style="text-align: center;">Inversion Acumulada Alimento Concentrado</h3>
-<canvas id="concentrado-acumulado-mensual"></canvas>
+    <h4 style="text-align: center;">Inversion Acumulada Alimento Concentrado</h4>
+    <canvas id="concentrado-acumulado-mensual"></canvas>
 </div>
 
 
@@ -2344,14 +1651,16 @@ $result_melaza = $conn->query($baseQuery_melaza);
 ?>
 
 <!-- Melaza Table -->
-
+<div class="container mt-4">
+    <h4 id="section-registros-concentrado" style="text-align: center;">REGISTROS MELAZA</h4>
+</div>
 <div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
     <h4 class="sub-section-title">Control de Melaza</h4>
-    
-<!-- Add New Melaza Form -->
-<button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addMelazaForm">
-    <i class="fas fa-plus"></i> Registrar  Melaza
-</button>
+    <!-- Add New Melaza Form -->
+    <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addMelazaForm">
+        <i class="fas fa-plus"></i> Registrar
+    </button>
+
 
 <div class="collapse mb-3" id="addMelazaForm">
     <div class="card card-body">
@@ -2372,7 +1681,7 @@ $result_melaza = $conn->query($baseQuery_melaza);
                     <input type="number" step="0.01" class="form-control" name="racion" required>
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label">Costo ($)</label>
+                    <label class="form-label">Costo</label>
                     <input type="number" step="0.01" class="form-control" name="costo" required>
                 </div>
                 <div class="col-md-4">
@@ -2385,27 +1694,8 @@ $result_melaza = $conn->query($baseQuery_melaza);
             </div>
         </form>
     </div>
-</div>    
-    <!-- Table Controls -->
-    <div class="row mb-3">
-        <div class="col-md-6">
-            <div class="d-flex align-items-center">
-                <label class="me-2">Show entries:</label>
-                <select class="form-select form-select-sm w-auto" id="melazaEntriesLength">
-                    <option value="10">10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                </select>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="d-flex justify-content-end">
-                <input type="search" class="form-control form-control-sm w-auto" 
-                       placeholder="Filter results..." id="melazaTableFilter">
-            </div>
-        </div>
-    </div>
+</div>
+
 
     <div class="table-responsive">
         <table id="melazaTable" class="table table-striped table-bordered">
@@ -2416,7 +1706,7 @@ $result_melaza = $conn->query($baseQuery_melaza);
                     <th style="text-align: center;">Producto</th>
                     <th style="text-align: center;">Ración (kg)</th>
                     <th style="text-align: center;">Costo ($/kg)</th>
-                    <th style="text-align: center;">Total ($)</th>                    
+                    <th style="text-align: center;">Total ($)</th>
                     <th style="text-align: center;"></th>
 
                 </tr>
@@ -2428,7 +1718,7 @@ $result_melaza = $conn->query($baseQuery_melaza);
                     while($row = $result_melaza->fetch_assoc()) {
                         $total = floatval($row['vh_melaza_racion']) * floatval($row['vh_melaza_costo']);
                         $total_costo_melaza += $total;
-                        
+
                         echo "<tr>";
                         echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_melaza_fecha']) . "</td>";
                         echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_melaza_etapa']) . "</td>";
@@ -2438,13 +1728,13 @@ $result_melaza = $conn->query($baseQuery_melaza);
                         echo "<td style='text-align: center;'>" . number_format($total, 2) . "</td>";
                         echo "<td style='text-align: center;'>
                                 <div class='d-flex text-center justify-content-center gap-2'>
-                                    <button class='btn btn-sm btn-primary' onclick='openEditMelazaModal(" . 
-                                        $row['id'] . ", \"" . 
-                                        $row['vh_melaza_tagid'] . "\", \"" . 
-                                        $row['vh_melaza_racion'] . "\", \"" . 
-                                        $row['vh_melaza_costo'] . "\", \"" . 
-                                        $row['vh_melaza_etapa'] . "\", \"" . 
-                                        $row['vh_melaza_producto'] . "\", \"" . 
+                                    <button class='btn btn-sm btn-success' onclick='openEditMelazaModal(" .
+                                        $row['id'] . ", \"" .
+                                        $row['vh_melaza_tagid'] . "\", \"" .
+                                        $row['vh_melaza_racion'] . "\", \"" .
+                                        $row['vh_melaza_costo'] . "\", \"" .
+                                        $row['vh_melaza_etapa'] . "\", \"" .
+                                        $row['vh_melaza_producto'] . "\", \"" .
                                         $row['vh_melaza_fecha'] . "\")'>
                                         <i class='fas fa-edit'></i>
                                     </button>
@@ -2458,30 +1748,19 @@ $result_melaza = $conn->query($baseQuery_melaza);
                 }
                 ?>
             </tbody>
-            <tfoot>
-                <tr class="table-info">
-                    <td colspan="4"><strong>Total</strong></td>
-                    <td><strong>$<?php echo number_format($total_costo_melaza, 2); ?></strong></td>
-                    <td colspan="2"></td>
-                </tr>
-            </tfoot>
         </table>
-        <script>
+<script>
 $(document).ready(function() {
     $('#melazaTable').DataTable({
-        // Set initial page length to 5
+        // Basic configuration
         pageLength: 5,
-        
-        // Configure length menu options
         lengthMenu: [
             [5, 10, 25, 50, 100, -1],
             [5, 10, 25, 50, 100, "Todos"]
         ],
-        
-        // Order by fecha (date) column descending
         order: [[0, 'desc']],
         
-        // Spanish language
+        // Spanish language configuration
         language: {
             url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json',
             lengthMenu: "Mostrar _MENU_ registros por página",
@@ -2497,16 +1776,22 @@ $(document).ready(function() {
                 previous: "Anterior"
             }
         },
-        
-        // Enable responsive features
-        responsive: true,
-        
-        // Configure DOM layout and buttons
+
+        // Responsive configuration
+        responsive: {
+            details: {
+                display: $.fn.dataTable.Responsive.display.childRow,
+                type: 'column',
+                target: 'tr'
+            }
+        },
+
+        // DOM and button configuration
         dom: '<"row"<"col-sm-12 col-md-6"B><"col-sm-12 col-md-6"f>>' +
              '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"p>>' +
              '<"row"<"col-sm-12"tr>>' +
              '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
-        
+
         buttons: [
             {
                 extend: 'collection',
@@ -2520,11 +1805,31 @@ $(document).ready(function() {
                 ]
             }
         ],
-        
-        // Column specific settings
+
+        // Column definitions
         columnDefs: [
             {
-                targets: [0], // Fecha column
+                // Control column for expand/collapse
+                className: 'control',
+                orderable: false,
+                targets: 0
+            },
+            {
+                // Format numeric columns
+                targets: [3, 4, 5], // Ración, Costo, Total columns
+                render: function(data, type, row) {
+                    if (type === 'display') {
+                        return parseFloat(data).toLocaleString('es-ES', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        });
+                    }
+                    return data;
+                }
+            },
+            {
+                // Format date column
+                targets: [0],
                 render: function(data, type, row) {
                     if (type === 'display') {
                         return new Date(data).toLocaleDateString('es-ES');
@@ -2533,7 +1838,8 @@ $(document).ready(function() {
                 }
             },
             {
-                targets: [6], // Acciones column
+                // Actions column
+                targets: -1,
                 orderable: false,
                 searchable: false
             }
@@ -2543,7 +1849,7 @@ $(document).ready(function() {
 </script>
 </div>
 </div>
-        
+
 <!-- Edit Melaza Modal -->
 <div class="modal fade" id="editMelazaModal" tabindex="-1">
     <div class="modal-dialog">
@@ -2570,7 +1876,7 @@ $(document).ready(function() {
                         <input type="number" step="0.01" class="form-control" name="racion" id="edit_melaza_racion" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Costo ($)</label>
+                        <label class="form-label">Costo</label>
                         <input type="number" step="0.01" class="form-control" name="costo" id="edit_melaza_costo" required>
                     </div>
                     <div class="mb-3">
@@ -2580,7 +1886,7 @@ $(document).ready(function() {
                 </div>
                 <div class="modal-footer d-flex justify-content-between">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    <button type="submit" class="btn btn-success">Guardar Cambios</button>
                 </div>
             </form>
         </div>
@@ -2597,7 +1903,7 @@ function openEditMelazaModal(id, tagid, racion, costo, etapa, producto, fecha) {
     document.getElementById('edit_melaza_racion').value = racion;
     document.getElementById('edit_melaza_costo').value = costo;
     document.getElementById('edit_melaza_fecha').value = fecha;
-    
+
     var editModal = new bootstrap.Modal(document.getElementById('editMelazaModal'));
     editModal.show();
 }
@@ -2624,10 +1930,12 @@ function deleteMelazaEntry(id) {
 }
 </script>
 
+
 <div style="max-width: 1300px; margin: 40px auto;">
-<h3 style="text-align: center;">Inversion Acumulada Melaza</h3>
+<h2>Inversion Acumulada Melaza</h2>
 <canvas id="melaza-acumulado-mensual"></canvas>
 </div>
+
 
 <!-- Sal Table Section -->
 <?php
@@ -2642,12 +1950,16 @@ $result_sal = $conn->query($baseQuery_sal);
 ?>
 
 <!-- Sal Table -->
+<div class="container mt-4">
+    <h4 id="section-registros-concentrado" style="text-align: center;">REGISTROS SAL MINERAL</h4>
+</div>
+
 <div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
     <h4 class="sub-section-title">Control de Sal</h4>
-    
+
     <!-- Add New Sal Form -->
-    <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addSalForm">
-        <i class="fas fa-plus"></i> Registrar Sal
+    <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addSalForm">
+        <i class="fas fa-plus"></i> Registrar
     </button>
     <div class="collapse mb-3" id="addSalForm">
     <div class="card card-body">
@@ -2663,7 +1975,7 @@ $result_sal = $conn->query($baseQuery_sal);
             }
             ?>
             <input type="hidden" name="tagid" value="<?php echo $tagid; ?>">
-            
+
             <!-- Debug output to verify tagid -->
             <?php if (empty($tagid)): ?>
                 <div class="alert alert-warning">
@@ -2701,27 +2013,8 @@ $result_sal = $conn->query($baseQuery_sal);
         </form>
     </div>
 </div>
-    <!-- Table Controls -->
-    <div class="row mb-3">
-        <div class="col-md-6">
-            <div class="d-flex align-items-center">
-                <label class="me-2">Show entries:</label>
-                <select class="form-select form-select-sm w-auto" id="salEntriesLength">
-                    <option value="10">10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                </select>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="d-flex justify-content-end">
-                <input type="search" class="form-control form-control-sm w-auto" 
-                       placeholder="Filter results..." id="salTableFilter">
-            </div>
-        </div>
-    </div>
-
+</div>
+<div class="container">
     <div class="table-responsive">
         <table id="salTable" class="table table-striped table-bordered">
             <thead>
@@ -2730,7 +2023,7 @@ $result_sal = $conn->query($baseQuery_sal);
                     <th style="text-align: center;">Producto</th>
                     <th style="text-align: center;">Etapa</th>
                     <th style="text-align: center;">Ración (kg)</th>
-                    <th style="text-align: center;">Costo ($)</th>
+                    <th style="text-align: center;">Costo</th>
                     <th style="text-align: center;">Total</th>
                     <th style="text-align: center;">Acciones</th>
 
@@ -2740,7 +2033,7 @@ $result_sal = $conn->query($baseQuery_sal);
                 <?php
                 $sql = "SELECT * FROM vh_sal WHERE vh_sal_tagid = '$tagid' ORDER BY vh_sal_fecha DESC";
                 $result = $conn->query($sql);
-                
+
                 if ($result->num_rows > 0) {
                     while($row = $result->fetch_assoc()) {
                         $total = $row['vh_sal_racion'] * $row['vh_sal_costo'];
@@ -2753,13 +2046,13 @@ $result_sal = $conn->query($baseQuery_sal);
                                 <td style='text-align: center;'>$" . number_format($total, 2) . "</td>
                                 <td style='text-align: center;'>
                                     <div class='d-flex text-center justify-content-center gap-2'>
-                                        <button class='btn btn-sm btn-primary' onclick='openEditSalModal(" . 
-                                            $row['id'] . ", \"" . 
-                                            htmlspecialchars($row['vh_sal_tagid'], ENT_QUOTES) . "\", \"" . 
-                                            htmlspecialchars($row['vh_sal_racion'], ENT_QUOTES) . "\", \"" . 
-                                            htmlspecialchars($row['vh_sal_costo'], ENT_QUOTES) . "\", \"" . 
-                                            htmlspecialchars($row['vh_sal_etapa'], ENT_QUOTES) . "\", \"" . 
-                                            htmlspecialchars($row['vh_sal_producto'], ENT_QUOTES) . "\", \"" . 
+                                        <button class='btn btn-sm btn-success' onclick='openEditSalModal(" .
+                                            $row['id'] . ", \"" .
+                                            htmlspecialchars($row['vh_sal_tagid'], ENT_QUOTES) . "\", \"" .
+                                            htmlspecialchars($row['vh_sal_racion'], ENT_QUOTES) . "\", \"" .
+                                            htmlspecialchars($row['vh_sal_costo'], ENT_QUOTES) . "\", \"" .
+                                            htmlspecialchars($row['vh_sal_etapa'], ENT_QUOTES) . "\", \"" .
+                                            htmlspecialchars($row['vh_sal_producto'], ENT_QUOTES) . "\", \"" .
                                             $row['vh_sal_fecha'] . "\")'>
                                             <i class='fas fa-edit'></i>
                                         </button>
@@ -2774,21 +2067,21 @@ $result_sal = $conn->query($baseQuery_sal);
                 ?>
             </tbody>
         </table>
-        <script>
+<script>
 $(document).ready(function() {
     $('#salTable').DataTable({
         // Set initial page length to 5
         pageLength: 5,
-        
+
         // Configure length menu options
         lengthMenu: [
             [5, 10, 25, 50, 100, -1],
             [5, 10, 25, 50, 100, "Todos"]
         ],
-        
+
         // Order by fecha (date) column descending
         order: [[0, 'desc']],
-        
+
         // Spanish language
         language: {
             url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json',
@@ -2805,16 +2098,16 @@ $(document).ready(function() {
                 previous: "Anterior"
             }
         },
-        
+
         // Enable responsive features
         responsive: true,
-        
+
         // Configure DOM layout and buttons
         dom: '<"row"<"col-sm-12 col-md-6"B><"col-sm-12 col-md-6"f>>' +
              '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"p>>' +
              '<"row"<"col-sm-12"tr>>' +
              '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
-        
+
         buttons: [
             {
                 extend: 'collection',
@@ -2828,9 +2121,41 @@ $(document).ready(function() {
                 ]
             }
         ],
-        
-        // Column specific settings
-        columnDefs: [
+
+         // Column specific settings
+         columnDefs: [
+            {
+                targets: [3], // Dosis column
+                render: function(data, type, row) {
+                    if (type === 'display') {
+                        // Remove any currency symbols or spaces before parsing
+                        const value = parseFloat(String(data).replace(/[^\d.-]/g, ''));
+                        return value.toLocaleString('es-ES', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        });
+                    }
+                    return data;
+                }
+            },
+            {
+                targets: [4], // Costo column
+                render: function(data, type, row) {
+                    if (type === 'display') {
+                        // Clean the data before parsing
+                        const value = parseFloat(String(data).replace(/[^\d.-]/g, ''));
+                        if (isNaN(value)) {
+                            console.log('Invalid Costo value:', data); // Debug log
+                            return '$ 0.00';
+                        }
+                        return '$ ' + value.toLocaleString('es-ES', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        });
+                    }
+                    return data;
+                }
+            },
             {
                 targets: [0], // Fecha column
                 render: function(data, type, row) {
@@ -2849,7 +2174,7 @@ $(document).ready(function() {
     });
 });
 </script>
-    </div>
+</div>
 </div>
 
 <!-- Edit Sal Modal -->
@@ -2878,7 +2203,7 @@ $(document).ready(function() {
                         <input type="number" step="0.01" class="form-control" name="racion" id="edit_sal_racion" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Costo ($)</label>
+                        <label class="form-label">Costo</label>
                         <input type="number" step="0.01" class="form-control" name="costo" id="edit_sal_costo" required>
                     </div>
                     <div class="mb-3">
@@ -2888,7 +2213,7 @@ $(document).ready(function() {
                 </div>
                 <div class="modal-footer d-flex justify-content-between">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    <button type="submit" class="btn btn-success">Guardar Cambios</button>
                 </div>
             </form>
         </div>
@@ -2906,7 +2231,7 @@ function openEditSalModal(id, tagid, racion, costo, etapa, producto, fecha) {
     document.getElementById('edit_sal_racion').value = racion;
     document.getElementById('edit_sal_costo').value = costo;
     document.getElementById('edit_sal_fecha').value = fecha;
-    
+
     var editModal = new bootstrap.Modal(document.getElementById('editSalModal'));
     editModal.show();
 }
@@ -2933,206 +2258,148 @@ function deleteSalEntry(id) {
 }
 </script>
 <div style="max-width: 1300px; margin: 40px auto;">
-    <h3 style="text-align: center;">Inversion Acumulada Sal Mineral</h3>
+    <h2>Inversion Acumulada Sal Mineral</h2>
     <canvas id="sal-acumulado-mensual"></canvas>
 </div>
 <div style="max-width: 800px; margin: 40px auto;">
-    <h3 style="text-align: center;">Distribución de Inversión en Alimentación</h3>
+    <h2>Distribución de Inversión en Alimentación</h2>
     <canvas id="investment-distribution-pie"></canvas>
 </div>
-<div class="container table-section" style="display:block; justify-content: center; align-items: center;">
-<h3 id="section-registros-salud" style="text-align: center;">REGISTROS DE SALUD</h3>
+
+<h3  class="container mt-4" class="collapse" id="section-historial-salud-vacuno">
+REGISTROS DE SALUD
+</h3>
 <!-- Aftosa Table Section -->
 <?php
-// Build the base query for Aftosa
+// First, update the query to include the JOIN
 if (isset($_GET['search']) && !empty($_GET['search'])) {
     $tagid = $conn->real_escape_string($_GET['search']);
-    $baseQuery_aftosa = "SELECT * FROM vh_aftosa WHERE vh_aftosa_tagid = '$tagid'";
+    $baseQuery_aftosa = "SELECT a.*, v.nombre
+                      FROM vh_aftosa a
+                      LEFT JOIN vacuno v ON a.vh_aftosa_tagid = v.tagid
+                      WHERE a.vh_aftosa_tagid = '$tagid'";
 } else {
-    $baseQuery_aftosa = "SELECT * FROM vh_aftosa";
+    $baseQuery_aftosa = "SELECT a.*, v.nombre
+                      FROM vh_aftosa a
+                      LEFT JOIN vacuno v ON a.vh_aftosa_tagid = v.tagid";
 }
-$result_sal = $conn->query($baseQuery_aftosa);
+$result_aftosa = $conn->query($baseQuery_aftosa);
 ?>
+<!-- Registros de Aftosa -->
+<div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
+    <h4 class="sub-section-title text-center">REGISTROS VACUNACION AFTOSA</h4>
+</div>
+<!-- Aftosa: Nuevo Registro Form -->
+<div class="container table-section" style="display: block;">
 
-<!-- Aftosa Table -->
-<!-- Edit Aftosa Modal -->
-<div class="modal fade" id="editAftosaModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Editar Aftosa</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <form id="editAftosaForm" action="process_aftosa.php" method="POST">
-                <div class="modal-body">
-                    <input type="hidden" name="action" value="update">
-                    <input type="hidden" name="id" id="edit_aftosa_id">
-                    <input type="hidden" name="tagid" id="edit_aftosa_tagid">
-                    <div class="mb-3">
-                        <label class="form-label">Producto</label>
-                        <input type="text" class="form-control" name="producto" id="edit_aftosa_producto" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Dosis (ml)</label>
-                        <input type="number" step="0.01" class="form-control" name="dosis" id="edit_aftosa_dosis" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Costo ($)</label>
-                        <input type="number" step="0.01" class="form-control" name="costo" id="edit_aftosa_costo" required>
-                    </div>
-                    <div class="mb-3">
+    <h4 class="sub-section-title">Control de Vacunacion Aftosa</h4>
+    <!-- Add New Aftosa Form -->
+    <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addAftosaForm">
+        <i class="fas fa-plus"></i> Registrar
+    </button>
+
+    <!-- NEW AFTOSA FORM -->
+
+    <div class="collapse mb-3" id="addAftosaForm">
+        <div class="card card-body">
+            <form id="aftosaForm" action="process_aftosa.php" method="POST">
+                <input type="hidden" name="action" value="insert">
+                <input type="hidden" name="tagid" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
+                <div class="row g-3">
+                    <div class="col-md-4">
                         <label class="form-label">Fecha</label>
-                        <input type="date" class="form-control" name="fecha" id="edit_aftosa_fecha" required>
+                        <input type="date" class="form-control" name="fecha" required>
                     </div>
-                </div>
-                <div class="modal-footer d-flex justify-content-between">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    <div class="col-md-4">
+                        <label class="form-label">Producto</label>
+                        <input type="text" class="form-control" name="producto" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Dosis</label>
+                        <input type="number" step="0.01" class="form-control" name="dosis" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Costo</label>
+                        <input type="number" step="0.01" class="form-control" name="costo" required>
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-success">Guardar</button>
+                    </div>
                 </div>
             </form>
         </div>
     </div>
-</div>
 
-<div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
-    <h4 class="sub-section-title">Vacunas Aftosa</h4>
-    
-    <!-- Add New Aftosa Form -->
-    <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addAftosaForm">
-        <i class="fas fa-plus"></i> Registrar Vacuna  Aftosa
-    </button>
-    <div class="collapse mb-3" id="addAftosaForm">
-    <div class="card card-body">
-        <form id="aftosaForm" action="process_aftosa.php" method="POST">
-        <input type="hidden" name="action" value="insert">
-            <?php
-            // Ensure tagid is set from either GET or SESSION
-            $tagid = '';
-            if (isset($_GET['search']) && !empty($_GET['search'])) {
-                $tagid = htmlspecialchars($_GET['search']);
-            } elseif (isset($_SESSION['current_tagid']) && !empty($_SESSION['current_tagid'])) {
-                $tagid = htmlspecialchars($_SESSION['current_tagid']);
-            }
-            ?>
-            <input type="hidden" name="tagid" value="<?php echo $tagid; ?>">
-            
-            <!-- Debug output to verify tagid -->
-            <?php if (empty($tagid)): ?>
-                <div class="alert alert-warning">
-                    No se ha seleccionado ningún animal. Por favor, busque un animal primero.
-                </div>
-            <?php endif; ?>
+    <!-- Aftosa DataTable -->
 
-            <div class="row g-3">
-                <div class="col-md-4">
-                    <label class="form-label">Producto</label>
-                    <input type="text" class="form-control" name="producto" required>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Dosis (ml)</label>
-                    <input type="number" step="0.01" class="form-control" name="dosis" required>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Costo ($/kg)</label>
-                    <input type="number" step="0.01" class="form-control" name="costo" required>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Fecha</label>
-                    <input type="date" class="form-control" name="fecha" required>
-                </div>
-                <div class="col-12">
-                    <button type="submit" class="btn btn-success" <?php echo empty($tagid) ? 'disabled' : ''; ?>>
-                        Guardar
-                    </button>
-                </div>
-            </div>
-        </form>
+    <div class="table-responsive">
+        <table id="aftosaTable" class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Tag ID</th>
+                    <th>Producto</th>
+                    <th>Dosis</th>
+                    <th>Costo</th>
+                    <th>Fecha</th>
+                    <th>Acciones</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                if ($result_aftosa->num_rows > 0) {
+                    while($row = $result_aftosa->fetch_assoc()) {
+                        $valor_total = floatval($row['vh_aftosa_costo']);
+
+                        echo "<tr>";
+                        echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_aftosa_tagid']) . "</td>";
+                        echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_aftosa_producto'] ?? 'N/A') . "</td>";
+                        echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_aftosa_dosis']) . "</td>";
+                        echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_aftosa_costo']) . "</td>";
+                        echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_aftosa_fecha']) . "</td>";
+                        echo "<td style='text-align: center;'>
+                                <div class='btn-group' role='group'>
+                                    <button class='btn btn-success text-center btn-sm edit-aftosa'
+                                            data-bs-toggle='modal'
+                                            data-bs-target='#editAftosaModal'
+                                            data-id='" . htmlspecialchars($row['id']) . "'
+                                            data-tagid='" . htmlspecialchars($row['vh_aftosa_tagid']) . "'
+                                            data-dosis='" . htmlspecialchars($row['vh_aftosa_dosis']) . "'
+                                            data-costo='" . htmlspecialchars($row['vh_aftosa_costo']) . "'
+                                            data-fecha='" . htmlspecialchars($row['vh_aftosa_fecha']) . "'>
+                                        <i class='fas fa-edit'></i>
+                                    </button>
+                                    <button class='btn btn-danger btn-sm onclick='deleteAftosaEntry(" . $row['id'] . ")''
+                                            data-id='" . htmlspecialchars($row['id']) . "'>
+                                        <i class='fas fa-trash'></i>
+                                    </button>
+                                </div>
+                            </td>";
+                        echo "</tr>";
+                    }
+                }
+                ?>
+            </tbody>
+        </table>
     </div>
 </div>
-    <!-- Table Controls -->
-    <div class="row mb-3">
-        <div class="col-md-6">
-            <div class="d-flex align-items-center">
-                <label class="me-2">Show entries:</label>
-                <select class="form-select form-select-sm w-auto" id="aftosaEntriesLength">
-                    <option value="10">10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                </select>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="d-flex justify-content-end">
-                <input type="search" class="form-control form-control-sm w-auto" 
-                       placeholder="Filter results..." id="aftosaTableFilter">
-            </div>
-        </div>
-    </div>
 
-  <div class="table-responsive">
-      <table id="aftosaTable" class="table table-striped table-bordered">
-          <thead>
-              <tr>
-                  <th style="text-align: center;">Fecha</th>
-                  <th style="text-align: center;">Producto</th>
-                  <th style="text-align: center;">Dosis (ml)</th>
-                  <th style="text-align: center;">Costo ($/Dosis)</th>
-                  <th style="text-align: center;">Acciones</th>
-
-              </tr>
-          </thead>
-          <tbody>
-              <?php
-              $sql = "SELECT * FROM vh_aftosa WHERE vh_aftosa_tagid = '$tagid' ORDER BY vh_aftosa_fecha DESC";
-              $result = $conn->query($sql);
-              $total_costo_aftosa = 0;
-              
-              if ($result->num_rows > 0) {
-                  while($row = $result->fetch_assoc()) {
-                    $total_costo_aftosa += $row['vh_aftosa_costo'];
-                      echo "<tr>
-                              <td style='text-align: center;'>" . date('d/m/Y', strtotime($row['vh_aftosa_fecha'])) . "</td>
-                              <td style='text-align: center;'>" . htmlspecialchars($row['vh_aftosa_producto']) . "</td>
-                              <td style='text-align: center;'>" . number_format($row['vh_aftosa_dosis'], 2) . "</td>
-                              <td style='text-align: center;'>$" . number_format($row['vh_aftosa_costo'], 2) . "</td>
-                              <td style='text-align: center;'>
-                                  <div class='d-flex text-center justify-content-center gap-2'>
-                                      <button class='btn btn-sm btn-primary' onclick='openEditAftosaModal(" . 
-                                          $row['id'] . ", \"" . 
-                                          htmlspecialchars($row['vh_aftosa_tagid'], ENT_QUOTES) . "\", \"" . 
-                                          htmlspecialchars($row['vh_aftosa_dosis'], ENT_QUOTES) . "\", \"" . 
-                                          htmlspecialchars($row['vh_aftosa_costo'], ENT_QUOTES) . "\", \"" . 
-                                          htmlspecialchars($row['vh_aftosa_producto'], ENT_QUOTES) . "\", \"" . 
-                                          $row['vh_aftosa_fecha'] . "\")'>
-                                          <i class='fas fa-edit'></i>
-                                      </button>
-                                      <button class='btn btn-sm btn-danger' onclick='deleteAftosaEntry(" . $row['id'] . ")'>
-                                          <i class='fas fa-trash'></i>
-                                      </button>
-                                  </div>
-                              </td>
-                            </tr>";
-                  }
-              }
-              ?>
-          </tbody>
-      </table>
-      <script>
+<!--  Peso Inicializacion DataTable -->
+<script>
 $(document).ready(function() {
     $('#aftosaTable').DataTable({
         // Set initial page length to 5
         pageLength: 5,
-        
+
         // Configure length menu options
         lengthMenu: [
             [5, 10, 25, 50, 100, -1],
             [5, 10, 25, 50, 100, "Todos"]
         ],
-        
+
         // Order by fecha (date) column descending
-        order: [[0, 'desc']],
-        
+        order: [[4, 'desc']],
+
         // Spanish language
         language: {
             url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json',
@@ -3149,16 +2416,16 @@ $(document).ready(function() {
                 previous: "Anterior"
             }
         },
-        
+
         // Enable responsive features
         responsive: true,
-        
+
         // Configure DOM layout and buttons
         dom: '<"row"<"col-sm-12 col-md-6"B><"col-sm-12 col-md-6"f>>' +
              '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"p>>' +
              '<"row"<"col-sm-12"tr>>' +
              '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
-        
+
         buttons: [
             {
                 extend: 'collection',
@@ -3172,12 +2439,23 @@ $(document).ready(function() {
                 ]
             }
         ],
-        
+
         // Column specific settings
         columnDefs: [
-
             {
-                targets: [0], // Fecha column
+                targets: [2, 3], // Peso, Precio, Valor Total columns
+                render: function(data, type, row) {
+                    if (type === 'display') {
+                        return parseFloat(data).toLocaleString('es-ES', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        });
+                    }
+                    return data;
+                }
+            },
+            {
+                targets: [4], // Fecha column
                 render: function(data, type, row) {
                     if (type === 'display') {
                         return new Date(data).toLocaleDateString('es-ES');
@@ -3186,7 +2464,7 @@ $(document).ready(function() {
                 }
             },
             {
-                targets: [4], // Acciones column
+                targets: [5], // Acciones column
                 orderable: false,
                 searchable: false
             }
@@ -3194,24 +2472,119 @@ $(document).ready(function() {
     });
 });
 </script>
+</div>
+<!-- Edit Aftosa Modal -->
+
+<div class="modal fade" id="editAftosaModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Editar Vacunacion Aftosa</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="editAftosaForm" action="process_aftosa.php" method="POST">
+                <div class="modal-body">
+                    <input type="hidden" name="action" value="update">
+                    <input type="hidden" name="id" id="edit_id">
+                    <input type="hidden" name="tagid" id="edit_tagid">
+                    <div class="mb-3">
+                        <label class="form-label">Producto</label>
+                        <input type="text" class="form-control" name="producto" id="edit_producto" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Dosis</label>
+                        <input type="number" step="0.01" class="form-control" name="dosis" id="edit_dosis" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Costo ($)</label>
+                        <input type="number" step="0.01" class="form-control" name="costo" id="edit_costo" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Fecha</label>
+                        <input type="date" class="form-control" name="fecha" id="edit_fecha" required>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-between">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-success">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
-<script>
-// Function to open edit modal for Aftosa entries
-function openEditAftosaModal(id, tagid, producto, dosis, costo,  fecha) {
-    document.getElementById('edit_aftosa_id').value = id;
-    document.getElementById('edit_aftosa_tagid').value = tagid;
-    document.getElementById('edit_aftosa_producto').value = producto;
-    document.getElementById('edit_aftosa_dosis').value = dosis;
-    document.getElementById('edit_aftosa_costo').value = costo;
-    document.getElementById('edit_aftosa_fecha').value = fecha;
-    
-    var editModal = new bootstrap.Modal(document.getElementById('editAftosaModal'));
-    editModal.show();
-}
+<!-- Edit Aftosa JS -->
 
-// Function to delete Aftosa entries
+<script>
+    // Handle edit button click
+    $('.edit-aftosa').click(function() {
+        const button = $(this);
+
+        // Get data from data attributes
+        const id = button.data('id');
+        const tagid = button.data('tagid');
+        const producto = button.data('producto');
+        const dosis = button.data('dosis');
+        const costo = button.data('costo');
+        const fecha = button.data('fecha');
+
+        // Populate modal fields
+        $('#edit_id').val(id);
+        $('#edit_tagid').val(tagid);
+        $('#edit_producto').val(producto);
+        $('#edit_dosis').val(dosis);
+        $('#edit_costo').val(costo);
+        $('#edit_fecha').val(fecha);
+    });
+
+    // Handle save changes
+    $('#saveEditAftosa').click(function() {
+        const form = $('#editAftosaForm');
+
+        // Validate form
+        if (!form[0].checkValidity()) {
+            form[0].reportValidity();
+            return;
+        }
+
+        // Show loading state
+        const saveButton = $(this);
+        const originalText = saveButton.text();
+        saveButton.prop('disabled', true).text('Guardando...');
+
+        // Send AJAX request
+        $.ajax({
+            url: 'process_aftosa.php',
+            type: 'POST',
+            data: form.serialize(),
+            action: 'update',
+            dataType: 'json',
+            success: function(response) {
+                console.log('Response received:', response);
+                try {
+                    if (response.success) {
+                        $('#editAftosaModal').modal('hide');
+                        location.reload();
+                    } else {
+                        alert('Error al actualizar: ' + (response.error || 'Error desconocido'));
+                    }
+                } catch (e) {
+                    console.error('Error parsing response:', e);
+                    alert('Error al procesar la respuesta del servidor');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX Error:', {xhr, status, error});
+                alert('Error al procesar la solicitud: ' + error);
+            },
+            complete: function() {
+                // Reset button state
+                saveButton.prop('disabled', false).text(originalText);
+            }
+        });
+    });
+
+// Function to delete concentrado entries
 function deleteAftosaEntry(id) {
     if (confirm('¿Está seguro de que desea eliminar este registro?')) {
         fetch('process_aftosa.php', {
@@ -3233,196 +2606,138 @@ function deleteAftosaEntry(id) {
 }
 </script>
 
+
 <!-- IBR Table Section -->
 <?php
-// Build the base query for IBR
+// First, update the query to include the JOIN
 if (isset($_GET['search']) && !empty($_GET['search'])) {
     $tagid = $conn->real_escape_string($_GET['search']);
-    $baseQuery_ibr = "SELECT * FROM vh_ibr WHERE vh_ibr_tagid = '$tagid'";
+    $baseQuery_ibr = "SELECT i.*, v.nombre
+                      FROM vh_ibr i
+                      LEFT JOIN vacuno v ON i.vh_ibr_tagid = v.tagid
+                      WHERE i.vh_ibr_tagid = '$tagid'";
 } else {
-    $baseQuery_ibr = "SELECT * FROM vh_ibr";
+    $baseQuery_ibr = "SELECT i.*, v.nombre
+                      FROM vh_ibr i
+                      LEFT JOIN vacuno v ON i.vh_ibr_tagid = v.tagid";
 }
 $result_ibr = $conn->query($baseQuery_ibr);
 ?>
+<!-- Registros de IBR -->
+<div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
+    <h4 class="sub-section-title text-center">REGISTROS VACUNACION IBR</h4>
+</div>
+<!-- Ibr: Nuevo Registro Form -->
+<div class="container table-section" style="display: block;">
 
-<!-- Edit IBR Modal -->
-<div class="modal fade" id="editIbrModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Editar IBR</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <form id="editIbrForm" action="process_ibr.php" method="POST">
-                <div class="modal-body">
-                    <input type="hidden" name="action" value="update">
-                    <input type="hidden" name="id" id="edit_ibr_id">
-                    <input type="hidden" name="tagid" id="edit_ibr_tagid">
-                    <div class="mb-3">
-                        <label class="form-label">Producto</label>
-                        <input type="text" class="form-control" name="producto" id="edit_ibr_producto" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Dosis (ml)</label>
-                        <input type="number" step="0.01" class="form-control" name="dosis" id="edit_ibr_dosis" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Costo ($)</label>
-                        <input type="number" step="0.01" class="form-control" name="costo" id="edit_ibr_costo" required>
-                    </div>
-                    <div class="mb-3">
+    <h4 class="sub-section-title">Control de Vacunacion IBR</h4>
+    <!-- Add New Ibr Form -->
+    <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addAftosaForm">
+        <i class="fas fa-plus"></i> Registrar
+    </button>
+
+    <!-- NEW IBR FORM -->
+
+    <div class="collapse mb-3" id="addIbrForm">
+        <div class="card card-body">
+            <form id="ibrForm" action="process_ibr.php" method="POST">
+                <input type="hidden" name="action" value="insert">
+                <input type="hidden" name="tagid" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
+                <div class="row g-3">
+                    <div class="col-md-4">
                         <label class="form-label">Fecha</label>
-                        <input type="date" class="form-control" name="fecha" id="edit_ibr_fecha" required>
+                        <input type="date" class="form-control" name="fecha" required>
                     </div>
-                </div>
-                <div class="modal-footer d-flex justify-content-between">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    <div class="col-md-4">
+                        <label class="form-label">Producto</label>
+                        <input type="text" class="form-control" name="producto" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Dosis</label>
+                        <input type="number" step="0.01" class="form-control" name="dosis" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Costo</label>
+                        <input type="number" step="0.01" class="form-control" name="costo" required>
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-success">Guardar</button>
+                    </div>
                 </div>
             </form>
         </div>
     </div>
-</div>
 
-<div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
-    <h4 class="sub-section-title">Vacunas IBR</h4>
-    
-    <!-- Add New IBR Form -->
-    <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addIbrForm">
-        <i class="fas fa-plus"></i> Registrar Vacuna  IBR
-    </button>
-    <div class="collapse mb-3" id="addIbrForm">
-    <div class="card card-body">
-        <form id="ibrForm" action="process_ibr.php" method="POST">
-        <input type="hidden" name="action" value="insert">
-            <?php
-            // Ensure tagid is set from either GET or SESSION
-            $tagid = '';
-            if (isset($_GET['search']) && !empty($_GET['search'])) {
-                $tagid = htmlspecialchars($_GET['search']);
-            } elseif (isset($_SESSION['current_tagid']) && !empty($_SESSION['current_tagid'])) {
-                $tagid = htmlspecialchars($_SESSION['current_tagid']);
-            }
-            ?>
-            <input type="hidden" name="tagid" value="<?php echo $tagid; ?>">
-            
-            <!-- Debug output to verify tagid -->
-            <?php if (empty($tagid)): ?>
-                <div class="alert alert-warning">
-                    No se ha seleccionado ningún animal. Por favor, busque un animal primero.
-                </div>
-            <?php endif; ?>
+    <!-- IBR DataTable -->
 
-            <div class="row g-3">
-                <div class="col-md-4">
-                    <label class="form-label">Producto</label>
-                    <input type="text" class="form-control" name="producto" required>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Dosis (ml)</label>
-                    <input type="number" step="0.01" class="form-control" name="dosis" required>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Costo ($/kg)</label>
-                    <input type="number" step="0.01" class="form-control" name="costo" required>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Fecha</label>
-                    <input type="date" class="form-control" name="fecha" required>
-                </div>
-                <div class="col-12">
-                    <button type="submit" class="btn btn-success" <?php echo empty($tagid) ? 'disabled' : ''; ?>>
-                        Guardar
-                    </button>
-                </div>
-            </div>
-        </form>
+    <div class="table-responsive">
+        <table id="ibrTable" class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Tag ID</th>
+                    <th>Producto</th>
+                    <th>Dosis</th>
+                    <th>Costo</th>
+                    <th>Fecha</th>
+                    <th>Acciones</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                if ($result_ibr->num_rows > 0) {
+                    while($row = $result_ibr->fetch_assoc()) {
+                        $valor_total = floatval($row['vh_ibr_costo']);
+
+                        echo "<tr>";
+                        echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_ibr_tagid']) . "</td>";
+                        echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_ibr_producto'] ?? 'N/A') . "</td>";
+                        echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_ibr_dosis']) . "</td>";
+                        echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_ibr_costo']) . "</td>";
+                        echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_ibr_fecha']) . "</td>";
+                        echo "<td style='text-align: center;'>
+                                <div class='btn-group' role='group'>
+                                    <button class='btn btn-success text-center btn-sm edit-ibr'
+                                            data-bs-toggle='modal'
+                                            data-bs-target='#editIbrModal'
+                                            data-id='" . htmlspecialchars($row['id']) . "'
+                                            data-tagid='" . htmlspecialchars($row['vh_ibr_tagid']) . "'
+                                            data-dosis='" . htmlspecialchars($row['vh_ibr_dosis']) . "'
+                                            data-costo='" . htmlspecialchars($row['vh_ibr_costo']) . "'
+                                            data-fecha='" . htmlspecialchars($row['vh_ibr_fecha']) . "'>
+                                        <i class='fas fa-edit'></i>
+                                    </button>
+                                    <button class='btn btn-danger btn-sm onclick='deleteIbrEntry(" . $row['id'] . ")''
+                                            data-id='" . htmlspecialchars($row['id']) . "'>
+                                        <i class='fas fa-trash'></i>
+                                    </button>
+                                </div>
+                            </td>";
+                        echo "</tr>";
+                    }
+                }
+                ?>
+            </tbody>
+        </table>
     </div>
 </div>
-    <!-- Table Controls -->
-    <div class="row mb-3">
-        <div class="col-md-6">
-            <div class="d-flex align-items-center">
-                <label class="me-2">Show entries:</label>
-                <select class="form-select form-select-sm w-auto" id="ibrEntriesLength">
-                    <option value="10">10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                </select>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="d-flex justify-content-end">
-                <input type="search" class="form-control form-control-sm w-auto" 
-                       placeholder="Filter results..." id="ibrTableFilter">
-            </div>
-        </div>
-    </div>
 
-  <div class="table-responsive">
-      <table id="ibrTable" class="table table-striped table-bordered">
-          <thead>
-              <tr>
-                  <th style="text-align: center;">Fecha</th>
-                  <th style="text-align: center;">Producto</th>
-                  <th style="text-align: center;">Dosis (ml)</th>
-                  <th style="text-align: center;">Costo ($/Dosis)</th>
-                  <th style="text-align: center;">Acciones</th>
-
-              </tr>
-          </thead>
-          <tbody>
-              <?php
-              $sql = "SELECT * FROM vh_ibr WHERE vh_ibr_tagid = '$tagid' ORDER BY vh_ibr_fecha DESC";
-              $result = $conn->query($sql);
-              $total_costo_ibr = 0;
-              
-              if ($result->num_rows > 0) {
-                  while($row = $result->fetch_assoc()) {
-                      $total += $row['vh_ibr_costo'];
-                      echo "<tr>
-                              <td style='text-align: center;'>" . date('d/m/Y', strtotime($row['vh_ibr_fecha'])) . "</td>
-                              <td style='text-align: center;'>" . htmlspecialchars($row['vh_ibr_producto']) . "</td>
-                              <td style='text-align: center;'>" . number_format($row['vh_ibr_dosis'], 2) . "</td>
-                              <td style='text-align: center;'>$" . number_format($row['vh_ibr_costo'], 2) . "</td>
-                              <td style='text-align: center;'>
-                                  <div class='d-flex text-center justify-content-center gap-2'>
-                                      <button class='btn btn-sm btn-primary' onclick='openEditIbrModal(" . 
-                                          $row['id'] . ", \"" . 
-                                          htmlspecialchars($row['vh_ibr_tagid'], ENT_QUOTES) . "\", \"" . 
-                                          htmlspecialchars($row['vh_ibr_dosis'], ENT_QUOTES) . "\", \"" . 
-                                          htmlspecialchars($row['vh_ibr_costo'], ENT_QUOTES) . "\", \"" . 
-                                          htmlspecialchars($row['vh_ibr_producto'], ENT_QUOTES) . "\", \"" . 
-                                          $row['vh_ibr_fecha'] . "\")'>
-                                          <i class='fas fa-edit'></i>
-                                      </button>
-                                      <button class='btn btn-sm btn-danger' onclick='deleteIbrEntry(" . $row['id'] . ")'>
-                                          <i class='fas fa-trash'></i>
-                                      </button>
-                                  </div>
-                              </td>
-                            </tr>";
-                  }
-              }
-              ?>
-          </tbody>
-      </table>
-      <script>
+<!--  Ibr Inicializacion DataTable -->
+<script>
 $(document).ready(function() {
     $('#ibrTable').DataTable({
         // Set initial page length to 5
         pageLength: 5,
-        
+
         // Configure length menu options
         lengthMenu: [
             [5, 10, 25, 50, 100, -1],
             [5, 10, 25, 50, 100, "Todos"]
         ],
-        
+
         // Order by fecha (date) column descending
-        order: [[0, 'desc']],
-        
+        order: [[4, 'desc']],
+
         // Spanish language
         language: {
             url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json',
@@ -3439,16 +2754,16 @@ $(document).ready(function() {
                 previous: "Anterior"
             }
         },
-        
+
         // Enable responsive features
         responsive: true,
-        
+
         // Configure DOM layout and buttons
         dom: '<"row"<"col-sm-12 col-md-6"B><"col-sm-12 col-md-6"f>>' +
              '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"p>>' +
              '<"row"<"col-sm-12"tr>>' +
              '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
-        
+
         buttons: [
             {
                 extend: 'collection',
@@ -3462,12 +2777,23 @@ $(document).ready(function() {
                 ]
             }
         ],
-        
+
         // Column specific settings
         columnDefs: [
-
             {
-                targets: [0], // Fecha column
+                targets: [2, 3], // Peso, Precio, Valor Total columns
+                render: function(data, type, row) {
+                    if (type === 'display') {
+                        return parseFloat(data).toLocaleString('es-ES', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        });
+                    }
+                    return data;
+                }
+            },
+            {
+                targets: [4], // Fecha column
                 render: function(data, type, row) {
                     if (type === 'display') {
                         return new Date(data).toLocaleDateString('es-ES');
@@ -3476,7 +2802,7 @@ $(document).ready(function() {
                 }
             },
             {
-                targets: [4], // Acciones column
+                targets: [5], // Acciones column
                 orderable: false,
                 searchable: false
             }
@@ -3484,24 +2810,119 @@ $(document).ready(function() {
     });
 });
 </script>
+</div>
+<!-- Edit IBR Modal -->
+
+<div class="modal fade" id="editIbrModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Editar Vacunacion IBR</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="editIbrForm" action="process_ibr.php" method="POST">
+                <div class="modal-body">
+                    <input type="hidden" name="action" value="update">
+                    <input type="hidden" name="id" id="edit_id">
+                    <input type="hidden" name="tagid" id="edit_tagid">
+                    <div class="mb-3">
+                        <label class="form-label">Producto</label>
+                        <input type="text" class="form-control" name="producto" id="edit_producto" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Dosis</label>
+                        <input type="number" step="0.01" class="form-control" name="dosis" id="edit_dosis" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Costo ($)</label>
+                        <input type="number" step="0.01" class="form-control" name="costo" id="edit_costo" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Fecha</label>
+                        <input type="date" class="form-control" name="fecha" id="edit_fecha" required>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-between">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-success">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
-<script>
-// Function to open edit modal for IBR entries
-function openEditIbrModal(id, tagid, producto, dosis, costo, fecha) {
-    document.getElementById('edit_ibr_id').value = id;
-    document.getElementById('edit_ibr_tagid').value = tagid;
-    document.getElementById('edit_ibr_producto').value = producto;
-    document.getElementById('edit_ibr_dosis').value = dosis;
-    document.getElementById('edit_ibr_costo').value = costo;
-    document.getElementById('edit_ibr_fecha').value = fecha;
-    
-    var editModal = new bootstrap.Modal(document.getElementById('editIbrModal'));
-    editModal.show();
-}
+<!-- Edit Aftosa JS -->
 
-// Function to delete IBR entries
+<script>
+    // Handle edit button click
+    $('.edit-ibr').click(function() {
+        const button = $(this);
+
+        // Get data from data attributes
+        const id = button.data('id');
+        const tagid = button.data('tagid');
+        const producto = button.data('producto');
+        const dosis = button.data('dosis');
+        const costo = button.data('costo');
+        const fecha = button.data('fecha');
+
+        // Populate modal fields
+        $('#edit_id').val(id);
+        $('#edit_tagid').val(tagid);
+        $('#edit_producto').val(producto);
+        $('#edit_dosis').val(dosis);
+        $('#edit_costo').val(costo);
+        $('#edit_fecha').val(fecha);
+    });
+
+    // Handle save changes
+    $('#saveEditIbr').click(function() {
+        const form = $('#editIbrForm');
+
+        // Validate form
+        if (!form[0].checkValidity()) {
+            form[0].reportValidity();
+            return;
+        }
+
+        // Show loading state
+        const saveButton = $(this);
+        const originalText = saveButton.text();
+        saveButton.prop('disabled', true).text('Guardando...');
+
+        // Send AJAX request
+        $.ajax({
+            url: 'process_ibr.php',
+            type: 'POST',
+            data: form.serialize(),
+            action: 'update',
+            dataType: 'json',
+            success: function(response) {
+                console.log('Response received:', response);
+                try {
+                    if (response.success) {
+                        $('#editIbrModal').modal('hide');
+                        location.reload();
+                    } else {
+                        alert('Error al actualizar: ' + (response.error || 'Error desconocido'));
+                    }
+                } catch (e) {
+                    console.error('Error parsing response:', e);
+                    alert('Error al procesar la respuesta del servidor');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX Error:', {xhr, status, error});
+                alert('Error al procesar la solicitud: ' + error);
+            },
+            complete: function() {
+                // Reset button state
+                saveButton.prop('disabled', false).text(originalText);
+            }
+        });
+    });
+
+// Function to delete concentrado entries
 function deleteIbrEntry(id) {
     if (confirm('¿Está seguro de que desea eliminar este registro?')) {
         fetch('process_ibr.php', {
@@ -3522,198 +2943,138 @@ function deleteIbrEntry(id) {
     }
 }
 </script>
-<!-- CBR Table Section -->
 
 <!-- CBR Table Section -->
 <?php
-// Build the base query for CBR
+// First, update the query to include the JOIN
 if (isset($_GET['search']) && !empty($_GET['search'])) {
     $tagid = $conn->real_escape_string($_GET['search']);
-    $baseQuery_cbr = "SELECT * FROM vh_cbr WHERE vh_cbr_tagid = '$tagid'";
+    $baseQuery_cbr = "SELECT c.*, v.nombre
+                      FROM vh_cbr c
+                      LEFT JOIN vacuno v ON c.vh_cbr_tagid = v.tagid
+                      WHERE c.vh_cbr_tagid = '$tagid'";
 } else {
-    $baseQuery_cbr = "SELECT * FROM vh_cbr";
+    $baseQuery_cbr = "SELECT c.*, v.nombre
+                      FROM vh_cbr c
+                      LEFT JOIN vacuno v ON c.vh_cbr_tagid = v.tagid";
 }
 $result_cbr = $conn->query($baseQuery_cbr);
 ?>
+<!-- Registros de CBR -->
+<div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
+    <h4 class="sub-section-title text-center">REGISTROS VACUNACION CBR</h4>
+</div>
+<!-- CBR: Nuevo Registro Form -->
+<div class="container table-section" style="display: block;">
 
-<!-- Edit CBR Modal -->
-<div class="modal fade" id="editCbrModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Editar CBR</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <form id="editCbrForm" action="process_cbr.php" method="POST">
-                <div class="modal-body">
-                    <input type="hidden" name="action" value="update">
-                    <input type="hidden" name="id" id="edit_cbr_id">
-                    <input type="hidden" name="tagid" id="edit_cbr_tagid">
-                    <div class="mb-3">
-                        <label class="form-label">Producto</label>
-                        <input type="text" class="form-control" name="producto" id="edit_cbr_producto" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Dosis (ml)</label>
-                        <input type="number" step="0.01" class="form-control" name="dosis" id="edit_cbr_dosis" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Costo ($)</label>
-                        <input type="number" step="0.01" class="form-control" name="costo" id="edit_cbr_costo" required>
-                    </div>
-                    <div class="mb-3">
+    <h4 class="sub-section-title">Control de Vacunacion CBR</h4>
+    <!-- Add New CBR Form -->
+    <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addCbrForm">
+        <i class="fas fa-plus"></i> Registrar
+    </button>
+
+    <!-- NEW CBR FORM -->
+
+    <div class="collapse mb-3" id="addCbrForm">
+        <div class="card card-body">
+            <form id="cbrForm" action="process_cbr.php" method="POST">
+                <input type="hidden" name="action" value="insert">
+                <input type="hidden" name="tagid" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
+                <div class="row g-3">
+                    <div class="col-md-4">
                         <label class="form-label">Fecha</label>
-                        <input type="date" class="form-control" name="fecha" id="edit_cbr_fecha" required>
+                        <input type="date" class="form-control" name="fecha" required>
                     </div>
-                </div>
-                <div class="modal-footer d-flex justify-content-between">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    <div class="col-md-4">
+                        <label class="form-label">Producto</label>
+                        <input type="text" class="form-control" name="producto" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Dosis</label>
+                        <input type="number" step="0.01" class="form-control" name="dosis" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Costo</label>
+                        <input type="number" step="0.01" class="form-control" name="costo" required>
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-success">Guardar</button>
+                    </div>
                 </div>
             </form>
         </div>
     </div>
-</div>
 
-<div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
-    <h4 class="sub-section-title">Vacunas CBR</h4>
-    
-    <!-- Add New CBR Form -->
-    <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addCbrForm">
-        <i class="fas fa-plus"></i> Registrar Vacuna  CBR
-    </button>
-    <div class="collapse mb-3" id="addCbrForm">
-    <div class="card card-body">
-        <form id="cbrForm" action="process_cbr.php" method="POST">
-        <input type="hidden" name="action" value="insert">
-            <?php
-            // Ensure tagid is set from either GET or SESSION
-            $tagid = '';
-            if (isset($_GET['search']) && !empty($_GET['search'])) {
-                $tagid = htmlspecialchars($_GET['search']);
-            } elseif (isset($_SESSION['current_tagid']) && !empty($_SESSION['current_tagid'])) {
-                $tagid = htmlspecialchars($_SESSION['current_tagid']);
-            }
-            ?>
-            <input type="hidden" name="tagid" value="<?php echo $tagid; ?>">
-            
-            <!-- Debug output to verify tagid -->
-            <?php if (empty($tagid)): ?>
-                <div class="alert alert-warning">
-                    No se ha seleccionado ningún animal. Por favor, busque un animal primero.
-                </div>
-            <?php endif; ?>
+    <!-- CBR DataTable -->
 
-            <div class="row g-3">
-                <div class="col-md-4">
-                    <label class="form-label">Producto</label>
-                    <input type="text" class="form-control" name="producto" required>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Dosis (ml)</label>
-                    <input type="number" step="0.01" class="form-control" name="dosis" required>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Costo ($/kg)</label>
-                    <input type="number" step="0.01" class="form-control" name="costo" required>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Fecha</label>
-                    <input type="date" class="form-control" name="fecha" required>
-                </div>
-                <div class="col-12">
-                    <button type="submit" class="btn btn-success" <?php echo empty($tagid) ? 'disabled' : ''; ?>>
-                        Guardar
-                    </button>
-                </div>
-            </div>
-        </form>
+    <div class="table-responsive">
+        <table id="cbrTable" class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Tag ID</th>
+                    <th>Producto</th>
+                    <th>Dosis</th>
+                    <th>Costo</th>
+                    <th>Fecha</th>
+                    <th>Acciones</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                if ($result_cbr->num_rows > 0) {
+                    while($row = $result_cbr->fetch_assoc()) {
+                        $valor_total = floatval($row['vh_cbr_costo']);
+
+                        echo "<tr>";
+                        echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_cbr_tagid']) . "</td>";
+                        echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_cbr_producto'] ?? 'N/A') . "</td>";
+                        echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_cbr_dosis']) . "</td>";
+                        echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_cbr_costo']) . "</td>";
+                        echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_cbr_fecha']) . "</td>";
+                        echo "<td style='text-align: center;'>
+                                <div class='btn-group' role='group'>
+                                    <button class='btn btn-success text-center btn-sm edit-Cbr'
+                                            data-bs-toggle='modal'
+                                            data-bs-target='#editCbrModal'
+                                            data-id='" . htmlspecialchars($row['id']) . "'
+                                            data-tagid='" . htmlspecialchars($row['vh_cbr_tagid']) . "'
+                                            data-dosis='" . htmlspecialchars($row['vh_cbr_dosis']) . "'
+                                            data-costo='" . htmlspecialchars($row['vh_cbr_costo']) . "'
+                                            data-fecha='" . htmlspecialchars($row['vh_cbr_fecha']) . "'>
+                                        <i class='fas fa-edit'></i>
+                                    </button>
+                                    <button class='btn btn-danger btn-sm onclick='deleteCbrEntry(" . $row['id'] . ")''
+                                            data-id='" . htmlspecialchars($row['id']) . "'>
+                                        <i class='fas fa-trash'></i>
+                                    </button>
+                                </div>
+                            </td>";
+                        echo "</tr>";
+                    }
+                }
+                ?>
+            </tbody>
+        </table>
     </div>
 </div>
-    <!-- Table Controls -->
-    <div class="row mb-3">
-        <div class="col-md-6">
-            <div class="d-flex align-items-center">
-                <label class="me-2">Show entries:</label>
-                <select class="form-select form-select-sm w-auto" id="cbrEntriesLength">
-                    <option value="10">10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                </select>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="d-flex justify-content-end">
-                <input type="search" class="form-control form-control-sm w-auto" 
-                       placeholder="Filter results..." id="cbrTableFilter">
-            </div>
-        </div>
-    </div>
 
-  <div class="table-responsive">
-      <table id="cbrTable" class="table table-striped table-bordered">
-          <thead>
-              <tr>
-                  <th style="text-align: center;">Fecha</th>
-                  <th style="text-align: center;">Producto</th>
-                  <th style="text-align: center;">Dosis (ml)</th>
-                  <th style="text-align: center;">Costo ($/Dosis)</th>
-                  <th style="text-align: center;">Acciones</th>
-
-              </tr>
-          </thead>
-          <tbody>
-              <?php
-              $sql = "SELECT * FROM vh_cbr WHERE vh_cbr_tagid = '$tagid' ORDER BY vh_cbr_fecha DESC";
-              $result = $conn->query($sql);
-              $total_costo_cbr = 0;
-              
-              if ($result->num_rows > 0) {
-                  while($row = $result->fetch_assoc()) {
-                      $total += $row['vh_cbr_costo'];
-                      echo "<tr>
-                              <td style='text-align: center;'>" . date('d/m/Y', strtotime($row['vh_cbr_fecha'])) . "</td>
-                              <td style='text-align: center;'>" . htmlspecialchars($row['vh_cbr_producto']) . "</td>
-                              <td style='text-align: center;'>" . number_format($row['vh_cbr_dosis'], 2) . "</td>
-                              <td style='text-align: center;'>$" . number_format($row['vh_cbr_costo'], 2) . "</td>
-                              <td style='text-align: center;'>
-                                  <div class='d-flex text-center justify-content-center gap-2'>
-                                      <button class='btn btn-sm btn-primary' onclick='openEditCbrModal(" . 
-                                          $row['id'] . ", \"" . 
-                                          htmlspecialchars($row['vh_cbr_tagid'], ENT_QUOTES) . "\", \"" . 
-                                          htmlspecialchars($row['vh_cbr_dosis'], ENT_QUOTES) . "\", \"" . 
-                                          htmlspecialchars($row['vh_cbr_costo'], ENT_QUOTES) . "\", \"" . 
-                                          htmlspecialchars($row['vh_cbr_producto'], ENT_QUOTES) . "\", \"" . 
-                                          $row['vh_cbr_fecha'] . "\")'>
-                                          <i class='fas fa-edit'></i>
-                                      </button>
-                                      <button class='btn btn-sm btn-danger' onclick='deleteCbrEntry(" . $row['id'] . ")'>
-                                          <i class='fas fa-trash'></i>
-                                      </button>
-                                  </div>
-                              </td>
-                            </tr>";
-                  }
-              }
-              ?>
-          </tbody>
-      </table>
-      <script>
+<!--  CBR Inicializacion DataTable -->
+<script>
 $(document).ready(function() {
     $('#cbrTable').DataTable({
         // Set initial page length to 5
         pageLength: 5,
-        
+
         // Configure length menu options
         lengthMenu: [
             [5, 10, 25, 50, 100, -1],
             [5, 10, 25, 50, 100, "Todos"]
         ],
-        
+
         // Order by fecha (date) column descending
-        order: [[0, 'desc']],
-        
+        order: [[4, 'desc']],
+
         // Spanish language
         language: {
             url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json',
@@ -3730,16 +3091,16 @@ $(document).ready(function() {
                 previous: "Anterior"
             }
         },
-        
+
         // Enable responsive features
         responsive: true,
-        
+
         // Configure DOM layout and buttons
         dom: '<"row"<"col-sm-12 col-md-6"B><"col-sm-12 col-md-6"f>>' +
              '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"p>>' +
              '<"row"<"col-sm-12"tr>>' +
              '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
-        
+
         buttons: [
             {
                 extend: 'collection',
@@ -3753,12 +3114,23 @@ $(document).ready(function() {
                 ]
             }
         ],
-        
+
         // Column specific settings
         columnDefs: [
-            
             {
-                targets: [0], // Fecha column
+                targets: [2, 3], // Peso, Precio, Valor Total columns
+                render: function(data, type, row) {
+                    if (type === 'display') {
+                        return parseFloat(data).toLocaleString('es-ES', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        });
+                    }
+                    return data;
+                }
+            },
+            {
+                targets: [4], // Fecha column
                 render: function(data, type, row) {
                     if (type === 'display') {
                         return new Date(data).toLocaleDateString('es-ES');
@@ -3767,7 +3139,7 @@ $(document).ready(function() {
                 }
             },
             {
-                targets: [4], // Acciones column
+                targets: [5], // Acciones column
                 orderable: false,
                 searchable: false
             }
@@ -3775,24 +3147,119 @@ $(document).ready(function() {
     });
 });
 </script>
+</div>
+<!-- Edit CBR Modal -->
+
+<div class="modal fade" id="editCbrModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Editar Vacunacion CBR</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="editCbrForm" action="process_cbr.php" method="POST">
+                <div class="modal-body">
+                    <input type="hidden" name="action" value="update">
+                    <input type="hidden" name="id" id="edit_id">
+                    <input type="hidden" name="tagid" id="edit_tagid">
+                    <div class="mb-3">
+                        <label class="form-label">Producto</label>
+                        <input type="text" class="form-control" name="producto" id="edit_producto" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Dosis</label>
+                        <input type="number" step="0.01" class="form-control" name="dosis" id="edit_dosis" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Costo ($)</label>
+                        <input type="number" step="0.01" class="form-control" name="costo" id="edit_costo" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Fecha</label>
+                        <input type="date" class="form-control" name="fecha" id="edit_fecha" required>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-between">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-success">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
-<script>
-// Function to open edit modal for CBR entries
-function openEditCbrModal(id, tagid, producto, dosis, costo, fecha) {
-    document.getElementById('edit_cbr_id').value = id;
-    document.getElementById('edit_cbr_tagid').value = tagid;
-    document.getElementById('edit_cbr_producto').value = producto;
-    document.getElementById('edit_cbr_dosis').value = dosis;
-    document.getElementById('edit_cbr_costo').value = costo;
-    document.getElementById('edit_cbr_fecha').value = fecha;
-    
-    var editModal = new bootstrap.Modal(document.getElementById('editCbrModal'));
-    editModal.show();
-}
+<!-- Edit Aftosa JS -->
 
-// Function to delete CBR entries
+<script>
+    // Handle edit button click
+    $('.edit-Cbr').click(function() {
+        const button = $(this);
+
+        // Get data from data attributes
+        const id = button.data('id');
+        const tagid = button.data('tagid');
+        const producto = button.data('producto');
+        const dosis = button.data('dosis');
+        const costo = button.data('costo');
+        const fecha = button.data('fecha');
+
+        // Populate modal fields
+        $('#edit_id').val(id);
+        $('#edit_tagid').val(tagid);
+        $('#edit_producto').val(producto);
+        $('#edit_dosis').val(dosis);
+        $('#edit_costo').val(costo);
+        $('#edit_fecha').val(fecha);
+    });
+
+    // Handle save changes
+    $('#saveEditCbr').click(function() {
+        const form = $('#editCbrForm');
+
+        // Validate form
+        if (!form[0].checkValidity()) {
+            form[0].reportValidity();
+            return;
+        }
+
+        // Show loading state
+        const saveButton = $(this);
+        const originalText = saveButton.text();
+        saveButton.prop('disabled', true).text('Guardando...');
+
+        // Send AJAX request
+        $.ajax({
+            url: 'process_cbr.php',
+            type: 'POST',
+            data: form.serialize(),
+            action: 'update',
+            dataType: 'json',
+            success: function(response) {
+                console.log('Response received:', response);
+                try {
+                    if (response.success) {
+                        $('#editCbrModal').modal('hide');
+                        location.reload();
+                    } else {
+                        alert('Error al actualizar: ' + (response.error || 'Error desconocido'));
+                    }
+                } catch (e) {
+                    console.error('Error parsing response:', e);
+                    alert('Error al procesar la respuesta del servidor');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX Error:', {xhr, status, error});
+                alert('Error al procesar la solicitud: ' + error);
+            },
+            complete: function() {
+                // Reset button state
+                saveButton.prop('disabled', false).text(originalText);
+            }
+        });
+    });
+
+// Function to delete concentrado entries
 function deleteCbrEntry(id) {
     if (confirm('¿Está seguro de que desea eliminar este registro?')) {
         fetch('process_cbr.php', {
@@ -3814,197 +3281,138 @@ function deleteCbrEntry(id) {
 }
 </script>
 
+
 <!-- BRUCELOSIS Table Section -->
 <?php
-// Build the base query for BRUCELOSIS
+// First, update the query to include the JOIN
 if (isset($_GET['search']) && !empty($_GET['search'])) {
     $tagid = $conn->real_escape_string($_GET['search']);
-    $baseQuery_brucelosis = "SELECT * FROM vh_brucelosis WHERE vh_brucelosis_tagid = '$tagid'";
+    $baseQuery_brucelosis = "SELECT b.*, v.nombre
+                      FROM vh_brucelosis b
+                      LEFT JOIN vacuno v ON b.vh_brucelosis_tagid = v.tagid
+                      WHERE b.vh_brucelosis_tagid = '$tagid'";
 } else {
-    $baseQuery_brucelosis = "SELECT * FROM vh_brucelosis";
+    $baseQuery_brucelosis = "SELECT b.*, v.nombre
+                      FROM vh_brucelosis b
+                      LEFT JOIN vacuno v ON b.vh_brucelosis_tagid = v.tagid";
 }
 $result_brucelosis = $conn->query($baseQuery_brucelosis);
 ?>
+<!-- Registros de BRUCELOSIS -->
+<div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
+    <h4 class="sub-section-title text-center">REGISTROS VACUNACION BRUCELOSIS</h4>
+</div>
+<!-- BRUCELOSIS: Nuevo Registro Form -->
+<div class="container table-section" style="display: block;">
 
-<!-- Edit BRUCELOSIS Modal -->
-<div class="modal fade" id="editBrucelosisModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Editar BRUCELOSIS</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <form id="editBrucelosisForm" action="process_brucelosis.php" method="POST">
-                <div class="modal-body">
-                    <input type="hidden" name="action" value="update">
-                    <input type="hidden" name="id" id="edit_brucelosis_id">
-                    <input type="hidden" name="tagid" id="edit_brucelosis_tagid">
-                    <div class="mb-3">
-                        <label class="form-label">Producto</label>
-                        <input type="text" class="form-control" name="producto" id="edit_brucelosis_producto" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Dosis (ml)</label>
-                        <input type="number" step="0.01" class="form-control" name="dosis" id="edit_brucelosis_dosis" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Costo ($)</label>
-                        <input type="number" step="0.01" class="form-control" name="costo" id="edit_brucelosis_costo" required>
-                    </div>
-                    <div class="mb-3">
+    <h4 class="sub-section-title">Control de Vacunacion BRUCELOSIS</h4>
+    <!-- Add New BRUCELOSIS Form -->
+    <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addBrucelosisForm">
+        <i class="fas fa-plus"></i> Registrar
+    </button>
+
+    <!-- NEW BRUCELOSIS FORM -->
+
+    <div class="collapse mb-3" id="addBrucelosisForm">
+        <div class="card card-body">
+            <form id="brucelosisForm" action="process_brucelosis.php" method="POST">
+                <input type="hidden" name="action" value="insert">
+                <input type="hidden" name="tagid" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
+                <div class="row g-3">
+                    <div class="col-md-4">
                         <label class="form-label">Fecha</label>
-                        <input type="date" class="form-control" name="fecha" id="edit_brucelosis_fecha" required>
+                        <input type="date" class="form-control" name="fecha" required>
                     </div>
-                </div>
-                <div class="modal-footer d-flex justify-content-between">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    <div class="col-md-4">
+                        <label class="form-label">Producto</label>
+                        <input type="text" class="form-control" name="producto" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Dosis</label>
+                        <input type="number" step="0.01" class="form-control" name="dosis" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Costo</label>
+                        <input type="number" step="0.01" class="form-control" name="costo" required>
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-success">Guardar</button>
+                    </div>
                 </div>
             </form>
         </div>
     </div>
-</div>
 
-<div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
-    <h4 class="sub-section-title">Vacunas BRUCELOSIS</h4>
-    
-    <!-- Add New BRUCELOSIS Form -->
-    <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addBrucelosisForm">
-        <i class="fas fa-plus"></i> Registrar Vacuna  BRUCELOSIS
-    </button>
-    <div class="collapse mb-3" id="addBrucelosisForm">
-    <div class="card card-body">
-        <form id="brucelosisForm" action="process_brucelosis.php" method="POST">
-        <input type="hidden" name="action" value="insert">
-            <?php
-            // Ensure tagid is set from either GET or SESSION
-            $tagid = '';
-            if (isset($_GET['search']) && !empty($_GET['search'])) {
-                $tagid = htmlspecialchars($_GET['search']);
-            } elseif (isset($_SESSION['current_tagid']) && !empty($_SESSION['current_tagid'])) {
-                $tagid = htmlspecialchars($_SESSION['current_tagid']);
-            }
-            ?>
-            <input type="hidden" name="tagid" value="<?php echo $tagid; ?>">
-            
-            <!-- Debug output to verify tagid -->
-            <?php if (empty($tagid)): ?>
-                <div class="alert alert-warning">
-                    No se ha seleccionado ningún animal. Por favor, busque un animal primero.
-                </div>
-            <?php endif; ?>
+    <!-- BRUCELOSIS DataTable -->
 
-            <div class="row g-3">
-                <div class="col-md-4">
-                    <label class="form-label">Producto</label>
-                    <input type="text" class="form-control" name="producto" required>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Dosis (ml)</label>
-                    <input type="number" step="0.01" class="form-control" name="dosis" required>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Costo ($/kg)</label>
-                    <input type="number" step="0.01" class="form-control" name="costo" required>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Fecha</label>
-                    <input type="date" class="form-control" name="fecha" required>
-                </div>
-                <div class="col-12">
-                    <button type="submit" class="btn btn-success" <?php echo empty($tagid) ? 'disabled' : ''; ?>>
-                        Guardar
-                    </button>
-                </div>
-            </div>
-        </form>
+    <div class="table-responsive">
+        <table id="brucelosisTable" class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Tag ID</th>
+                    <th>Producto</th>
+                    <th>Dosis</th>
+                    <th>Costo</th>
+                    <th>Fecha</th>
+                    <th>Acciones</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                if ($result_brucelosis->num_rows > 0) {
+                    while($row = $result_brucelosis->fetch_assoc()) {
+                        $valor_total = floatval($row['vh_brucelosis_costo']);
+
+                        echo "<tr>";
+                        echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_brucelosis_tagid']) . "</td>";
+                        echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_brucelosis_producto'] ?? 'N/A') . "</td>";
+                        echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_brucelosis_dosis']) . "</td>";
+                        echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_brucelosis_costo']) . "</td>";
+                        echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_brucelosis_fecha']) . "</td>";
+                        echo "<td style='text-align: center;'>
+                                <div class='btn-group' role='group'>
+                                    <button class='btn btn-success text-center btn-sm edit-brucelosis'
+                                            data-bs-toggle='modal'
+                                            data-bs-target='#editBrucelosisModal'
+                                            data-id='" . htmlspecialchars($row['id']) . "'
+                                            data-tagid='" . htmlspecialchars($row['vh_brucelosis_tagid']) . "'
+                                            data-dosis='" . htmlspecialchars($row['vh_brucelosis_dosis']) . "'
+                                            data-costo='" . htmlspecialchars($row['vh_brucelosis_costo']) . "'
+                                            data-fecha='" . htmlspecialchars($row['vh_brucelosis_fecha']) . "'>
+                                        <i class='fas fa-edit'></i>
+                                    </button>
+                                    <button class='btn btn-danger btn-sm onclick='editBrucelosisEntry(" . $row['id'] . ")''
+                                            data-id='" . htmlspecialchars($row['id']) . "'>
+                                        <i class='fas fa-trash'></i>
+                                    </button>
+                                </div>
+                            </td>";
+                        echo "</tr>";
+                    }
+                }
+                ?>
+            </tbody>
+        </table>
     </div>
 </div>
-    <!-- Table Controls -->
-    <div class="row mb-3">
-        <div class="col-md-6">
-            <div class="d-flex align-items-center">
-                <label class="me-2">Show entries:</label>
-                <select class="form-select form-select-sm w-auto" id="brucelosisEntriesLength">
-                    <option value="10">10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                </select>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="d-flex justify-content-end">
-                <input type="search" class="form-control form-control-sm w-auto" 
-                       placeholder="Filter results..." id="brucelosisTableFilter">
-            </div>
-        </div>
-    </div>
 
-  <div class="table-responsive">
-      <table id="brucelosisTable" class="table table-striped table-bordered">
-          <thead>
-              <tr>
-                  <th style="text-align: center;">Fecha</th>
-                  <th style="text-align: center;">Producto</th>
-                  <th style="text-align: center;">Dosis (ml)</th>
-                  <th style="text-align: center;">Costo ($/Dosis)</th>
-                  <th style="text-align: center;">Acciones</th>
-
-              </tr>
-          </thead>
-          <tbody>
-              <?php
-              $sql = "SELECT * FROM vh_brucelosis WHERE vh_brucelosis_tagid = '$tagid' ORDER BY vh_brucelosis_fecha DESC";
-              $result = $conn->query($sql);
-              $total_costo_brucelosis = 0;
-              
-              if ($result->num_rows > 0) {
-                  while($row = $result->fetch_assoc()) {
-                      $total += $row['vh_brucelosis_costo'];
-                      echo "<tr>
-                              <td style='text-align: center;'>" . date('d/m/Y', strtotime($row['vh_brucelosis_fecha'])) . "</td>
-                              <td style='text-align: center;'>" . htmlspecialchars($row['vh_brucelosis_producto']) . "</td>
-                              <td style='text-align: center;'>" . number_format($row['vh_brucelosis_dosis'], 2) . "</td>
-                              <td style='text-align: center;'>$" . number_format($row['vh_brucelosis_costo'], 2) . "</td>
-                              <td style='text-align: center;'>
-                                  <div class='d-flex text-center justify-content-center gap-2'>
-                                      <button class='btn btn-sm btn-primary' onclick='openEditBrucelosisModal(" . 
-                                          $row['id'] . ", \"" . 
-                                          htmlspecialchars($row['vh_brucelosis_tagid'],
-                                          ENT_QUOTES) . "\", \"" . 
-                                          htmlspecialchars($row['vh_brucelosis_producto'], ENT_QUOTES) . "\", \"" . 
-                                          htmlspecialchars($row['vh_brucelosis_dosis'], ENT_QUOTES) . "\", \"" . 
-                                          htmlspecialchars($row['vh_brucelosis_costo'], ENT_QUOTES) . "\", \"" . 
-                                          $row['vh_brucelosis_fecha'] . "\")'>
-                                          <i class='fas fa-edit'></i>
-                                      </button>
-                                      <button class='btn btn-sm btn-danger' onclick='deleteBrucelosisEntry(" . $row['id'] . ")'>
-                                          <i class='fas fa-trash'></i>
-                                      </button>
-                                  </div>
-                              </td>
-                            </tr>";
-                  }
-              }
-              ?>
-          </tbody>
-      </table>
-      <script>
+<!--  BRUCELOSIS Inicializacion DataTable -->
+<script>
 $(document).ready(function() {
     $('#brucelosisTable').DataTable({
         // Set initial page length to 5
         pageLength: 5,
-        
+
         // Configure length menu options
         lengthMenu: [
             [5, 10, 25, 50, 100, -1],
             [5, 10, 25, 50, 100, "Todos"]
         ],
-        
+
         // Order by fecha (date) column descending
-        order: [[0, 'desc']],
-        
+        order: [[4, 'desc']],
+
         // Spanish language
         language: {
             url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json',
@@ -4021,16 +3429,16 @@ $(document).ready(function() {
                 previous: "Anterior"
             }
         },
-        
+
         // Enable responsive features
         responsive: true,
-        
+
         // Configure DOM layout and buttons
         dom: '<"row"<"col-sm-12 col-md-6"B><"col-sm-12 col-md-6"f>>' +
              '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"p>>' +
              '<"row"<"col-sm-12"tr>>' +
              '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
-        
+
         buttons: [
             {
                 extend: 'collection',
@@ -4044,12 +3452,23 @@ $(document).ready(function() {
                 ]
             }
         ],
-        
+
         // Column specific settings
         columnDefs: [
-            
             {
-                targets: [0], // Fecha column
+                targets: [2, 3], // Peso, Precio, Valor Total columns
+                render: function(data, type, row) {
+                    if (type === 'display') {
+                        return parseFloat(data).toLocaleString('es-ES', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        });
+                    }
+                    return data;
+                }
+            },
+            {
+                targets: [4], // Fecha column
                 render: function(data, type, row) {
                     if (type === 'display') {
                         return new Date(data).toLocaleDateString('es-ES');
@@ -4058,7 +3477,7 @@ $(document).ready(function() {
                 }
             },
             {
-                targets: [4], // Acciones column
+                targets: [5], // Acciones column
                 orderable: false,
                 searchable: false
             }
@@ -4066,25 +3485,120 @@ $(document).ready(function() {
     });
 });
 </script>
+</div>
+<!-- Edit BRUCELOSIS Modal -->
+
+<div class="modal fade" id="editBrucelosisModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Editar Vacunacion BRUCELOSIS</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="editBrucelosisForm" action="process_brucelosis.php" method="POST">
+                <div class="modal-body">
+                    <input type="hidden" name="action" value="update">
+                    <input type="hidden" name="id" id="edit_id">
+                    <input type="hidden" name="tagid" id="edit_tagid">
+                    <div class="mb-3">
+                        <label class="form-label">Producto</label>
+                        <input type="text" class="form-control" name="producto" id="edit_producto" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Dosis</label>
+                        <input type="number" step="0.01" class="form-control" name="dosis" id="edit_dosis" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Costo ($)</label>
+                        <input type="number" step="0.01" class="form-control" name="costo" id="edit_costo" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Fecha</label>
+                        <input type="date" class="form-control" name="fecha" id="edit_fecha" required>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-between">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-success">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
-<script>
-// Function to open edit modal for BRUCELOSIS entries
-function openEditBrucelosisModal(id, tagid, producto, dosis, costo, fecha) {
-    document.getElementById('edit_brucelosis_id').value = id;
-    document.getElementById('edit_brucelosis_tagid').value = tagid;
-    document.getElementById('edit_brucelosis_producto').value = producto;
-    document.getElementById('edit_brucelosis_dosis').value = dosis
-    document.getElementById('edit_brucelosis_costo').value = costo;
-    document.getElementById('edit_brucelosis_fecha').value = fecha;
-    
-    var editModal = new bootstrap.Modal(document.getElementById('editBrucelosisModal'));
-    editModal.show();
-}
+<!-- Edit Brucelosis JS -->
 
-// Function to delete BRUCELOSIS entries
-function deleteBrucelosisEntry(id) {
+<script>
+    // Handle edit button click
+    $('.edit-brucelosis').click(function() {
+        const button = $(this);
+
+        // Get data from data attributes
+        const id = button.data('id');
+        const tagid = button.data('tagid');
+        const producto = button.data('producto');
+        const dosis = button.data('dosis');
+        const costo = button.data('costo');
+        const fecha = button.data('fecha');
+
+        // Populate modal fields
+        $('#edit_id').val(id);
+        $('#edit_tagid').val(tagid);
+        $('#edit_producto').val(producto);
+        $('#edit_dosis').val(dosis);
+        $('#edit_costo').val(costo);
+        $('#edit_fecha').val(fecha);
+    });
+
+    // Handle save changes
+    $('#saveEditbrucelosis').click(function() {
+        const form = $('#editBrucelosisForm');
+
+        // Validate form
+        if (!form[0].checkValidity()) {
+            form[0].reportValidity();
+            return;
+        }
+
+        // Show loading state
+        const saveButton = $(this);
+        const originalText = saveButton.text();
+        saveButton.prop('disabled', true).text('Guardando...');
+
+        // Send AJAX request
+        $.ajax({
+            url: 'process_brucelosis.php',
+            type: 'POST',
+            data: form.serialize(),
+            action: 'update',
+            dataType: 'json',
+            success: function(response) {
+                console.log('Response received:', response);
+                try {
+                    if (response.success) {
+                        $('#editBrucelosisModal').modal('hide');
+                        location.reload();
+                    } else {
+                        alert('Error al actualizar: ' + (response.error || 'Error desconocido'));
+                    }
+                } catch (e) {
+                    console.error('Error parsing response:', e);
+                    alert('Error al procesar la respuesta del servidor');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX Error:', {xhr, status, error});
+                alert('Error al procesar la solicitud: ' + error);
+            },
+            complete: function() {
+                // Reset button state
+                saveButton.prop('disabled', false).text(originalText);
+            }
+        });
+    });
+
+// Function to delete concentrado entries
+function editBrucelosisEntry(id) {
     if (confirm('¿Está seguro de que desea eliminar este registro?')) {
         fetch('process_brucelosis.php', {
             method: 'POST',
@@ -4105,197 +3619,137 @@ function deleteBrucelosisEntry(id) {
 }
 </script>
 
-<!-- Carbunco Table Section -->
-
+<!-- CARBUNCO Table Section -->
 <?php
-// Build the base query for CARBUNCO
+// First, update the query to include the JOIN
 if (isset($_GET['search']) && !empty($_GET['search'])) {
     $tagid = $conn->real_escape_string($_GET['search']);
-    $baseQuery_carbunco = "SELECT * FROM vh_carbunco WHERE vh_carbunco_tagid = '$tagid'";
+    $baseQuery_carbunco = "SELECT c.*, v.nombre
+                      FROM vh_carbunco c
+                      LEFT JOIN vacuno v ON c.vh_carbunco_tagid = v.tagid
+                      WHERE c.vh_carbunco_tagid = '$tagid'";
 } else {
-    $baseQuery_carbunco = "SELECT * FROM vh_carbunco";
+    $baseQuery_carbunco = "SELECT c.*, v.nombre
+                      FROM vh_carbunco c
+                      LEFT JOIN vacuno v ON c.vh_carbunco_tagid = v.tagid";
 }
 $result_carbunco = $conn->query($baseQuery_carbunco);
 ?>
+<!-- Registros de CARBUNCO -->
+<div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
+    <h4 class="sub-section-title text-center">REGISTROS VACUNACION CARBUNCO</h4>
+</div>
+<!-- CARBUNCO: Nuevo Registro Form -->
+<div class="container table-section" style="display: block;">
 
-<!-- Edit CARBUNCO Modal -->
-<div class="modal fade" id="editCarbuncoModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Editar CARBUNCO</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <form id="editCarbuncoForm" action="process_carbunco.php" method="POST">
-                <div class="modal-body">
-                    <input type="hidden" name="action" value="update">
-                    <input type="hidden" name="id" id="edit_carbunco_id">
-                    <input type="hidden" name="tagid" id="edit_carbunco_tagid">
-                    <div class="mb-3">
-                        <label class="form-label">Producto</label>
-                        <input type="text" class="form-control" name="producto" id="edit_carbunco_producto" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Dosis (ml)</label>
-                        <input type="number" step="0.01" class="form-control" name="dosis" id="edit_carbunco_dosis" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Costo ($)</label>
-                        <input type="number" step="0.01" class="form-control" name="costo" id="edit_carbunco_costo" required>
-                    </div>
-                    <div class="mb-3">
+    <h4 class="sub-section-title">Control de Vacunacion Carbunco</h4>
+    <!-- Add New Carbunco Form -->
+    <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addCarbuncoForm">
+        <i class="fas fa-plus"></i> Registrar
+    </button>
+
+    <!-- NEW Carbunco FORM -->
+
+    <div class="collapse mb-3" id="addCarbuncoForm">
+        <div class="card card-body">
+            <form id="carbuncoForm" action="process_carbunco.php" method="POST">
+                <input type="hidden" name="action" value="insert">
+                <input type="hidden" name="tagid" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
+                <div class="row g-3">
+                    <div class="col-md-4">
                         <label class="form-label">Fecha</label>
-                        <input type="date" class="form-control" name="fecha" id="edit_carbunco_fecha" required>
+                        <input type="date" class="form-control" name="fecha" required>
                     </div>
-                </div>
-                <div class="modal-footer d-flex justify-content-between">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    <div class="col-md-4">
+                        <label class="form-label">Producto</label>
+                        <input type="text" class="form-control" name="producto" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Dosis</label>
+                        <input type="number" step="0.01" class="form-control" name="dosis" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Costo</label>
+                        <input type="number" step="0.01" class="form-control" name="costo" required>
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-success">Guardar</button>
+                    </div>
                 </div>
             </form>
         </div>
     </div>
-</div>
 
-<div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
-    <h4 class="sub-section-title">Vacunas CARBUNCO</h4>
-    
-    <!-- Add New CARBUNCO Form -->
-    <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addCarbuncoForm">
-        <i class="fas fa-plus"></i> Registrar Vacuna  CARBUNCO
-    </button>
-    <div class="collapse mb-3" id="addCarbuncoForm">
-    <div class="card card-body">
-        <form id="carbuncoForm" action="process_carbunco.php" method="POST">
-        <input type="hidden" name="action" value="insert">
-            <?php
-            // Ensure tagid is set from either GET or SESSION
-            $tagid = '';
-            if (isset($_GET['search']) && !empty($_GET['search'])) {
-                $tagid = htmlspecialchars($_GET['search']);
-            } elseif (isset($_SESSION['current_tagid']) && !empty($_SESSION['current_tagid'])) {
-                $tagid = htmlspecialchars($_SESSION['current_tagid']);
-            }
-            ?>
-            <input type="hidden" name="tagid" value="<?php echo $tagid; ?>">
-            
-            <!-- Debug output to verify tagid -->
-            <?php if (empty($tagid)): ?>
-                <div class="alert alert-warning">
-                    No se ha seleccionado ningún animal. Por favor, busque un animal primero.
-                </div>
-            <?php endif; ?>
+    <!-- Carbunco DataTable -->
 
-            <div class="row g-3">
-                <div class="col-md-4">
-                    <label class="form-label">Producto</label>
-                    <input type="text" class="form-control" name="producto" required>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Dosis (ml)</label>
-                    <input type="number" step="0.01" class="form-control" name="dosis" required>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Costo ($/kg)</label>
-                    <input type="number" step="0.01" class="form-control" name="costo" required>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Fecha</label>
-                    <input type="date" class="form-control" name="fecha" required>
-                </div>
-                <div class="col-12">
-                    <button type="submit" class="btn btn-success" <?php echo empty($tagid) ? 'disabled' : ''; ?>>
-                        Guardar
-                    </button>
-                </div>
-            </div>
-        </form>
+    <div class="table-responsive">
+        <table id="carbuncoTable" class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Tag ID</th>
+                    <th>Producto</th>
+                    <th>Dosis</th>
+                    <th>Costo</th>
+                    <th>Fecha</th>
+                    <th>Acciones</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                if ($result_carbunco->num_rows > 0) {
+                    while($row = $result_carbunco->fetch_assoc()) {
+                        $valor_total = floatval($row['vh_carbunco_costo']);
+
+                        echo "<tr>";
+                        echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_carbunco_tagid']) . "</td>";
+                        echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_carbunco_producto'] ?? 'N/A') . "</td>";
+                        echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_carbunco_dosis']) . "</td>";
+                        echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_carbunco_costo']) . "</td>";
+                        echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_carbunco_fecha']) . "</td>";
+                        echo "<td style='text-align: center;'>
+                                <div class='btn-group' role='group'>
+                                    <button class='btn btn-success text-center btn-sm edit-carbunco'
+                                            data-bs-toggle='modal'
+                                            data-bs-target='#editCarbuncoModal'
+                                            data-id='" . htmlspecialchars($row['id']) . "'
+                                            data-tagid='" . htmlspecialchars($row['vh_carbunco_tagid']) . "'
+                                            data-dosis='" . htmlspecialchars($row['vh_carbunco_dosis']) . "'
+                                            data-costo='" . htmlspecialchars($row['vh_carbunco_costo']) . "'
+                                            data-fecha='" . htmlspecialchars($row['vh_carbunco_fecha']) . "'>
+                                        <i class='fas fa-edit'></i>
+                                    </button>
+                                    <button class='btn btn-danger btn-sm onclick='editCarbuncoEntry(" . $row['id'] . ")''
+                                            data-id='" . htmlspecialchars($row['id']) . "'>
+                                        <i class='fas fa-trash'></i>
+                                    </button>
+                                </div>
+                            </td>";
+                        echo "</tr>";
+                    }
+                }
+                ?>
+            </tbody>
+        </table>
     </div>
 </div>
-    <!-- Table Controls -->
-    <div class="row mb-3">
-        <div class="col-md-6">
-            <div class="d-flex align-items-center">
-                <label class="me-2">Show entries:</label>
-                <select class="form-select form-select-sm w-auto" id="carbuncoEntriesLength">
-                    <option value="10">10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                </select>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="d-flex justify-content-end">
-                <input type="search" class="form-control form-control-sm w-auto" 
-                       placeholder="Filter results..." id="carbuncoTableFilter">
-            </div>
-        </div>
-    </div>
 
-  <div class="table-responsive">
-      <table id="carbuncoTable" class="table table-striped table-bordered">
-          <thead>
-              <tr>
-                  <th style="text-align: center;">Fecha</th>
-                  <th style="text-align: center;">Producto</th>
-                  <th style="text-align: center;">Dosis (ml)</th>
-                  <th style="text-align: center;">Costo ($/Dosis)</th>
-                  <th style="text-align: center;">Acciones</th>
-
-              </tr>
-          </thead>
-          <tbody>
-              <?php
-              $sql = "SELECT * FROM vh_carbunco WHERE vh_carbunco_tagid = '$tagid' ORDER BY vh_carbunco_fecha DESC";
-              $result = $conn->query($sql);
-              $total_costo_carbunco = 0;
-              
-              if ($result->num_rows > 0) {
-                  while($row = $result->fetch_assoc()) {
-                      $total += $row['vh_carbunco_costo'];
-                      echo "<tr>
-                              <td style='text-align: center;'>" . date('d/m/Y', strtotime($row['vh_carbunco_fecha'])) . "</td>
-                              <td style='text-align: center;'>" . htmlspecialchars($row['vh_carbunco_producto']) . "</td>
-                              <td style='text-align: center;'>" . number_format($row['vh_carbunco_dosis'], 2) . "</td>
-                              <td style='text-align: center;'>$" . number_format($row['vh_carbunco_costo'], 2) . "</td>
-                              <td style='text-align: center;'>
-                                  <div class='d-flex text-center justify-content-center gap-2'>
-                                      <button class='btn btn-sm btn-primary' onclick='openEditCarbuncoModal(" . 
-                                          $row['id'] . ", \"" . 
-                                          htmlspecialchars($row['vh_carbunco_tagid'], ENT_QUOTES) . "\", \"" .
-					                                htmlspecialchars($row['vh_carbunco_producto'], ENT_QUOTES) . "\", \"" . 
-                                          htmlspecialchars($row['vh_carbunco_dosis'], ENT_QUOTES) . "\", \"" . 
-                                          htmlspecialchars($row['vh_carbunco_costo'], ENT_QUOTES) . "\", \"" .                                          
-                                          $row['vh_carbunco_fecha'] . "\")'>
-                                          <i class='fas fa-edit'></i>
-                                      </button>
-                                      <button class='btn btn-sm btn-danger' onclick='deleteCarbuncoEntry(" . $row['id'] . ")'>
-                                          <i class='fas fa-trash'></i>
-                                      </button>
-                                  </div>
-                              </td>
-                            </tr>";
-                  }
-              }
-              ?>
-          </tbody>
-      </table>
-      <script>
+<!--  Carbunco Inicializacion DataTable -->
+<script>
 $(document).ready(function() {
     $('#carbuncoTable').DataTable({
         // Set initial page length to 5
         pageLength: 5,
-        
+
         // Configure length menu options
         lengthMenu: [
             [5, 10, 25, 50, 100, -1],
             [5, 10, 25, 50, 100, "Todos"]
         ],
-        
+
         // Order by fecha (date) column descending
-        order: [[0, 'desc']],
-        
+        order: [[4, 'desc']],
+
         // Spanish language
         language: {
             url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json',
@@ -4312,16 +3766,16 @@ $(document).ready(function() {
                 previous: "Anterior"
             }
         },
-        
+
         // Enable responsive features
         responsive: true,
-        
+
         // Configure DOM layout and buttons
         dom: '<"row"<"col-sm-12 col-md-6"B><"col-sm-12 col-md-6"f>>' +
              '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"p>>' +
              '<"row"<"col-sm-12"tr>>' +
              '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
-        
+
         buttons: [
             {
                 extend: 'collection',
@@ -4335,12 +3789,23 @@ $(document).ready(function() {
                 ]
             }
         ],
-        
+
         // Column specific settings
         columnDefs: [
-            
             {
-                targets: [0], // Fecha column
+                targets: [2, 3], // Peso, Precio, Valor Total columns
+                render: function(data, type, row) {
+                    if (type === 'display') {
+                        return parseFloat(data).toLocaleString('es-ES', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        });
+                    }
+                    return data;
+                }
+            },
+            {
+                targets: [4], // Fecha column
                 render: function(data, type, row) {
                     if (type === 'display') {
                         return new Date(data).toLocaleDateString('es-ES');
@@ -4349,7 +3814,7 @@ $(document).ready(function() {
                 }
             },
             {
-                targets: [4], // Acciones column
+                targets: [5], // Acciones column
                 orderable: false,
                 searchable: false
             }
@@ -4357,25 +3822,120 @@ $(document).ready(function() {
     });
 });
 </script>
+</div>
+<!-- Edit Carbunco Modal -->
+
+<div class="modal fade" id="editCarbuncoModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Editar Vacunacion Carbunco</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="editCarbuncoForm" action="process_carbunco.php" method="POST">
+                <div class="modal-body">
+                    <input type="hidden" name="action" value="update">
+                    <input type="hidden" name="id" id="edit_id">
+                    <input type="hidden" name="tagid" id="edit_tagid">
+                    <div class="mb-3">
+                        <label class="form-label">Producto</label>
+                        <input type="text" class="form-control" name="producto" id="edit_producto" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Dosis</label>
+                        <input type="number" step="0.01" class="form-control" name="dosis" id="edit_dosis" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Costo ($)</label>
+                        <input type="number" step="0.01" class="form-control" name="costo" id="edit_costo" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Fecha</label>
+                        <input type="date" class="form-control" name="fecha" id="edit_fecha" required>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-between">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-success">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
-<script>
-// Function to open edit modal for CARBUNCO entries
-function openEditCarbuncoModal(id, tagid, producto, dosis, costo, fecha) {
-    document.getElementById('edit_carbunco_id').value = id;
-    document.getElementById('edit_carbunco_tagid').value = tagid;
-    document.getElementById('edit_carbunco_producto').value = producto;
-    document.getElementById('edit_carbunco_dosis').value = dosis
-    document.getElementById('edit_carbunco_costo').value = costo;
-    document.getElementById('edit_carbunco_fecha').value = fecha;
-    
-    var editModal = new bootstrap.Modal(document.getElementById('editCarbuncoModal'));
-    editModal.show();
-}
+<!-- Edit Carbunco JS -->
 
-// Function to delete CARBUNCO entries
-function deleteCarbuncoEntry(id) {
+<script>
+    // Handle edit button click
+    $('.edit-carbunco').click(function() {
+        const button = $(this);
+
+        // Get data from data attributes
+        const id = button.data('id');
+        const tagid = button.data('tagid');
+        const producto = button.data('producto');
+        const dosis = button.data('dosis');
+        const costo = button.data('costo');
+        const fecha = button.data('fecha');
+
+        // Populate modal fields
+        $('#edit_id').val(id);
+        $('#edit_tagid').val(tagid);
+        $('#edit_producto').val(producto);
+        $('#edit_dosis').val(dosis);
+        $('#edit_costo').val(costo);
+        $('#edit_fecha').val(fecha);
+    });
+
+    // Handle save changes
+    $('#saveEditCarbunco').click(function() {
+        const form = $('#editCarbuncoForm');
+
+        // Validate form
+        if (!form[0].checkValidity()) {
+            form[0].reportValidity();
+            return;
+        }
+
+        // Show loading state
+        const saveButton = $(this);
+        const originalText = saveButton.text();
+        saveButton.prop('disabled', true).text('Guardando...');
+
+        // Send AJAX request
+        $.ajax({
+            url: 'process_carbunco.php',
+            type: 'POST',
+            data: form.serialize(),
+            action: 'update',
+            dataType: 'json',
+            success: function(response) {
+                console.log('Response received:', response);
+                try {
+                    if (response.success) {
+                        $('#editCarbuncoModal').modal('hide');
+                        location.reload();
+                    } else {
+                        alert('Error al actualizar: ' + (response.error || 'Error desconocido'));
+                    }
+                } catch (e) {
+                    console.error('Error parsing response:', e);
+                    alert('Error al procesar la respuesta del servidor');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX Error:', {xhr, status, error});
+                alert('Error al procesar la solicitud: ' + error);
+            },
+            complete: function() {
+                // Reset button state
+                saveButton.prop('disabled', false).text(originalText);
+            }
+        });
+    });
+
+// Function delete Carbunco Table entries
+function editCarbuncoEntry(id) {
     if (confirm('¿Está seguro de que desea eliminar este registro?')) {
         fetch('process_carbunco.php', {
             method: 'POST',
@@ -4398,194 +3958,135 @@ function deleteCarbuncoEntry(id) {
 
 <!-- Garrapatas Table Section -->
 <?php
-// Build the base query for Garrapatas
+// First, update the query to include the JOIN
 if (isset($_GET['search']) && !empty($_GET['search'])) {
     $tagid = $conn->real_escape_string($_GET['search']);
-    $baseQuery_garrapatas = "SELECT * FROM vh_garrapatas WHERE vh_garrapatas_tagid = '$tagid'";
+    $baseQuery_garrapatas = "SELECT g.*, v.nombre
+                      FROM vh_garrapatas g
+                      LEFT JOIN vacuno v ON g.vh_garrapatas_tagid = v.tagid
+                      WHERE g.vh_garrapatas_tagid = '$tagid'";
 } else {
-    $baseQuery_garrapatas = "SELECT * FROM vh_garrapatas";
+    $baseQuery_garrapatas = "SELECT g.*, v.nombre
+                      FROM vh_garrapatas g
+                      LEFT JOIN vacuno v ON g.vh_garrapatas_tagid = v.tagid";
 }
 $result_garrapatas = $conn->query($baseQuery_garrapatas);
 ?>
+<!-- Registros de Garrapatas -->
+<div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
+    <h4 class="sub-section-title text-center">REGISTROS VACUNACION GARRAPATAS</h4>
+</div>
+<!-- Garrapatas: Nuevo Registro Form -->
+<div class="container table-section" style="display: block;">
 
-<!-- Edit Garrapatas Modal -->
-<div class="modal fade" id="editGarrapatasModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Editar Garrapatas</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <form id="editGarrapatasForm" action="process_garrapatas.php" method="POST">
-                <div class="modal-body">
-                    <input type="hidden" name="action" value="update">
-                    <input type="hidden" name="id" id="edit_garrapatas_id">
-                    <input type="hidden" name="tagid" id="edit_garrapatas_tagid">
-                    <div class="mb-3">
-                        <label class="form-label">Producto</label>
-                        <input type="text" class="form-control" name="producto" id="edit_garrapatas_producto" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Dosis (ml)</label>
-                        <input type="number" step="0.01" class="form-control" name="dosis" id="edit_garrapatas_dosis" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Costo ($)</label>
-                        <input type="number" step="0.01" class="form-control" name="costo" id="edit_garrapatas_costo" required>
-                    </div>
-                    <div class="mb-3">
+    <h4 class="sub-section-title">Control de Vacunacion Garrapatas</h4>
+    <!-- Add New Garrapatas Form -->
+    <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addGarrapatasForm">
+        <i class="fas fa-plus"></i> Registrar
+    </button>
+
+    <!-- NEW Garrapatas FORM -->
+
+    <div class="collapse mb-3" id="addGarrapatasForm">
+        <div class="card card-body">
+            <form id="garrapatasForm" action="process_garrapatas.php" method="POST">
+                <input type="hidden" name="action" value="insert">
+                <input type="hidden" name="tagid" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
+                <div class="row g-3">
+                    <div class="col-md-4">
                         <label class="form-label">Fecha</label>
-                        <input type="date" class="form-control" name="fecha" id="edit_garrapatas_fecha" required>
+                        <input type="date" class="form-control" name="fecha" required>
                     </div>
-                </div>
-                <div class="modal-footer d-flex justify-content-between">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    <div class="col-md-4">
+                        <label class="form-label">Producto</label>
+                        <input type="text" class="form-control" name="producto" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Dosis</label>
+                        <input type="number" step="0.01" class="form-control" name="dosis" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Costo</label>
+                        <input type="number" step="0.01" class="form-control" name="costo" required>
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-success">Guardar</button>
+                    </div>
                 </div>
             </form>
         </div>
     </div>
-</div>
 
-<div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
-    <h4 class="sub-section-title">Vacunas Garrapatas</h4>
-    
-    <!-- Add New Garrapatas Form -->
-    <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addGarrapatasForm">
-        <i class="fas fa-plus"></i> Registrar Vacuna  Garrapatas
-    </button>
-    <div class="collapse mb-3" id="addGarrapatasForm">
-    <div class="card card-body">
-        <form id="garrapatasForm" action="process_garrapatas.php" method="POST">
-        <input type="hidden" name="action" value="insert">
-            <?php
-            // Ensure tagid is set from either GET or SESSION
-            $tagid = '';
-            if (isset($_GET['search']) && !empty($_GET['search'])) {
-                $tagid = htmlspecialchars($_GET['search']);
-            } elseif (isset($_SESSION['current_tagid']) && !empty($_SESSION['current_tagid'])) {
-                $tagid = htmlspecialchars($_SESSION['current_tagid']);
-            }
-            ?>
-            <input type="hidden" name="tagid" value="<?php echo $tagid; ?>">
-            
-            <!-- Debug output to verify tagid -->
-            <?php if (empty($tagid)): ?>
-                <div class="alert alert-warning">
-                    No se ha seleccionado ningún animal. Por favor, busque un animal primero.
-                </div>
-            <?php endif; ?>
+    <!-- Garrapatas DataTable -->
 
-            <div class="row g-3">
-                <div class="col-md-4">
-                    <label class="form-label">Producto</label>
-                    <input type="text" class="form-control" name="producto" required>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Dosis (ml)</label>
-                    <input type="number" step="0.01" class="form-control" name="dosis" required>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Costo ($/kg)</label>
-                    <input type="number" step="0.01" class="form-control" name="costo" required>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Fecha</label>
-                    <input type="date" class="form-control" name="fecha" required>
-                </div>
-                <div class="col-12">
-                    <button type="submit" class="btn btn-success" <?php echo empty($tagid) ? 'disabled' : ''; ?>>
-                        Guardar
-                    </button>
-                </div>
-            </div>
-        </form>
+    <div class="table-responsive">
+        <table id="garrapatasTable" class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Tag ID</th>
+                    <th>Producto</th>
+                    <th>Dosis</th>
+                    <th>Costo</th>
+                    <th>Fecha</th>
+                    <th>Acciones</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                if ($result_garrapatas->num_rows > 0) {
+                    while($row = $result_garrapatas->fetch_assoc()) {
+                        $valor_total = floatval($row['vh_garrapatas_costo']);
+
+                        echo "<tr>";
+                        echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_garrapatas_tagid']) . "</td>";
+                        echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_garrapatas_producto'] ?? 'N/A') . "</td>";
+                        echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_garrapatas_dosis']) . "</td>";
+                        echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_garrapatas_costo']) . "</td>";
+                        echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_garrapatas_fecha']) . "</td>";
+                        echo "<td style='text-align: center;'>
+                                <div class='btn-group' role='group'>
+                                    <button class='btn btn-success text-center btn-sm edit-garrapatas'
+                                            data-bs-toggle='modal'
+                                            data-bs-target='#editGarrapatasModal'
+                                            data-id='" . htmlspecialchars($row['id']) . "'
+                                            data-tagid='" . htmlspecialchars($row['vh_garrapatas_tagid']) . "'
+                                            data-dosis='" . htmlspecialchars($row['vh_garrapatas_dosis']) . "'
+                                            data-costo='" . htmlspecialchars($row['vh_garrapatas_costo']) . "'
+                                            data-fecha='" . htmlspecialchars($row['vh_garrapatas_fecha']) . "'>
+                                        <i class='fas fa-edit'></i>
+                                    </button>
+                                    <button class='btn btn-danger btn-sm onclick='editGarrapatasEntry(" . $row['id'] . ")''
+                                            data-id='" . htmlspecialchars($row['id']) . "'>
+                                        <i class='fas fa-trash'></i>
+                                    </button>
+                                </div>
+                            </td>";
+                        echo "</tr>";
+                    }
+                }
+                ?>
+            </tbody>
+        </table>
     </div>
 </div>
-    <!-- Table Controls -->
-    <div class="row mb-3">
-        <div class="col-md-6">
-            <div class="d-flex align-items-center">
-                <label class="me-2">Show entries:</label>
-                <select class="form-select form-select-sm w-auto" id="garrapatasEntriesLength">
-                    <option value="10">10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                </select>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="d-flex justify-content-end">
-                <input type="search" class="form-control form-control-sm w-auto" 
-                       placeholder="Filter results..." id="garrapatasTableFilter">
-            </div>
-        </div>
-    </div>
 
-  <div class="table-responsive">
-      <table id="garrapatasTable" class="table table-striped table-bordered">
-          <thead>
-              <tr>
-                  <th style="text-align: center;">Fecha</th>
-                  <th style="text-align: center;">Producto</th>
-                  <th style="text-align: center;">Dosis (ml)</th>
-                  <th style="text-align: center;">Costo ($/Dosis)</th>
-                  <th style="text-align: center;">Acciones</th>
-
-              </tr>
-          </thead>
-          <tbody>
-              <?php
-              $sql = "SELECT * FROM vh_garrapatas WHERE vh_garrapatas_tagid = '$tagid' ORDER BY vh_garrapatas_fecha DESC";
-              $result = $conn->query($sql);
-              $total_costo_garrapatas = 0;
-              
-              if ($result->num_rows > 0) {
-                  while($row = $result->fetch_assoc()) {
-                      $total += $row['vh_garrapatas_costo'];
-                      echo "<tr>
-                              <td style='text-align: center;'>" . date('d/m/Y', strtotime($row['vh_garrapatas_fecha'])) . "</td>
-                              <td style='text-align: center;'>" . htmlspecialchars($row['vh_garrapatas_producto']) . "</td>
-                              <td style='text-align: center;'>" . number_format($row['vh_garrapatas_dosis'], 2) . "</td>
-                              <td style='text-align: center;'>$" . number_format($row['vh_garrapatas_costo'], 2) . "</td>
-                              <td style='text-align: center;'>
-                                  <div class='d-flex text-center justify-content-center gap-2'>
-                                      <button class='btn btn-sm btn-primary' onclick='openEditGarrapatasModal(" . 
-                                          $row['id'] . ", \"" . 
-                                          htmlspecialchars($row['vh_garrapatas_tagid'], ENT_QUOTES) . "\", \"" .
-					                                htmlspecialchars($row['vh_garrapatas_producto'], ENT_QUOTES) . "\", \"" . 
-                                          htmlspecialchars($row['vh_garrapatas_dosis'], ENT_QUOTES) . "\", \"" . 
-                                          htmlspecialchars($row['vh_garrapatas_costo'], ENT_QUOTES) . "\", \"" .                                          
-                                          $row['vh_garrapatas_fecha'] . "\")'>
-                                          <i class='fas fa-edit'></i>
-                                      </button>
-                                      <button class='btn btn-sm btn-danger' onclick='deleteGarrapatasEntry(" . $row['id'] . ")'>
-                                          <i class='fas fa-trash'></i>
-                                      </button>
-                                  </div>
-                              </td>
-                            </tr>";
-                  }
-              }
-              ?>
-          </tbody>
-      </table>
-      <script>
+<!--  Garrapatas Inicializacion DataTable -->
+<script>
 $(document).ready(function() {
     $('#garrapatasTable').DataTable({
         // Set initial page length to 5
         pageLength: 5,
-        
+
         // Configure length menu options
         lengthMenu: [
             [5, 10, 25, 50, 100, -1],
             [5, 10, 25, 50, 100, "Todos"]
         ],
-        
+
         // Order by fecha (date) column descending
-        order: [[0, 'desc']],
-        
+        order: [[4, 'desc']],
+
         // Spanish language
         language: {
             url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json',
@@ -4602,16 +4103,16 @@ $(document).ready(function() {
                 previous: "Anterior"
             }
         },
-        
+
         // Enable responsive features
         responsive: true,
-        
+
         // Configure DOM layout and buttons
         dom: '<"row"<"col-sm-12 col-md-6"B><"col-sm-12 col-md-6"f>>' +
              '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"p>>' +
              '<"row"<"col-sm-12"tr>>' +
              '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
-        
+
         buttons: [
             {
                 extend: 'collection',
@@ -4625,12 +4126,23 @@ $(document).ready(function() {
                 ]
             }
         ],
-        
+
         // Column specific settings
         columnDefs: [
-
             {
-                targets: [0], // Fecha column
+                targets: [2, 3], // Peso, Precio, Valor Total columns
+                render: function(data, type, row) {
+                    if (type === 'display') {
+                        return parseFloat(data).toLocaleString('es-ES', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        });
+                    }
+                    return data;
+                }
+            },
+            {
+                targets: [4], // Fecha column
                 render: function(data, type, row) {
                     if (type === 'display') {
                         return new Date(data).toLocaleDateString('es-ES');
@@ -4639,7 +4151,7 @@ $(document).ready(function() {
                 }
             },
             {
-                targets: [4], // Acciones column
+                targets: [5], // Acciones column
                 orderable: false,
                 searchable: false
             }
@@ -4647,25 +4159,120 @@ $(document).ready(function() {
     });
 });
 </script>
+</div>
+<!-- Edit Garrapatas Modal -->
+
+<div class="modal fade" id="editGarrapatasModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Editar Vacunacion Garrapatas</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="editGarrapatasForm" action="process_garrapatas.php" method="POST">
+                <div class="modal-body">
+                    <input type="hidden" name="action" value="update">
+                    <input type="hidden" name="id" id="edit_id">
+                    <input type="hidden" name="tagid" id="edit_tagid">
+                    <div class="mb-3">
+                        <label class="form-label">Producto</label>
+                        <input type="text" class="form-control" name="producto" id="edit_producto" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Dosis</label>
+                        <input type="number" step="0.01" class="form-control" name="dosis" id="edit_dosis" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Costo ($)</label>
+                        <input type="number" step="0.01" class="form-control" name="costo" id="edit_costo" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Fecha</label>
+                        <input type="date" class="form-control" name="fecha" id="edit_fecha" required>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-between">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-success">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
-<script>
-// Function to open edit modal for Garrapatas entries
-function openEditGarrapatasModal(id, tagid, producto, dosis, costo, fecha) {
-    document.getElementById('edit_garrapatas_id').value = id;
-    document.getElementById('edit_garrapatas_tagid').value = tagid;
-    document.getElementById('edit_garrapatas_producto').value = producto;
-    document.getElementById('edit_garrapatas_dosis').value = dosis
-    document.getElementById('edit_garrapatas_costo').value = costo;
-    document.getElementById('edit_garrapatas_fecha').value = fecha;
-    
-    var editModal = new bootstrap.Modal(document.getElementById('editGarrapatasModal'));
-    editModal.show();
-}
+<!-- Edit Garrapatas JS -->
 
-// Function to delete Garrapatas entries
-function deleteGarrapatasEntry(id) {
+<script>
+    // Handle edit button click
+    $('.edit-garrapatas').click(function() {
+        const button = $(this);
+
+        // Get data from data attributes
+        const id = button.data('id');
+        const tagid = button.data('tagid');
+        const producto = button.data('producto');
+        const dosis = button.data('dosis');
+        const costo = button.data('costo');
+        const fecha = button.data('fecha');
+
+        // Populate modal fields
+        $('#edit_id').val(id);
+        $('#edit_tagid').val(tagid);
+        $('#edit_producto').val(producto);
+        $('#edit_dosis').val(dosis);
+        $('#edit_costo').val(costo);
+        $('#edit_fecha').val(fecha);
+    });
+
+    // Handle save changes
+    $('#saveEditGarrapatas').click(function() {
+        const form = $('#editGarrapatasForm');
+
+        // Validate form
+        if (!form[0].checkValidity()) {
+            form[0].reportValidity();
+            return;
+        }
+
+        // Show loading state
+        const saveButton = $(this);
+        const originalText = saveButton.text();
+        saveButton.prop('disabled', true).text('Guardando...');
+
+        // Send AJAX request
+        $.ajax({
+            url: 'process_garrapatas.php',
+            type: 'POST',
+            data: form.serialize(),
+            action: 'update',
+            dataType: 'json',
+            success: function(response) {
+                console.log('Response received:', response);
+                try {
+                    if (response.success) {
+                        $('#editGarrapatasModal').modal('hide');
+                        location.reload();
+                    } else {
+                        alert('Error al actualizar: ' + (response.error || 'Error desconocido'));
+                    }
+                } catch (e) {
+                    console.error('Error parsing response:', e);
+                    alert('Error al procesar la respuesta del servidor');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX Error:', {xhr, status, error});
+                alert('Error al procesar la solicitud: ' + error);
+            },
+            complete: function() {
+                // Reset button state
+                saveButton.prop('disabled', false).text(originalText);
+            }
+        });
+    });
+
+// Function delete Garrapatas Table entries
+function editGarrapatasEntry(id) {
     if (confirm('¿Está seguro de que desea eliminar este registro?')) {
         fetch('process_garrapatas.php', {
             method: 'POST',
@@ -4685,196 +4292,139 @@ function deleteGarrapatasEntry(id) {
     }
 }
 </script>
+
+
 <!-- Mastitis Table Section -->
 <?php
-// Build the base query for mastitis
+// First, update the query to include the JOIN
 if (isset($_GET['search']) && !empty($_GET['search'])) {
     $tagid = $conn->real_escape_string($_GET['search']);
-    $baseQuery_mastitis = "SELECT * FROM vh_mastitis WHERE vh_mastitis_tagid = '$tagid'";
+    $baseQuery_mastitis = "SELECT m.*, v.nombre
+                      FROM vh_mastitis m
+                      LEFT JOIN vacuno v ON m.vh_mastitis_tagid = v.tagid
+                      WHERE m.vh_mastitis_tagid = '$tagid'";
 } else {
-    $baseQuery_mastitis = "SELECT * FROM vh_mastitis";
+    $baseQuery_mastitis = "SELECT m.*, v.nombre
+                      FROM vh_mastitis m
+                      LEFT JOIN vacuno v ON m.vh_mastitis_tagid = v.tagid";
 }
 $result_mastitis = $conn->query($baseQuery_mastitis);
 ?>
+<!-- Registros de Mastitis -->
+<div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
+    <h4 class="sub-section-title text-center">REGISTROS VACUNACION GARRAPATAS</h4>
+</div>
+<!-- Mastitis: Nuevo Registro Form -->
+<div class="container table-section" style="display: block;">
 
-<!-- Edit mastitis Modal -->
-<div class="modal fade" id="editmastitisModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Editar mastitis</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <form id="editCbrForm" action="process_mastitis.php" method="POST">
-                <div class="modal-body">
-                    <input type="hidden" name="action" value="update">
-                    <input type="hidden" name="id" id="edit_mastitis_id">
-                    <input type="hidden" name="tagid" id="edit_mastitis_tagid">
-                    <div class="mb-3">
-                        <label class="form-label">Producto</label>
-                        <input type="text" class="form-control" name="producto" id="edit_mastitis_producto" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Dosis (ml)</label>
-                        <input type="number" step="0.01" class="form-control" name="dosis" id="edit_mastitis_dosis" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Costo ($)</label>
-                        <input type="number" step="0.01" class="form-control" name="costo" id="edit_mastitis_costo" required>
-                    </div>
-                    <div class="mb-3">
+    <h4 class="sub-section-title">Control de Vacunacion Mastitis</h4>
+    <!-- Add New Mastitis Form -->
+    <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addMastitisForm">
+        <i class="fas fa-plus"></i> Registrar
+    </button>
+
+    <!-- NEW Mastitis FORM -->
+
+    <div class="collapse mb-3" id="addMastitisForm">
+        <div class="card card-body">
+            <form id="mastitisForm" action="process_mastitis.php" method="POST">
+                <input type="hidden" name="action" value="insert">
+                <input type="hidden" name="tagid" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
+                <div class="row g-3">
+                    <div class="col-md-4">
                         <label class="form-label">Fecha</label>
-                        <input type="date" class="form-control" name="fecha" id="edit_mastitis_fecha" required>
+                        <input type="date" class="form-control" name="fecha" required>
                     </div>
-                </div>
-                <div class="modal-footer d-flex justify-content-between">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    <div class="col-md-4">
+                        <label class="form-label">Producto</label>
+                        <input type="text" class="form-control" name="producto" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Dosis</label>
+                        <input type="number" step="0.01" class="form-control" name="dosis" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Costo</label>
+                        <input type="number" step="0.01" class="form-control" name="costo" required>
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-success">Guardar</button>
+                    </div>
                 </div>
             </form>
         </div>
     </div>
-</div>
 
-<div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
-    <h4 class="sub-section-title">Vacunas Mastitis</h4>
-    
-    <!-- Add New mastitis Form -->
-    <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addmastitisForm">
-        <i class="fas fa-plus"></i> Registrar Vacuna  Mastitis
-    </button>
-    <div class="collapse mb-3" id="addmastitisForm">
-    <div class="card card-body">
-        <form id="mastitisForm" action="process_mastitis.php" method="POST">
-        <input type="hidden" name="action" value="insert">
-            <?php
-            // Ensure tagid is set from either GET or SESSION
-            $tagid = '';
-            if (isset($_GET['search']) && !empty($_GET['search'])) {
-                $tagid = htmlspecialchars($_GET['search']);
-            } elseif (isset($_SESSION['current_tagid']) && !empty($_SESSION['current_tagid'])) {
-                $tagid = htmlspecialchars($_SESSION['current_tagid']);
-            }
-            ?>
-            <input type="hidden" name="tagid" value="<?php echo $tagid; ?>">
-            
-            <!-- Debug output to verify tagid -->
-            <?php if (empty($tagid)): ?>
-                <div class="alert alert-warning">
-                    No se ha seleccionado ningún animal. Por favor, busque un animal primero.
-                </div>
-            <?php endif; ?>
+    <!-- Mastitis DataTable -->
 
-            <div class="row g-3">
-                <div class="col-md-4">
-                    <label class="form-label">Producto</label>
-                    <input type="text" class="form-control" name="producto" required>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Dosis (ml)</label>
-                    <input type="number" step="0.01" class="form-control" name="dosis" required>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Costo ($/kg)</label>
-                    <input type="number" step="0.01" class="form-control" name="costo" required>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Fecha</label>
-                    <input type="date" class="form-control" name="fecha" required>
-                </div>
-                <div class="col-12">
-                    <button type="submit" class="btn btn-success" <?php echo empty($tagid) ? 'disabled' : ''; ?>>
-                        Guardar
-                    </button>
-                </div>
-            </div>
-        </form>
+    <div class="table-responsive">
+        <table id="mastitisTable" class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Tag ID</th>
+                    <th>Producto</th>
+                    <th>Dosis</th>
+                    <th>Costo</th>
+                    <th>Fecha</th>
+                    <th>Acciones</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                if ($result_mastitis->num_rows > 0) {
+                    while($row = $result_mastitis->fetch_assoc()) {
+                        $valor_total = floatval($row['vh_mastitis_costo']);
+
+                        echo "<tr>";
+                        echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_mastitis_tagid']) . "</td>";
+                        echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_mastitis_producto'] ?? 'N/A') . "</td>";
+                        echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_mastitis_dosis']) . "</td>";
+                        echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_mastitis_costo']) . "</td>";
+                        echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_mastitis_fecha']) . "</td>";
+                        echo "<td style='text-align: center;'>
+                                <div class='btn-group' role='group'>
+                                    <button class='btn btn-success text-center btn-sm edit-mastitis'
+                                            data-bs-toggle='modal'
+                                            data-bs-target='#editMastitisModal'
+                                            data-id='" . htmlspecialchars($row['id']) . "'
+                                            data-tagid='" . htmlspecialchars($row['vh_mastitis_tagid']) . "'
+                                            data-dosis='" . htmlspecialchars($row['vh_mastitis_dosis']) . "'
+                                            data-costo='" . htmlspecialchars($row['vh_mastitis_costo']) . "'
+                                            data-fecha='" . htmlspecialchars($row['vh_mastitis_fecha']) . "'>
+                                        <i class='fas fa-edit'></i>
+                                    </button>
+                                    <button class='btn btn-danger btn-sm onclick='editMastitisEntry(" . $row['id'] . ")''
+                                            data-id='" . htmlspecialchars($row['id']) . "'>
+                                        <i class='fas fa-trash'></i>
+                                    </button>
+                                </div>
+                            </td>";
+                        echo "</tr>";
+                    }
+                }
+                ?>
+            </tbody>
+        </table>
     </div>
 </div>
-    <!-- Table Controls -->
-    <div class="row mb-3">
-        <div class="col-md-6">
-            <div class="d-flex align-items-center">
-                <label class="me-2">Show entries:</label>
-                <select class="form-select form-select-sm w-auto" id="mastitisEntriesLength">
-                    <option value="10">10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                </select>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="d-flex justify-content-end">
-                <input type="search" class="form-control form-control-sm w-auto" 
-                       placeholder="Filter results..." id="mastitisTableFilter">
-            </div>
-        </div>
-    </div>
 
-  <div class="table-responsive">
-      <table id="mastitisTable" class="table table-striped table-bordered">
-          <thead>
-              <tr>
-                  <th style="text-align: center;">Fecha</th>
-                  <th style="text-align: center;">Producto</th>
-                  <th style="text-align: center;">Dosis (ml)</th>
-                  <th style="text-align: center;">Costo ($/Dosis)</th>
-                  <th style="text-align: center;">Acciones</th>
-
-              </tr>
-          </thead>
-          <tbody>
-              <?php
-              $sql = "SELECT * FROM vh_mastitis WHERE vh_mastitis_tagid = '$tagid' ORDER BY vh_mastitis_fecha DESC";
-              $result = $conn->query($sql);
-              $total_costo_mastitis = 0;
-              
-              if ($result->num_rows > 0) {
-                  while($row = $result->fetch_assoc()) {
-                      $total += $row['vh_mastitis_costo'];
-                      echo "<tr>
-                              <td style='text-align: center;'>" . date('d/m/Y', strtotime($row['vh_mastitis_fecha'])) . "</td>
-                              <td style='text-align: center;'>" . htmlspecialchars($row['vh_mastitis_producto']) . "</td>
-                              <td style='text-align: center;'>" . number_format($row['vh_mastitis_dosis'], 2) . "</td>
-                              <td style='text-align: center;'>$" . number_format($row['vh_mastitis_costo'], 2) . "</td>
-                              <td style='text-align: center;'>
-                                  <div class='d-flex text-center justify-content-center gap-2'>
-                                      <button class='btn btn-sm btn-primary' onclick='openEditmastitisModal(" . 
-                                          $row['id'] . ", \"" . 
-                                          htmlspecialchars($row['vh_mastitis_tagid'], ENT_QUOTES) . "\", \"" .
-					                                htmlspecialchars($row['vh_mastitis_producto'], ENT_QUOTES) . "\", \"" . 
-                                          htmlspecialchars($row['vh_mastitis_dosis'], ENT_QUOTES) . "\", \"" . 
-                                          htmlspecialchars($row['vh_mastitis_costo'], ENT_QUOTES) . "\", \"" .                                          
-                                          $row['vh_mastitis_fecha'] . "\")'>
-                                          <i class='fas fa-edit'></i>
-                                      </button>
-                                      <button class='btn btn-sm btn-danger' onclick='deletemastitisEntry(" . $row['id'] . ")'>
-                                          <i class='fas fa-trash'></i>
-                                      </button>
-                                  </div>
-                              </td>
-                            </tr>";
-                  }
-              }
-              ?>
-          </tbody>
-      </table>
-      <script>
+<!--  Mastitis Inicializacion DataTable -->
+<script>
 $(document).ready(function() {
     $('#mastitisTable').DataTable({
         // Set initial page length to 5
         pageLength: 5,
-        
+
         // Configure length menu options
         lengthMenu: [
             [5, 10, 25, 50, 100, -1],
             [5, 10, 25, 50, 100, "Todos"]
         ],
-        
+
         // Order by fecha (date) column descending
-        order: [[0, 'desc']],
-        
+        order: [[4, 'desc']],
+
         // Spanish language
         language: {
             url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json',
@@ -4891,16 +4441,16 @@ $(document).ready(function() {
                 previous: "Anterior"
             }
         },
-        
+
         // Enable responsive features
         responsive: true,
-        
+
         // Configure DOM layout and buttons
         dom: '<"row"<"col-sm-12 col-md-6"B><"col-sm-12 col-md-6"f>>' +
              '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"p>>' +
              '<"row"<"col-sm-12"tr>>' +
              '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
-        
+
         buttons: [
             {
                 extend: 'collection',
@@ -4914,12 +4464,23 @@ $(document).ready(function() {
                 ]
             }
         ],
-        
+
         // Column specific settings
         columnDefs: [
-
             {
-                targets: [0], // Fecha column
+                targets: [2, 3], // Peso, Precio, Valor Total columns
+                render: function(data, type, row) {
+                    if (type === 'display') {
+                        return parseFloat(data).toLocaleString('es-ES', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        });
+                    }
+                    return data;
+                }
+            },
+            {
+                targets: [4], // Fecha column
                 render: function(data, type, row) {
                     if (type === 'display') {
                         return new Date(data).toLocaleDateString('es-ES');
@@ -4928,7 +4489,7 @@ $(document).ready(function() {
                 }
             },
             {
-                targets: [4], // Acciones column
+                targets: [5], // Acciones column
                 orderable: false,
                 searchable: false
             }
@@ -4936,25 +4497,120 @@ $(document).ready(function() {
     });
 });
 </script>
+</div>
+<!-- Edit Mastitis Modal -->
+
+<div class="modal fade" id="editMastitisModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Editar Vacunacion Mastitis</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="editMastitisForm" action="process_mastitis.php" method="POST">
+                <div class="modal-body">
+                    <input type="hidden" name="action" value="update">
+                    <input type="hidden" name="id" id="edit_id">
+                    <input type="hidden" name="tagid" id="edit_tagid">
+                    <div class="mb-3">
+                        <label class="form-label">Producto</label>
+                        <input type="text" class="form-control" name="producto" id="edit_producto" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Dosis</label>
+                        <input type="number" step="0.01" class="form-control" name="dosis" id="edit_dosis" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Costo ($)</label>
+                        <input type="number" step="0.01" class="form-control" name="costo" id="edit_costo" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Fecha</label>
+                        <input type="date" class="form-control" name="fecha" id="edit_fecha" required>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-between">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-success">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
-<script>
-// Function to open edit modal for mastitis entries
-function openEditmastitisModal(id, tagid, producto, dosis, costo, fecha) {
-    document.getElementById('edit_mastitis_id').value = id;
-    document.getElementById('edit_mastitis_tagid').value = tagid;
-    document.getElementById('edit_mastitis_producto').value = producto;
-    document.getElementById('edit_mastitis_dosis').value = dosis
-    document.getElementById('edit_mastitis_costo').value = costo;
-    document.getElementById('edit_mastitis_fecha').value = fecha;
-    
-    var editModal = new bootstrap.Modal(document.getElementById('editmastitisModal'));
-    editModal.show();
-}
+<!-- Edit Mastitis JS -->
 
-// Function to delete mastitis entries
-function deletemastitisEntry(id) {
+<script>
+    // Handle edit button click
+    $('.edit-mastitis').click(function() {
+        const button = $(this);
+
+        // Get data from data attributes
+        const id = button.data('id');
+        const tagid = button.data('tagid');
+        const producto = button.data('producto');
+        const dosis = button.data('dosis');
+        const costo = button.data('costo');
+        const fecha = button.data('fecha');
+
+        // Populate modal fields
+        $('#edit_id').val(id);
+        $('#edit_tagid').val(tagid);
+        $('#edit_producto').val(producto);
+        $('#edit_dosis').val(dosis);
+        $('#edit_costo').val(costo);
+        $('#edit_fecha').val(fecha);
+    });
+
+    // Handle save changes
+    $('#saveEditMastitis').click(function() {
+        const form = $('#editMastitisForm');
+
+        // Validate form
+        if (!form[0].checkValidity()) {
+            form[0].reportValidity();
+            return;
+        }
+
+        // Show loading state
+        const saveButton = $(this);
+        const originalText = saveButton.text();
+        saveButton.prop('disabled', true).text('Guardando...');
+
+        // Send AJAX request
+        $.ajax({
+            url: 'process_mastitis.php',
+            type: 'POST',
+            data: form.serialize(),
+            action: 'update',
+            dataType: 'json',
+            success: function(response) {
+                console.log('Response received:', response);
+                try {
+                    if (response.success) {
+                        $('#editMastitisModal').modal('hide');
+                        location.reload();
+                    } else {
+                        alert('Error al actualizar: ' + (response.error || 'Error desconocido'));
+                    }
+                } catch (e) {
+                    console.error('Error parsing response:', e);
+                    alert('Error al procesar la respuesta del servidor');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX Error:', {xhr, status, error});
+                alert('Error al procesar la solicitud: ' + error);
+            },
+            complete: function() {
+                // Reset button state
+                saveButton.prop('disabled', false).text(originalText);
+            }
+        });
+    });
+
+// Function delete Mastitis Table entries
+function editMastitisEntry(id) {
     if (confirm('¿Está seguro de que desea eliminar este registro?')) {
         fetch('process_mastitis.php', {
             method: 'POST',
@@ -4974,199 +4630,137 @@ function deletemastitisEntry(id) {
     }
 }
 </script>
-
 <!-- Lombrices Table Section -->
 <?php
-// Build the base query for Lombrices
+// First, update the query to include the JOIN
 if (isset($_GET['search']) && !empty($_GET['search'])) {
     $tagid = $conn->real_escape_string($_GET['search']);
-    $baseQuery_lombrices = "SELECT * FROM vh_lombrices WHERE vh_lombrices_tagid = '$tagid'";
+    $baseQuery_lombrices = "SELECT l.*, v.nombre
+                      FROM vh_lombrices l
+                      LEFT JOIN vacuno v ON l.vh_lombrices_tagid = v.tagid
+                      WHERE l.vh_lombrices_tagid = '$tagid'";
 } else {
-    $baseQuery_lombrices = "SELECT * FROM vh_lombrices";
+    $baseQuery_lombrices = "SELECT l.*, v.nombre
+                      FROM vh_lombrices l
+                      LEFT JOIN vacuno v ON l.vh_lombrices_tagid = v.tagid";
 }
 $result_lombrices = $conn->query($baseQuery_lombrices);
 ?>
+<!-- Registros de Lombrices -->
+<div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
+    <h4 class="sub-section-title text-center">REGISTROS VACUNACION LOMBRICES</h4>
+</div>
+<!-- Lombrices: Nuevo Registro Form -->
+<div class="container table-section" style="display: block;">
 
-<!-- Edit Lombrices Modal -->
-<div class="modal fade" id="editLombricesModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Editar Lombrices</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <form id="editLombricesForm" action="process_lombrices.php" method="POST">
-                <div class="modal-body">
-                    <input type="hidden" name="action" value="update">
-                    <input type="hidden" name="id" id="edit_lombrices_id">
-                    <input type="hidden" name="tagid" id="edit_lombrices_tagid">
-                    <div class="mb-3">
-                        <label class="form-label">Producto</label>
-                        <input type="text" class="form-control" name="producto" id="edit_lombrices_producto" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Dosis (ml)</label>
-                        <input type="number" step="0.01" class="form-control" name="dosis" id="edit_lombrices_dosis" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Costo ($)</label>
-                        <input type="number" step="0.01" class="form-control" name="costo" id="edit_lombrices_costo" required>
-                    </div>
-                    <div class="mb-3">
+    <h4 class="sub-section-title">Control de Vacunacion Lombrices</h4>
+    <!-- Add New Lombrices Form -->
+    <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addLombricesForm">
+        <i class="fas fa-plus"></i> Registrar
+    </button>
+
+    <!-- NEW Lombrices FORM -->
+
+    <div class="collapse mb-3" id="addLombricesForm">
+        <div class="card card-body">
+            <form id="lombricesForm" action="process_lombrices.php" method="POST">
+                <input type="hidden" name="action" value="insert">
+                <input type="hidden" name="tagid" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
+                <div class="row g-3">
+                    <div class="col-md-4">
                         <label class="form-label">Fecha</label>
-                        <input type="date" class="form-control" name="fecha" id="edit_lombrices_fecha" required>
+                        <input type="date" class="form-control" name="fecha" required>
                     </div>
-                </div>
-                <div class="modal-footer d-flex justify-content-between">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    <div class="col-md-4">
+                        <label class="form-label">Producto</label>
+                        <input type="text" class="form-control" name="producto" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Dosis</label>
+                        <input type="number" step="0.01" class="form-control" name="dosis" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Costo</label>
+                        <input type="number" step="0.01" class="form-control" name="costo" required>
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-success">Guardar</button>
+                    </div>
                 </div>
             </form>
         </div>
     </div>
-</div>
 
-<div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
-    <h4 class="sub-section-title">Vacunas Lombrices</h4>
-    
-    <!-- Add New Lombrices Form -->
-    <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addLombricesForm">
-        <i class="fas fa-plus"></i> Registrar Vacuna  Lombrices
-    </button>
-    <div class="collapse mb-3" id="addLombricesForm">
-    <div class="card card-body">
-        <form id="lombricesForm" action="process_lombrices.php" method="POST">
-        <input type="hidden" name="action" value="insert">
-            <?php
-            // Ensure tagid is set from either GET or SESSION
-            $tagid = '';
-            if (isset($_GET['search']) && !empty($_GET['search'])) {
-                $tagid = htmlspecialchars($_GET['search']);
-            } elseif (isset($_SESSION['current_tagid']) && !empty($_SESSION['current_tagid'])) {
-                $tagid = htmlspecialchars($_SESSION['current_tagid']);
-            }
-            ?>
-            <input type="hidden" name="tagid" value="<?php echo $tagid; ?>">
-            
-            <!-- Debug output to verify tagid -->
-            <?php if (empty($tagid)): ?>
-                <div class="alert alert-warning">
-                    No se ha seleccionado ningún animal. Por favor, busque un animal primero.
-                </div>
-            <?php endif; ?>
+    <!-- Lombrices DataTable -->
 
-            <div class="row g-3">
-                <div class="col-md-4">
-                    <label class="form-label">Producto</label>
-                    <input type="text" class="form-control" name="producto" required>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Dosis (ml)</label>
-                    <input type="number" step="0.01" class="form-control" name="dosis" required>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Costo ($/kg)</label>
-                    <input type="number" step="0.01" class="form-control" name="costo" required>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Fecha</label>
-                    <input type="date" class="form-control" name="fecha" required>
-                </div>
-                <div class="col-12">
-                    <button type="submit" class="btn btn-success" <?php echo empty($tagid) ? 'disabled' : ''; ?>>
-                        Guardar
-                    </button>
-                </div>
-            </div>
-        </form>
+    <div class="table-responsive">
+        <table id="lombricesTable" class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Tag ID</th>
+                    <th>Producto</th>
+                    <th>Dosis</th>
+                    <th>Costo</th>
+                    <th>Fecha</th>
+                    <th>Acciones</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                if ($result_lombrices->num_rows > 0) {
+                    while($row = $result_lombrices->fetch_assoc()) {
+                        $valor_total = floatval($row['vh_lombrices_costo']);
+
+                        echo "<tr>";
+                        echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_lombrices_tagid']) . "</td>";
+                        echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_lombrices_producto'] ?? 'N/A') . "</td>";
+                        echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_lombrices_dosis']) . "</td>";
+                        echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_lombrices_costo']) . "</td>";
+                        echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_lombrices_fecha']) . "</td>";
+                        echo "<td style='text-align: center;'>
+                                <div class='btn-group' role='group'>
+                                    <button class='btn btn-success text-center btn-sm edit-lombrices'
+                                            data-bs-toggle='modal'
+                                            data-bs-target='#editLombricesModal'
+                                            data-id='" . htmlspecialchars($row['id']) . "'
+                                            data-tagid='" . htmlspecialchars($row['vh_lombrices_tagid']) . "'
+                                            data-dosis='" . htmlspecialchars($row['vh_lombrices_dosis']) . "'
+                                            data-costo='" . htmlspecialchars($row['vh_lombrices_costo']) . "'
+                                            data-fecha='" . htmlspecialchars($row['vh_lombrices_fecha']) . "'>
+                                        <i class='fas fa-edit'></i>
+                                    </button>
+                                    <button class='btn btn-danger btn-sm onclick='editLombricesEntry(" . $row['id'] . ")''
+                                            data-id='" . htmlspecialchars($row['id']) . "'>
+                                        <i class='fas fa-trash'></i>
+                                    </button>
+                                </div>
+                            </td>";
+                        echo "</tr>";
+                    }
+                }
+                ?>
+            </tbody>
+        </table>
     </div>
 </div>
-    <!-- Table Controls -->
-    <div class="row mb-3">
-        <div class="col-md-6">
-            <div class="d-flex align-items-center">
-                <label class="me-2">Show entries:</label>
-                <select class="form-select form-select-sm w-auto" id="lombricesEntriesLength">
-                    <option value="10">10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                </select>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="d-flex justify-content-end">
-                <input type="search" class="form-control form-control-sm w-auto" 
-                       placeholder="Filter results..." id="lombricesTableFilter">
-            </div>
-        </div>
-    </div>
 
-  <div class="table-responsive">
-      <table id="lombricesTable" class="table table-striped table-bordered">
-          <thead>
-              <tr>
-                  <th style="text-align: center;">Fecha</th>
-                  <th style="text-align: center;">Producto</th>
-                  <th style="text-align: center;">Dosis (ml)</th>
-                  <th style="text-align: center;">Costo ($/Dosis)</th>
-                  <th style="text-align: center;">Acciones</th>
-
-              </tr>
-          </thead>
-          <tbody>
-              <?php
-              $sql = "SELECT * FROM vh_lombrices WHERE vh_lombrices_tagid = '$tagid' ORDER BY vh_lombrices_fecha DESC";
-              $result = $conn->query($sql);
-              $total_costo_lombrices = 0;
-              
-              if ($result->num_rows > 0) {
-                  while($row = $result->fetch_assoc()) {
-                      $total += $row['vh_lombrices_costo'];
-                      echo "<tr>
-                              <td style='text-align: center;'>" . date('d/m/Y', strtotime($row['vh_lombrices_fecha'])) . "</td>
-                              <td style='text-align: center;'>" . htmlspecialchars($row['vh_lombrices_producto']) . "</td>
-                              <td style='text-align: center;'>" . number_format($row['vh_lombrices_dosis'], 2) . "</td>
-
-                              <td style='text-align: center;'>$" . number_format($row['vh_lombrices_costo'], 2) . "</td>
-                              <td style='text-align: center;'>
-                                  <div class='d-flex text-center justify-content-center gap-2'>
-
-                                      <button class='btn btn-sm btn-primary' onclick='openEditLombricesModal(" . 
-                                          $row['id'] . ", \"" . 
-                                          htmlspecialchars($row['vh_lombrices_tagid'], ENT_QUOTES) . "\", \"" .
-					                      htmlspecialchars($row['vh_lombrices_producto'], ENT_QUOTES) . "\", \"" . 
-                                          htmlspecialchars($row['vh_lombrices_dosis'], ENT_QUOTES) . "\", \"" . 
-                                          htmlspecialchars($row['vh_lombrices_costo'], ENT_QUOTES) . "\", \"" .                                          
-                                          $row['vh_lombrices_fecha'] . "\")'>
-                                          <i class='fas fa-edit'></i>
-                                      </button>
-                                      <button class='btn btn-sm btn-danger' onclick='deleteLombricesEntry(" . $row['id'] . ")'>
-                                          <i class='fas fa-trash'></i>
-                                      </button>
-                                  </div>
-                              </td>
-                            </tr>";
-                  }
-              }
-              ?>
-          </tbody>
-      </table>
-      <script>
+<!--  Lombrices Inicializacion DataTable -->
+<script>
 $(document).ready(function() {
     $('#lombricesTable').DataTable({
         // Set initial page length to 5
         pageLength: 5,
-        
+
         // Configure length menu options
         lengthMenu: [
             [5, 10, 25, 50, 100, -1],
             [5, 10, 25, 50, 100, "Todos"]
         ],
-        
+
         // Order by fecha (date) column descending
-        order: [[0, 'desc']],
-        
+        order: [[4, 'desc']],
+
         // Spanish language
         language: {
             url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json',
@@ -5183,16 +4777,16 @@ $(document).ready(function() {
                 previous: "Anterior"
             }
         },
-        
+
         // Enable responsive features
         responsive: true,
-        
+
         // Configure DOM layout and buttons
         dom: '<"row"<"col-sm-12 col-md-6"B><"col-sm-12 col-md-6"f>>' +
              '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"p>>' +
              '<"row"<"col-sm-12"tr>>' +
              '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
-        
+
         buttons: [
             {
                 extend: 'collection',
@@ -5206,11 +4800,23 @@ $(document).ready(function() {
                 ]
             }
         ],
-        
+
         // Column specific settings
         columnDefs: [
             {
-                targets: [0], // Fecha column
+                targets: [2, 3], // Peso, Precio, Valor Total columns
+                render: function(data, type, row) {
+                    if (type === 'display') {
+                        return parseFloat(data).toLocaleString('es-ES', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        });
+                    }
+                    return data;
+                }
+            },
+            {
+                targets: [4], // Fecha column
                 render: function(data, type, row) {
                     if (type === 'display') {
                         return new Date(data).toLocaleDateString('es-ES');
@@ -5219,7 +4825,7 @@ $(document).ready(function() {
                 }
             },
             {
-                targets: [4], // Acciones column
+                targets: [5], // Acciones column
                 orderable: false,
                 searchable: false
             }
@@ -5227,25 +4833,120 @@ $(document).ready(function() {
     });
 });
 </script>
+</div>
+<!-- Edit Lombrices Modal -->
+
+<div class="modal fade" id="editLombricesModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Editar Vacunacion Lombrices</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="editLombricesForm" action="process_lombrices.php" method="POST">
+                <div class="modal-body">
+                    <input type="hidden" name="action" value="update">
+                    <input type="hidden" name="id" id="edit_id">
+                    <input type="hidden" name="tagid" id="edit_tagid">
+                    <div class="mb-3">
+                        <label class="form-label">Producto</label>
+                        <input type="text" class="form-control" name="producto" id="edit_producto" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Dosis</label>
+                        <input type="number" step="0.01" class="form-control" name="dosis" id="edit_dosis" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Costo ($)</label>
+                        <input type="number" step="0.01" class="form-control" name="costo" id="edit_costo" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Fecha</label>
+                        <input type="date" class="form-control" name="fecha" id="edit_fecha" required>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-between">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-success">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
-<script>
-// Function to open edit modal for Lombrices entries
-function openEditLombricesModal(id, tagid, producto, dosis, costo, fecha) {
-    document.getElementById('edit_lombrices_id').value = id;
-    document.getElementById('edit_lombrices_tagid').value = tagid;
-    document.getElementById('edit_lombrices_producto').value = producto;
-    document.getElementById('edit_lombrices_dosis').value = dosis
-    document.getElementById('edit_lombrices_costo').value = costo;
-    document.getElementById('edit_lombrices_fecha').value = fecha;
-    
-    var editModal = new bootstrap.Modal(document.getElementById('editLombricesModal'));
-    editModal.show();
-}
+<!-- Edit Lombrices JS -->
 
-// Function to delete Lombrices entries
-function deleteLombricesEntry(id) {
+<script>
+    // Handle edit button click
+    $('.edit-lombrices').click(function() {
+        const button = $(this);
+
+        // Get data from data attributes
+        const id = button.data('id');
+        const tagid = button.data('tagid');
+        const producto = button.data('producto');
+        const dosis = button.data('dosis');
+        const costo = button.data('costo');
+        const fecha = button.data('fecha');
+
+        // Populate modal fields
+        $('#edit_id').val(id);
+        $('#edit_tagid').val(tagid);
+        $('#edit_producto').val(producto);
+        $('#edit_dosis').val(dosis);
+        $('#edit_costo').val(costo);
+        $('#edit_fecha').val(fecha);
+    });
+
+    // Handle save changes
+    $('#saveEditLombrices').click(function() {
+        const form = $('#editLombricesForm');
+
+        // Validate form
+        if (!form[0].checkValidity()) {
+            form[0].reportValidity();
+            return;
+        }
+
+        // Show loading state
+        const saveButton = $(this);
+        const originalText = saveButton.text();
+        saveButton.prop('disabled', true).text('Guardando...');
+
+        // Send AJAX request
+        $.ajax({
+            url: 'process_lombrices.php',
+            type: 'POST',
+            data: form.serialize(),
+            action: 'update',
+            dataType: 'json',
+            success: function(response) {
+                console.log('Response received:', response);
+                try {
+                    if (response.success) {
+                        $('#editLombricesModal').modal('hide');
+                        location.reload();
+                    } else {
+                        alert('Error al actualizar: ' + (response.error || 'Error desconocido'));
+                    }
+                } catch (e) {
+                    console.error('Error parsing response:', e);
+                    alert('Error al procesar la respuesta del servidor');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX Error:', {xhr, status, error});
+                alert('Error al procesar la solicitud: ' + error);
+            },
+            complete: function() {
+                // Reset button state
+                saveButton.prop('disabled', false).text(originalText);
+            }
+        });
+    });
+
+// Function delete Lombrices Table entries
+function editLombricesEntry(id) {
     if (confirm('¿Está seguro de que desea eliminar este registro?')) {
         fetch('process_lombrices.php', {
             method: 'POST',
@@ -5265,6 +4966,8 @@ function deleteLombricesEntry(id) {
     }
 }
 </script>
+
+
 <!-- Scripts -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -5272,7 +4975,7 @@ function deleteLombricesEntry(id) {
 <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
 <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
 <script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
-    
+
 
 <!-- Peso: Promedio Mensual -->
 <script>
@@ -5350,7 +5053,7 @@ function deleteLombricesEntry(id) {
                 y: {
                     title: {
                         display: true,
-                        text: 'Precio ($/Kg)'
+                        text: 'Precio'
                     },
                     beginAtZero: true
                 }
@@ -5764,10 +5467,10 @@ function deleteLombricesEntry(id) {
                             if (label) {
                                 label = label.split('(')[0].trim(); // Remove percentage from tooltip
                             }
-                            
+
                             let value = context.raw;
                             let percentage = ((value / <?php echo $totalInvestment; ?>) * 100).toFixed(1);
-                            
+
                             return label + ': ' + new Intl.NumberFormat('es-AR', {
                                 style: 'currency',
                                 currency: 'ARS',
@@ -5780,12 +5483,16 @@ function deleteLombricesEntry(id) {
             }
         }
     });
-</script> 
+</script>
 
-<div class="container table-section" style="display:block; justify-content: center; align-items: center;">
-<h3 id="section-registros-reproduccion" style="text-align: center;">REGISTROS DE REPRODUCCION</h3>
+<h3  class="container mt-4" class="collapse" id="section-historial-reproduccion-vacuno">
+REGISTROS DE REPRODUCCION
+</h3>
 
-  <!-- Inseminacion Table Section -->
+<!-- Inseminacion Table Section -->
+<div class="container mt-4">
+    <h4 id="section-registros-concentrado" style="text-align: center;">REGISTROS INSEMINACIONES</h4>
+</div>
 <!-- Inseminacion Table Section -->
 <?php
 // Build the base query for Inseminacion
@@ -5810,13 +5517,13 @@ $result_inseminacion = $conn->query($baseQuery_inseminacion);
                 <div class="modal-body">
                     <input type="hidden" name="action" value="update">
                     <input type="hidden" name="id" id="edit_inseminacion_id">
-                    <input type="hidden" name="tagid" id="edit_inseminacion_tagid">                    
+                    <input type="hidden" name="tagid" id="edit_inseminacion_tagid">
                     <div class="mb-3">
                         <label class="form-label">Numero</label>
                         <input type="number" step="0.01" class="form-control" name="numero" id="edit_inseminacion_numero" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Costo ($)</label>
+                        <label class="form-label">Costo</label>
                         <input type="number" step="0.01" class="form-control" name="costo" id="edit_inseminacion_costo" required>
                     </div>
                     <div class="mb-3">
@@ -5826,7 +5533,7 @@ $result_inseminacion = $conn->query($baseQuery_inseminacion);
                 </div>
                 <div class="modal-footer d-flex justify-content-between">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    <button type="submit" class="btn btn-success">Guardar Cambios</button>
                 </div>
             </form>
         </div>
@@ -5835,10 +5542,10 @@ $result_inseminacion = $conn->query($baseQuery_inseminacion);
 
 <div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
     <h4 class="sub-section-title">Inseminaciones</h4>
-    
+
     <!-- Add New Inseminacion Form -->
-    <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addInseminacionForm">
-        <i class="fas fa-plus"></i> Registrar Inseminaciones
+    <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addInseminacionForm">
+        <i class="fas fa-plus"></i> Registrar
     </button>
     <div class="collapse mb-3" id="addInseminacionForm">
     <div class="card card-body">
@@ -5854,7 +5561,7 @@ $result_inseminacion = $conn->query($baseQuery_inseminacion);
             }
             ?>
             <input type="hidden" name="tagid" value="<?php echo $tagid; ?>">
-            
+
             <!-- Debug output to verify tagid -->
             <?php if (empty($tagid)): ?>
                 <div class="alert alert-warning">
@@ -5862,13 +5569,13 @@ $result_inseminacion = $conn->query($baseQuery_inseminacion);
                 </div>
             <?php endif; ?>
 
-            <div class="row g-3">                
+            <div class="row g-3">
                 <div class="col-md-4">
                     <label class="form-label">Numero</label>
                     <input type="number" step="0.01" class="form-control" name="numero" required>
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label">Costo ($)</label>
+                    <label class="form-label">Costo</label>
                     <input type="number" step="0.01" class="form-control" name="costo" required>
                 </div>
                 <div class="col-md-4">
@@ -5884,34 +5591,13 @@ $result_inseminacion = $conn->query($baseQuery_inseminacion);
         </form>
     </div>
 </div>
-    <!-- Table Controls -->
-    <div class="row mb-3">
-        <div class="col-md-6">
-            <div class="d-flex align-items-center">
-                <label class="me-2">Show entries:</label>
-                <select class="form-select form-select-sm w-auto" id="inseminacionEntriesLength">
-                    <option value="10">10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                </select>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="d-flex justify-content-end">
-                <input type="search" class="form-control form-control-sm w-auto" 
-                       placeholder="Filter results..." id="inseminacionTableFilter">
-            </div>
-        </div>
-    </div>
-
   <div class="table-responsive">
       <table id="inseminacionTable" class="table table-striped table-bordered">
           <thead>
               <tr>
                   <th style="text-align: center;">Fecha</th>
                   <th style="text-align: center;">Numero</th>
-                  <th style="text-align: center;">Costo ($/Und)</th>
+                  <th style="text-align: center;">Costo</th>
                   <th style="text-align: center;">Acciones</th>
 
               </tr>
@@ -5921,7 +5607,7 @@ $result_inseminacion = $conn->query($baseQuery_inseminacion);
               $sql = "SELECT * FROM vh_inseminacion WHERE vh_inseminacion_tagid = '$tagid' ORDER BY vh_inseminacion_fecha DESC";
               $result = $conn->query($sql);
               $total_costo_inseminacion = 0;
-              
+
               if ($result->num_rows > 0) {
                   while($row = $result->fetch_assoc()) {
                       $total += $row['vh_inseminacion_costo'];
@@ -5933,11 +5619,11 @@ $result_inseminacion = $conn->query($baseQuery_inseminacion);
 
 
                                   <div class='d-flex text-center justify-content-center gap-2'>
-                                      <button class='btn btn-sm btn-primary' onclick='openEditInseminacionModal(" . 
-                                          $row['id'] . ", \"" . 
-                                          htmlspecialchars($row['vh_inseminacion_tagid'], ENT_QUOTES) . "\", \"" .					  
-                                          htmlspecialchars($row['vh_inseminacion_numero'], ENT_QUOTES) . "\", \"" . 
-                                          htmlspecialchars($row['vh_inseminacion_costo'], ENT_QUOTES) . "\", \"" .                                          
+                                      <button class='btn btn-sm btn-success' onclick='openEditInseminacionModal(" .
+                                          $row['id'] . ", \"" .
+                                          htmlspecialchars($row['vh_inseminacion_tagid'], ENT_QUOTES) . "\", \"" .
+                                          htmlspecialchars($row['vh_inseminacion_numero'], ENT_QUOTES) . "\", \"" .
+                                          htmlspecialchars($row['vh_inseminacion_costo'], ENT_QUOTES) . "\", \"" .
                                           $row['vh_inseminacion_fecha'] . "\")'>
                                           <i class='fas fa-edit'></i>
                                       </button>
@@ -5957,16 +5643,16 @@ $(document).ready(function() {
     $('#inseminacionTable').DataTable({
         // Set initial page length to 5
         pageLength: 5,
-        
+
         // Configure length menu options
         lengthMenu: [
             [5, 10, 25, 50, 100, -1],
             [5, 10, 25, 50, 100, "Todos"]
         ],
-        
+
         // Order by fecha (date) column descending
         order: [[0, 'desc']],
-        
+
         // Spanish language
         language: {
             url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json',
@@ -5983,16 +5669,45 @@ $(document).ready(function() {
                 previous: "Anterior"
             }
         },
-        
+
         // Enable responsive features
-        responsive: true,
-        
+        responsive: {
+            details: {
+                type: 'column',
+                renderer: function ( api, rowIdx, columns ) {
+                    var data = $.map( columns, function ( col, i ) {
+                        return col.hidden ?
+                            '<tr data-dt-row="'+col.rowIndex+'" data-dt-column="'+col.columnIndex+'">'+
+                                '<td>'+col.title+':'+'</td> '+
+                                '<td>'+col.data+'</td>'+
+                            '</tr>' :
+                            '';
+                    } ).join('');
+ 
+                    return data ?
+                        $('<table/>').append( data ) :
+                        false;
+                }
+            },
+            details: {
+                display: $.fn.dataTable.Responsive.display.modal( {
+                    header: function ( row ) {
+                        var data = row.data();
+                        return 'Details for '+data[0];
+                    }
+                } ),
+                renderer: $.fn.dataTable.Responsive.renderer.tableAll( {
+                    tableClass: 'table'
+                } )
+            }
+        },
+
         // Configure DOM layout and buttons
         dom: '<"row"<"col-sm-12 col-md-6"B><"col-sm-12 col-md-6"f>>' +
              '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"p>>' +
              '<"row"<"col-sm-12"tr>>' +
              '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
-        
+
         buttons: [
             {
                 extend: 'collection',
@@ -6006,7 +5721,7 @@ $(document).ready(function() {
                 ]
             }
         ],
-        
+
         // Column specific settings
         columnDefs: [
             {
@@ -6023,7 +5738,10 @@ $(document).ready(function() {
                 orderable: false,
                 searchable: false
             }
-        ]
+        ],
+
+        // Responsive priority settings
+        responsivePriority: [1, 2, 3]
     });
 });
 </script>
@@ -6038,7 +5756,7 @@ function openEditInseminacionModal(id, tagid, numero, costo, fecha) {
     document.getElementById('edit_inseminacion_numero').value = numero;
     document.getElementById('edit_inseminacion_costo').value = costo;
     document.getElementById('edit_inseminacion_fecha').value = fecha;
-    
+
     var editModal = new bootstrap.Modal(document.getElementById('editInseminacionModal'));
     editModal.show();
 }
@@ -6065,6 +5783,9 @@ function deleteInseminacionEntry(id) {
 }
 </script>
 <!-- Gestacion Table Section -->
+<div class="container mt-4">
+    <h4 id="section-registros-concentrado" style="text-align: center;">REGISTROS GESTACIONES</h4>
+</div>
 <?php
 // Build the base query for Gestacion
 if (isset($_GET['search']) && !empty($_GET['search'])) {
@@ -6088,13 +5809,13 @@ $result_gestacion = $conn->query($baseQuery_gestacion);
                 <div class="modal-body">
                     <input type="hidden" name="action" value="update">
                     <input type="hidden" name="id" id="edit_gestacion_id">
-                    <input type="hidden" name="tagid" id="edit_gestacion_tagid">                    
+                    <input type="hidden" name="tagid" id="edit_gestacion_tagid">
                     <div class="mb-3">
-                        <label class="form-label">Dosis (ml)</label>
+                        <label class="form-label">Dosis</label>
                         <input type="number" step="0.01" class="form-control" name="numero" id="edit_gestacion_numero" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Costo ($)</label>
+                        <label class="form-label">Costo</label>
                         <input type="number" step="0.01" class="form-control" name="costo" id="edit_gestacion_costo" required>
                     </div>
                     <div class="mb-3">
@@ -6104,7 +5825,7 @@ $result_gestacion = $conn->query($baseQuery_gestacion);
                 </div>
                 <div class="modal-footer d-flex justify-content-between">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    <button type="submit" class="btn btn-success">Guardar Cambios</button>
                 </div>
             </form>
         </div>
@@ -6113,10 +5834,10 @@ $result_gestacion = $conn->query($baseQuery_gestacion);
 
 <div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
     <h4 class="sub-section-title">Gestaciones</h4>
-    
+
     <!-- Add New Gestacion Form -->
-    <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addGestacionForm">
-        <i class="fas fa-plus"></i> Registrar Gestaciones
+    <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addGestacionForm">
+        <i class="fas fa-plus"></i> Registrar
     </button>
     <div class="collapse mb-3" id="addGestacionForm">
     <div class="card card-body">
@@ -6132,7 +5853,7 @@ $result_gestacion = $conn->query($baseQuery_gestacion);
             }
             ?>
             <input type="hidden" name="tagid" value="<?php echo $tagid; ?>">
-            
+
             <!-- Debug output to verify tagid -->
             <?php if (empty($tagid)): ?>
                 <div class="alert alert-warning">
@@ -6140,7 +5861,7 @@ $result_gestacion = $conn->query($baseQuery_gestacion);
                 </div>
             <?php endif; ?>
 
-            <div class="row g-3">                
+            <div class="row g-3">
                 <div class="col-md-4">
                     <label class="form-label">Numero</label>
                     <input type="number" step="0.01" class="form-control" name="numero" required>
@@ -6158,27 +5879,6 @@ $result_gestacion = $conn->query($baseQuery_gestacion);
         </form>
     </div>
 </div>
-    <!-- Table Controls -->
-    <div class="row mb-3">
-        <div class="col-md-6">
-            <div class="d-flex align-items-center">
-                <label class="me-2">Show entries:</label>
-                <select class="form-select form-select-sm w-auto" id="gestacionEntriesLength">
-                    <option value="10">10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                </select>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="d-flex justify-content-end">
-                <input type="search" class="form-control form-control-sm w-auto" 
-                       placeholder="Filter results..." id="gestacionTableFilter">
-            </div>
-        </div>
-    </div>
-
   <div class="table-responsive">
       <table id="gestacionTable" class="table table-striped table-bordered">
           <thead>
@@ -6192,19 +5892,19 @@ $result_gestacion = $conn->query($baseQuery_gestacion);
           <tbody>
               <?php
               $sql = "SELECT * FROM vh_gestacion WHERE vh_gestacion_tagid = '$tagid' ORDER BY vh_gestacion_fecha DESC";
-              $result = $conn->query($sql);              
-              
+              $result = $conn->query($sql);
+
               if ($result->num_rows > 0) {
-                  while($row = $result->fetch_assoc()) {                      
+                  while($row = $result->fetch_assoc()) {
                       echo "<tr>
                               <td style='text-align: center;'>" . date('d/m/Y', strtotime($row['vh_gestacion_fecha'])) . "</td>
                               <td style='text-align: center;'>" . number_format($row['vh_gestacion_numero'], 2) . "</td>
                               <td style='text-align: center;'>
                                   <div class='d-flex text-center justify-content-center gap-2'>
-                                      <button class='btn btn-sm btn-primary' onclick='openEditGestacionModal(" . 
-                                          $row['id'] . ", \"" . 
-                                          htmlspecialchars($row['vh_gestacion_tagid'], ENT_QUOTES) . "\", \"" .					  
-                                          htmlspecialchars($row['vh_gestacion_numero'], ENT_QUOTES) . "\", \"" .                                         
+                                      <button class='btn btn-sm btn-success' onclick='openEditGestacionModal(" .
+                                          $row['id'] . ", \"" .
+                                          htmlspecialchars($row['vh_gestacion_tagid'], ENT_QUOTES) . "\", \"" .
+                                          htmlspecialchars($row['vh_gestacion_numero'], ENT_QUOTES) . "\", \"" .
                                           $row['vh_gestacion_fecha'] . "\")'>
                                           <i class='fas fa-edit'></i>
                                       </button>
@@ -6224,16 +5924,16 @@ $(document).ready(function() {
     $('#gestacionTable').DataTable({
         // Set initial page length to 5
         pageLength: 5,
-        
+
         // Configure length menu options
         lengthMenu: [
             [5, 10, 25, 50, 100, -1],
             [5, 10, 25, 50, 100, "Todos"]
         ],
-        
+
         // Order by fecha (date) column descending
         order: [[0, 'desc']],
-        
+
         // Spanish language
         language: {
             url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json',
@@ -6250,16 +5950,45 @@ $(document).ready(function() {
                 previous: "Anterior"
             }
         },
-        
+
         // Enable responsive features
-        responsive: true,
-        
+        responsive: {
+            details: {
+                type: 'column',
+                renderer: function ( api, rowIdx, columns ) {
+                    var data = $.map( columns, function ( col, i ) {
+                        return col.hidden ?
+                            '<tr data-dt-row="'+col.rowIndex+'" data-dt-column="'+col.columnIndex+'">'+
+                                '<td>'+col.title+':'+'</td> '+
+                                '<td>'+col.data+'</td>'+
+                            '</tr>' :
+                            '';
+                    } ).join('');
+ 
+                    return data ?
+                        $('<table/>').append( data ) :
+                        false;
+                }
+            },
+            details: {
+                display: $.fn.dataTable.Responsive.display.modal( {
+                    header: function ( row ) {
+                        var data = row.data();
+                        return 'Details for '+data[0];
+                    }
+                } ),
+                renderer: $.fn.dataTable.Responsive.renderer.tableAll( {
+                    tableClass: 'table'
+                } )
+            }
+        },
+
         // Configure DOM layout and buttons
         dom: '<"row"<"col-sm-12 col-md-6"B><"col-sm-12 col-md-6"f>>' +
              '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"p>>' +
              '<"row"<"col-sm-12"tr>>' +
              '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
-        
+
         buttons: [
             {
                 extend: 'collection',
@@ -6273,7 +6002,7 @@ $(document).ready(function() {
                 ]
             }
         ],
-        
+
         // Column specific settings
         columnDefs: [
             {
@@ -6281,7 +6010,10 @@ $(document).ready(function() {
                 orderable: false,
                 searchable: false
             }
-        ]
+        ],
+
+        // Responsive priority settings
+        responsivePriority: [1, 2, 3]
     });
 });
 </script>
@@ -6295,7 +6027,7 @@ function openEditGestacionModal(id, tagid, numero, fecha) {
     document.getElementById('edit_gestacion_tagid').value = tagid;
     document.getElementById('edit_gestacion_numero').value = numero;
     document.getElementById('edit_gestacion_fecha').value = fecha;
-    
+
     var editModal = new bootstrap.Modal(document.getElementById('editGestacionModal'));
     editModal.show();
 }
@@ -6323,8 +6055,12 @@ function deleteGestacionEntry(id) {
 </script>
 
 <!-- Parto Table Section -->
+<div class="container mt-4">
+    <h4 id="section-registros-concentrado" style="text-align: center;">REGISTROS PARTOS</h4>
+</div>
 <?php
 // Build the base query for Parto
+
 if (isset($_GET['search']) && !empty($_GET['search'])) {
     $tagid = $conn->real_escape_string($_GET['search']);
     $baseQuery_parto = "SELECT * FROM vh_parto WHERE vh_parto_tagid = '$tagid'";
@@ -6346,11 +6082,11 @@ $result_parto = $conn->query($baseQuery_parto);
                 <div class="modal-body">
                     <input type="hidden" name="action" value="update">
                     <input type="hidden" name="id" id="edit_parto_id">
-                    <input type="hidden" name="tagid" id="edit_parto_tagid">                    
+                    <input type="hidden" name="tagid" id="edit_parto_tagid">
                     <div class="mb-3">
-                        <label class="form-label">Dosis (ml)</label>
+                        <label class="form-label">Dosis</label>
                         <input type="number" step="0.01" class="form-control" name="numero" id="edit_parto_numero" required>
-                    </div>                    
+                    </div>
                     <div class="mb-3">
                         <label class="form-label">Fecha</label>
                         <input type="date" class="form-control" name="fecha" id="edit_parto_fecha" required>
@@ -6358,7 +6094,7 @@ $result_parto = $conn->query($baseQuery_parto);
                 </div>
                 <div class="modal-footer d-flex justify-content-between">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    <button type="submit" class="btn btn-success">Guardar Cambios</button>
                 </div>
             </form>
         </div>
@@ -6367,10 +6103,10 @@ $result_parto = $conn->query($baseQuery_parto);
 
 <div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
     <h4 class="sub-section-title">Partos</h4>
-    
+
     <!-- Add New Parto Form -->
-    <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addPartoForm">
-        <i class="fas fa-plus"></i> Registrar Partos
+    <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addPartoForm">
+        <i class="fas fa-plus"></i> Registrar
     </button>
     <div class="collapse mb-3" id="addPartoForm">
     <div class="card card-body">
@@ -6386,14 +6122,14 @@ $result_parto = $conn->query($baseQuery_parto);
             }
             ?>
             <input type="hidden" name="tagid" value="<?php echo $tagid; ?>">
-            
+
             <!-- Debug output to verify tagid -->
             <?php if (empty($tagid)): ?>
                 <div class="alert alert-warning">
                     No se ha seleccionado ningún animal. Por favor, busque un animal primero.
                 </div>
             <?php endif; ?>
-            <div class="row g-3">                
+            <div class="row g-3">
                 <div class="col-md-4">
                     <label class="form-label">Numero</label>
                     <input type="number" step="0.01" class="form-control" name="numero" required>
@@ -6411,53 +6147,32 @@ $result_parto = $conn->query($baseQuery_parto);
         </form>
     </div>
 </div>
-    <!-- Table Controls -->
-    <div class="row mb-3">
-        <div class="col-md-6">
-            <div class="d-flex align-items-center">
-                <label class="me-2">Show entries:</label>
-                <select class="form-select form-select-sm w-auto" id="partoEntriesLength">
-                    <option value="10">10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                </select>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="d-flex justify-content-end">
-                <input type="search" class="form-control form-control-sm w-auto" 
-                       placeholder="Filter results..." id="partoTableFilter">
-            </div>
-        </div>
-    </div>
-
   <div class="table-responsive">
       <table id="partoTable" class="table table-striped table-bordered">
           <thead>
               <tr>
-                  <th>Fecha</th>
-                  <th>Numero</th>
-                  <th>Acciones</th>
+                  <th style="text-align: center;">Fecha</th>
+                  <th style="text-align: center;">Numero</th>
+                  <th style="text-align: center;">Acciones</th>
               </tr>
           </thead>
           <tbody>
               <?php
               $sql = "SELECT * FROM vh_parto WHERE vh_parto_tagid = '$tagid' ORDER BY vh_parto_fecha DESC";
               $result = $conn->query($sql);
-              
-              
+
+
               if ($result->num_rows > 0) {
-                  while($row = $result->fetch_assoc()) {                      
+                  while($row = $result->fetch_assoc()) {
                       echo "<tr>
-                              <td>" . date('d/m/Y', strtotime($row['vh_parto_fecha'])) . "</td>
-                              <td>" . number_format($row['vh_parto_numero'], 2) . "</td>
-                              <td>
+                              <td style='text-align: center;'>" . date('d/m/Y', strtotime($row['vh_parto_fecha'])) . "</td>
+                              <td style='text-align: center;'>" . number_format($row['vh_parto_numero'], 2) . "</td>
+                              <td style='text-align: center;'>
                                   <div class='d-flex justify-content-center gap-2'>
-                                      <button class='btn btn-sm btn-primary' onclick='openEditPartoModal(" . 
-                                          $row['id'] . ", \"" . 
-                                          htmlspecialchars($row['vh_parto_tagid'], ENT_QUOTES) . "\", \"" .					  
-                                          htmlspecialchars($row['vh_parto_numero'], ENT_QUOTES) . "\", \"" .                                         
+                                      <button class='btn btn-sm btn-success' onclick='openEditPartoModal(" .
+                                          $row['id'] . ", \"" .
+                                          htmlspecialchars($row['vh_parto_tagid'], ENT_QUOTES) . "\", \"" .
+                                          htmlspecialchars($row['vh_parto_numero'], ENT_QUOTES) . "\", \"" .
                                           $row['vh_parto_fecha'] . "\")'>
                                           <i class='fas fa-edit'></i>
                                       </button>
@@ -6477,16 +6192,16 @@ $(document).ready(function() {
     $('#partoTable').DataTable({
         // Set initial page length to 5
         pageLength: 5,
-        
+
         // Configure length menu options
         lengthMenu: [
             [5, 10, 25, 50, 100, -1],
             [5, 10, 25, 50, 100, "Todos"]
         ],
-        
+
         // Order by fecha (date) column descending
         order: [[0, 'desc']],
-        
+
         // Spanish language
         language: {
             url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json',
@@ -6503,16 +6218,45 @@ $(document).ready(function() {
                 previous: "Anterior"
             }
         },
-        
+
         // Enable responsive features
-        responsive: true,
-        
+        responsive: {
+            details: {
+                type: 'column',
+                renderer: function ( api, rowIdx, columns ) {
+                    var data = $.map( columns, function ( col, i ) {
+                        return col.hidden ?
+                            '<tr data-dt-row="'+col.rowIndex+'" data-dt-column="'+col.columnIndex+'">'+
+                                '<td>'+col.title+':'+'</td> '+
+                                '<td>'+col.data+'</td>'+
+                            '</tr>' :
+                            '';
+                    } ).join('');
+ 
+                    return data ?
+                        $('<table/>').append( data ) :
+                        false;
+                }
+            },
+            details: {
+                display: $.fn.dataTable.Responsive.display.modal( {
+                    header: function ( row ) {
+                        var data = row.data();
+                        return 'Details for '+data[0];
+                    }
+                } ),
+                renderer: $.fn.dataTable.Responsive.renderer.tableAll( {
+                    tableClass: 'table'
+                } )
+            }
+        },
+
         // Configure DOM layout and buttons
         dom: '<"row"<"col-sm-12 col-md-6"B><"col-sm-12 col-md-6"f>>' +
              '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"p>>' +
              '<"row"<"col-sm-12"tr>>' +
              '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
-        
+
         buttons: [
             {
                 extend: 'collection',
@@ -6526,7 +6270,7 @@ $(document).ready(function() {
                 ]
             }
         ],
-        
+
         // Column specific settings
         columnDefs: [
             {
@@ -6543,7 +6287,10 @@ $(document).ready(function() {
                 orderable: false,
                 searchable: false
             }
-        ]
+        ],
+
+        // Responsive priority settings
+        responsivePriority: [1, 2, 3]
     });
 });
 </script>
@@ -6557,7 +6304,7 @@ function openEditPartoModal(id, tagid, numero, fecha) {
     document.getElementById('edit_parto_tagid').value = tagid;
     document.getElementById('edit_parto_numero').value = numero;
     document.getElementById('edit_parto_fecha').value = fecha;
-    
+
     var editModal = new bootstrap.Modal(document.getElementById('editPartoModal'));
     editModal.show();
 }
@@ -6585,7 +6332,9 @@ function deletePartoEntry(id) {
 </script>
 
 <!-- Aborto Table Section -->
-
+<div class="container mt-4">
+    <h4 id="section-registros-concentrado" style="text-align: center;">REGISTROS ABORTOS</h4>
+</div>
 <?php
 // Build the base query for Aborto
 if (isset($_GET['search']) && !empty($_GET['search'])) {
@@ -6609,11 +6358,11 @@ $result_aborto = $conn->query($baseQuery_aborto);
                 <div class="modal-body">
                     <input type="hidden" name="action" value="update">
                     <input type="hidden" name="id" id="edit_aborto_id">
-                    <input type="hidden" name="tagid" id="edit_aborto_tagid">                    
+                    <input type="hidden" name="tagid" id="edit_aborto_tagid">
                     <div class="mb-3">
                         <label class="form-label">Causa</label>
                         <input type="text" class="form-control" name="causa" id="edit_aborto_causa" required>
-                    </div>                    
+                    </div>
                     <div class="mb-3">
                         <label class="form-label">Fecha</label>
                         <input type="date" class="form-control" name="fecha" id="edit_aborto_fecha" required>
@@ -6621,7 +6370,7 @@ $result_aborto = $conn->query($baseQuery_aborto);
                 </div>
                 <div class="modal-footer d-flex justify-content-between">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    <button type="submit" class="btn btn-success">Guardar Cambios</button>
                 </div>
             </form>
         </div>
@@ -6630,10 +6379,10 @@ $result_aborto = $conn->query($baseQuery_aborto);
 
 <div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
     <h4 class="sub-section-title">Abortos</h4>
-    
+
     <!-- Add New Aborto Form -->
-    <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addAbortoForm">
-        <i class="fas fa-plus"></i> Registrar Abortos
+    <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addAbortoForm">
+        <i class="fas fa-plus"></i> Registrar
     </button>
     <div class="collapse mb-3" id="addAbortoForm">
     <div class="card card-body">
@@ -6649,14 +6398,14 @@ $result_aborto = $conn->query($baseQuery_aborto);
             }
             ?>
             <input type="hidden" name="tagid" value="<?php echo $tagid; ?>">
-            
+
             <!-- Debug output to verify tagid -->
             <?php if (empty($tagid)): ?>
                 <div class="alert alert-warning">
                     No se ha seleccionado ningún animal. Por favor, busque un animal primero.
                 </div>
             <?php endif; ?>
-            <div class="row g-3">                
+            <div class="row g-3">
                 <div class="col-md-4">
                     <label class="form-label">Causa</label>
                     <input type="text" class="form-control" name="causa" required>
@@ -6674,53 +6423,32 @@ $result_aborto = $conn->query($baseQuery_aborto);
         </form>
     </div>
 </div>
-    <!-- Table Controls -->
-    <div class="row mb-3">
-        <div class="col-md-6">
-            <div class="d-flex align-items-center">
-                <label class="me-2">Show entries:</label>
-                <select class="form-select form-select-sm w-auto" id="abortoEntriesLength">
-                    <option value="10">10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                </select>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="d-flex justify-content-end">
-                <input type="search" class="form-control form-control-sm w-auto" 
-                       placeholder="Filter results..." id="abortoTableFilter">
-            </div>
-        </div>
-    </div>
-
   <div class="table-responsive">
       <table id="abortoTable" class="table table-striped table-bordered">
           <thead>
               <tr>
-                  <th>Fecha</th>
-                  <th>Causa</th>
-                  <th>Acciones</th>
+                  <th style="text-align: center;">Fecha</th>
+                  <th style="text-align: center;">Causa</th>
+                  <th style="text-align: center;">Acciones</th>
               </tr>
           </thead>
           <tbody>
               <?php
               $sql = "SELECT * FROM vh_aborto WHERE vh_aborto_tagid = '$tagid' ORDER BY vh_aborto_fecha DESC";
               $result = $conn->query($sql);
-              
-              
+
+
               if ($result->num_rows > 0) {
-                  while($row = $result->fetch_assoc()) {                      
+                  while($row = $result->fetch_assoc()) {
                       echo "<tr>
-                              <td>" . date('d/m/Y', strtotime($row['vh_aborto_fecha'])) . "</td>
-                              <td>" . htmlspecialchars($row['vh_aborto_causa']) . "</td>
-                              <td>
+                              <td style='text-align: center;'>" . date('d/m/Y', strtotime($row['vh_aborto_fecha'])) . "</td>
+                              <td style='text-align: center;'>" . htmlspecialchars($row['vh_aborto_causa']) . "</td>
+                              <td style='text-align: center;'>
                                   <div class='d-flex justify-content-center gap-2'>
-                                      <button class='btn btn-sm btn-primary' onclick='openEditAbortoModal(" . 
-                                          $row['id'] . ", \"" . 
-                                          htmlspecialchars($row['vh_aborto_tagid'], ENT_QUOTES) . "\", \"" .					  
-                                          htmlspecialchars($row['vh_aborto_causa'], ENT_QUOTES) . "\", \"" .                                         
+                                      <button class='btn btn-sm btn-success' onclick='openEditAbortoModal(" .
+                                          $row['id'] . ", \"" .
+                                          htmlspecialchars($row['vh_aborto_tagid'], ENT_QUOTES) . "\", \"" .
+                                          htmlspecialchars($row['vh_aborto_causa'], ENT_QUOTES) . "\", \"" .
                                           $row['vh_aborto_fecha'] . "\")'>
                                           <i class='fas fa-edit'></i>
                                       </button>
@@ -6740,16 +6468,16 @@ $(document).ready(function() {
     $('#abortoTable').DataTable({
         // Set initial page length to 5
         pageLength: 5,
-        
+
         // Configure length menu options
         lengthMenu: [
             [5, 10, 25, 50, 100, -1],
             [5, 10, 25, 50, 100, "Todos"]
         ],
-        
+
         // Order by fecha (date) column descending
         order: [[0, 'desc']],
-        
+
         // Spanish language
         language: {
             url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json',
@@ -6766,16 +6494,45 @@ $(document).ready(function() {
                 previous: "Anterior"
             }
         },
-        
+
         // Enable responsive features
-        responsive: true,
-        
+        responsive: {
+            details: {
+                type: 'column',
+                renderer: function ( api, rowIdx, columns ) {
+                    var data = $.map( columns, function ( col, i ) {
+                        return col.hidden ?
+                            '<tr data-dt-row="'+col.rowIndex+'" data-dt-column="'+col.columnIndex+'">'+
+                                '<td>'+col.title+':'+'</td> '+
+                                '<td>'+col.data+'</td>'+
+                            '</tr>' :
+                            '';
+                    } ).join('');
+ 
+                    return data ?
+                        $('<table/>').append( data ) :
+                        false;
+                }
+            },
+            details: {
+                display: $.fn.dataTable.Responsive.display.modal( {
+                    header: function ( row ) {
+                        var data = row.data();
+                        return 'Details for '+data[0];
+                    }
+                } ),
+                renderer: $.fn.dataTable.Responsive.renderer.tableAll( {
+                    tableClass: 'table'
+                } )
+            }
+        },
+
         // Configure DOM layout and buttons
         dom: '<"row"<"col-sm-12 col-md-6"B><"col-sm-12 col-md-6"f>>' +
              '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"p>>' +
              '<"row"<"col-sm-12"tr>>' +
              '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
-        
+
         buttons: [
             {
                 extend: 'collection',
@@ -6789,7 +6546,7 @@ $(document).ready(function() {
                 ]
             }
         ],
-        
+
         // Column specific settings
         columnDefs: [
             {
@@ -6806,7 +6563,10 @@ $(document).ready(function() {
                 orderable: false,
                 searchable: false
             }
-        ]
+        ],
+
+        // Responsive priority settings
+        responsivePriority: [1, 2, 3]
     });
 });
 </script>
@@ -6820,7 +6580,7 @@ function openEditAbortoModal(id, tagid, causa, fecha) {
     document.getElementById('edit_aborto_tagid').value = tagid;
     document.getElementById('edit_aborto_causa').value = causa
     document.getElementById('edit_aborto_fecha').value = fecha;
-    
+
     var editModal = new bootstrap.Modal(document.getElementById('editAbortoModal'));
     editModal.show();
 }
@@ -6847,22 +6607,14 @@ function deleteAbortoEntry(id) {
 }
 </script>
 
-<div class="container table-section" style="display:block; justify-content: center; align-items: center;">
-<h3 id="section-registros-otros" style="text-align: center;">OTROS REGISTROS</h3>
-<!-- Venta Table Section -->
-<?php
-// Build the base query for Venta
-if (isset($_GET['search']) && !empty($_GET['search'])) {
-    $tagid = $conn->real_escape_string($_GET['search']);
-    $baseQuery_venta = "SELECT * FROM vh_venta WHERE vh_venta_tagid = '$tagid'";
-} else {
-    $baseQuery_venta = "SELECT * FROM vh_venta";
-}
-$result_venta = $conn->query($baseQuery_venta);
-?>
+<h3  class="container mt-4" class="collapse" id="section-historial-otros-vacuno">
+OTROS REGISTROS
+</h3>
 
-<!-- Venta Table -->
 <!-- Venta Table Section -->
+<div class="container mt-4">
+    <h4 id="section-registros-concentrado" style="text-align: center;">REGISTROS VENTAS</h4>
+</div>
 <?php
 // Build the base query for Venta
 if (isset($_GET['search']) && !empty($_GET['search'])) {
@@ -6886,14 +6638,14 @@ $result_venta = $conn->query($baseQuery_venta);
                 <div class="modal-body">
                     <input type="hidden" name="action" value="update">
                     <input type="hidden" name="id" id="edit_venta_id">
-                    <input type="hidden" name="tagid" id="edit_venta_tagid">                    
+                    <input type="hidden" name="tagid" id="edit_venta_tagid">
                     <div class="mb-3">
                         <label class="form-label">Peso</label>
                         <input type="number" step="0.01" class="form-control" name="peso" id="edit_venta_peso" required>
                     </div>			<div class="mb-3">
                         <label class="form-label">Precio</label>
                         <input type="number" step="0.01" class="form-control" name="precio" id="edit_venta_precio" required>
-                    </div>                     
+                    </div>
                     <div class="mb-3">
                         <label class="form-label">Fecha</label>
                         <input type="date" class="form-control" name="fecha" id="edit_venta_fecha" required>
@@ -6901,7 +6653,7 @@ $result_venta = $conn->query($baseQuery_venta);
                 </div>
                 <div class="modal-footer d-flex justify-content-between">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    <button type="submit" class="btn btn-success">Guardar Cambios</button>
                 </div>
             </form>
         </div>
@@ -6910,10 +6662,10 @@ $result_venta = $conn->query($baseQuery_venta);
 
 <div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
     <h4 class="sub-section-title">Ventas</h4>
-    
+
     <!-- Add New Venta Form -->
-    <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addVentaForm">
-        <i class="fas fa-plus"></i> Registrar Ventas
+    <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addVentaForm">
+        <i class="fas fa-plus"></i> Registrar
     </button>
     <div class="collapse mb-3" id="addVentaForm">
     <div class="card card-body">
@@ -6929,7 +6681,7 @@ $result_venta = $conn->query($baseQuery_venta);
             }
             ?>
             <input type="hidden" name="tagid" value="<?php echo $tagid; ?>">
-            
+
             <!-- Debug output to verify tagid -->
             <?php if (empty($tagid)): ?>
                 <div class="alert alert-warning">
@@ -6940,7 +6692,7 @@ $result_venta = $conn->query($baseQuery_venta);
             <div class="col-md-4">
                     <label class="form-label">Fecha</label>
                         <input type="date" class="form-control" name="fecha" id="edit_venta_fecha" required>
-                </div>              
+                </div>
                 <div class="col-md-4">
                     <label class="form-label">Peso</label>
                         <input type="number" step="0.01" class="form-control" name="peso" id="edit_venta_peso" required>
@@ -6958,27 +6710,6 @@ $result_venta = $conn->query($baseQuery_venta);
         </form>
     </div>
 </div>
-    <!-- Table Controls -->
-    <div class="row mb-3">
-        <div class="col-md-6">
-            <div class="d-flex align-items-center">
-                <label class="me-2">Show entries:</label>
-                <select class="form-select form-select-sm w-auto" id="ventaEntriesLength">
-                    <option value="10">10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                </select>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="d-flex justify-content-end">
-                <input type="search" class="form-control form-control-sm w-auto" 
-                       placeholder="Filter results..." id="ventaTableFilter">
-            </div>
-        </div>
-    </div>
-
   <div class="table-responsive">
       <table id="ventaTable" class="table table-striped table-bordered">
           <thead>
@@ -6994,21 +6725,21 @@ $result_venta = $conn->query($baseQuery_venta);
               <?php
               $sql = "SELECT * FROM vh_venta WHERE vh_venta_tagid = '$tagid' ORDER BY vh_venta_fecha DESC";
               $result = $conn->query($sql);
-              
-              
+
+
               if ($result->num_rows > 0) {
-                  while($row = $result->fetch_assoc()) {                      
+                  while($row = $result->fetch_assoc()) {
                       echo "<tr>
                               	<td style='text-align: center;'>" . date('d/m/Y', strtotime($row['vh_venta_fecha'])) . "</td>
                               	<td style='text-align: center;'>" . number_format($row['vh_venta_peso'], 2) . "</td>
 				                <td style='text-align: center;'>" . number_format($row['vh_venta_precio'], 2) . "</td>
                                 <td style='text-align: center;'>
                                   <div class='d-flex text-center justify-content-center gap-2'>
-                                      <button class='btn btn-sm btn-primary' onclick='openEditVentaModal(" . 
-                                          $row['id'] . ", \"" . 
-                                          htmlspecialchars($row['vh_venta_tagid'], ENT_QUOTES) . "\", \"" .					  
+                                      <button class='btn btn-sm btn-success' onclick='openEditVentaModal(" .
+                                          $row['id'] . ", \"" .
+                                          htmlspecialchars($row['vh_venta_tagid'], ENT_QUOTES) . "\", \"" .
                                           htmlspecialchars($row['vh_venta_peso'], ENT_QUOTES) . "\", \"" .
-                                          htmlspecialchars($row['vh_venta_precio'], ENT_QUOTES) . "\", \"" .                                         
+                                          htmlspecialchars($row['vh_venta_precio'], ENT_QUOTES) . "\", \"" .
                                           $row['vh_venta_fecha'] . "\")'>
                                           <i class='fas fa-edit'></i>
                                       </button>
@@ -7028,16 +6759,16 @@ $(document).ready(function() {
     $('#ventaTable').DataTable({
         // Set initial page length to 5
         pageLength: 5,
-        
+
         // Configure length menu options
         lengthMenu: [
             [5, 10, 25, 50, 100, -1],
             [5, 10, 25, 50, 100, "Todos"]
         ],
-        
+
         // Order by fecha (date) column descending
         order: [[0, 'desc']],
-        
+
         // Spanish language
         language: {
             url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json',
@@ -7054,16 +6785,45 @@ $(document).ready(function() {
                 previous: "Anterior"
             }
         },
-        
+
         // Enable responsive features
-        responsive: true,
-        
+        responsive: {
+            details: {
+                type: 'column',
+                renderer: function ( api, rowIdx, columns ) {
+                    var data = $.map( columns, function ( col, i ) {
+                        return col.hidden ?
+                            '<tr data-dt-row="'+col.rowIndex+'" data-dt-column="'+col.columnIndex+'">'+
+                                '<td>'+col.title+':'+'</td> '+
+                                '<td>'+col.data+'</td>'+
+                            '</tr>' :
+                            '';
+                    } ).join('');
+ 
+                    return data ?
+                        $('<table/>').append( data ) :
+                        false;
+                }
+            },
+            details: {
+                display: $.fn.dataTable.Responsive.display.modal( {
+                    header: function ( row ) {
+                        var data = row.data();
+                        return 'Details for '+data[0];
+                    }
+                } ),
+                renderer: $.fn.dataTable.Responsive.renderer.tableAll( {
+                    tableClass: 'table'
+                } )
+            }
+        },
+
         // Configure DOM layout and buttons
         dom: '<"row"<"col-sm-12 col-md-6"B><"col-sm-12 col-md-6"f>>' +
              '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"p>>' +
              '<"row"<"col-sm-12"tr>>' +
              '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
-        
+
         buttons: [
             {
                 extend: 'collection',
@@ -7077,7 +6837,7 @@ $(document).ready(function() {
                 ]
             }
         ],
-        
+
         // Column specific settings
         columnDefs: [
             {
@@ -7094,7 +6854,10 @@ $(document).ready(function() {
                 orderable: false,
                 searchable: false
             }
-        ]
+        ],
+
+        // Responsive priority settings
+        responsivePriority: [1, 2, 3]
     });
 });
 </script>
@@ -7109,7 +6872,7 @@ function openEditVentaModal(id, tagid, peso, precio, fecha) {
     document.getElementById('edit_venta_peso').value = peso;
     document.getElementById('edit_venta_precio').value = precio;
     document.getElementById('edit_venta_fecha').value = fecha;
-    
+
     var editModal = new bootstrap.Modal(document.getElementById('editVentaModal'));
     editModal.show();
 }
@@ -7137,6 +6900,9 @@ function deleteVentaEntry(id) {
 </script>
 
 <!-- Destete Table Section -->
+<div class="container mt-4">
+    <h4 id="section-registros-concentrado" style="text-align: center;">REGISTROS DESTETE</h4>
+</div>
 
 <?php
 // Build the base query for Destete
@@ -7161,11 +6927,11 @@ $result_destete = $conn->query($baseQuery_destete);
                 <div class="modal-body">
                     <input type="hidden" name="action" value="update">
                     <input type="hidden" name="id" id="edit_destete_id">
-                    <input type="hidden" name="tagid" id="edit_destete_tagid">                    
+                    <input type="hidden" name="tagid" id="edit_destete_tagid">
                     <div class="mb-3">
                         <label class="form-label">Peso</label>
                         <input type="number" step="0.01" class="form-control" name="peso" id="edit_destete_peso" required>
-                    </div>			                 
+                    </div>
                     <div class="mb-3">
                         <label class="form-label">Fecha</label>
                         <input type="date" class="form-control" name="fecha" id="edit_destete_fecha" required>
@@ -7173,7 +6939,7 @@ $result_destete = $conn->query($baseQuery_destete);
                 </div>
                 <div class="modal-footer d-flex justify-content-between">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    <button type="submit" class="btn btn-success">Guardar Cambios</button>
                 </div>
             </form>
         </div>
@@ -7182,10 +6948,10 @@ $result_destete = $conn->query($baseQuery_destete);
 
 <div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
     <h4 class="sub-section-title">Destetes</h4>
-    
+
     <!-- Add New Destete Form -->
-    <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addDesteteForm">
-        <i class="fas fa-plus"></i> Registrar Destetes
+    <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addDesteteForm">
+        <i class="fas fa-plus"></i> Registrar
     </button>
     <div class="collapse mb-3" id="addDesteteForm">
     <div class="card card-body">
@@ -7201,14 +6967,14 @@ $result_destete = $conn->query($baseQuery_destete);
             }
             ?>
             <input type="hidden" name="tagid" value="<?php echo $tagid; ?>">
-            
+
             <!-- Debug output to verify tagid -->
             <?php if (empty($tagid)): ?>
                 <div class="alert alert-warning">
                     No se ha seleccionado ningún animal. Por favor, busque un animal primero.
                 </div>
             <?php endif; ?>
-            <div class="row g-3">                
+            <div class="row g-3">
                 <div class="col-md-4">
                     <label class="form-label">Peso</label>
                         <input type="number" step="0.01" class="form-control" name="peso" id="edit_destete_peso" required>
@@ -7226,27 +6992,6 @@ $result_destete = $conn->query($baseQuery_destete);
         </form>
     </div>
 </div>
-    <!-- Table Controls -->
-    <div class="row mb-3">
-        <div class="col-md-6">
-            <div class="d-flex align-items-center">
-                <label class="me-2">Show entries:</label>
-                <select class="form-select form-select-sm w-auto" id="desteteEntriesLength">
-                    <option value="10">10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                </select>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="d-flex justify-content-end">
-                <input type="search" class="form-control form-control-sm w-auto" 
-                       placeholder="Filter results..." id="desteteTableFilter">
-            </div>
-        </div>
-    </div>
-
   <div class="table-responsive">
       <table id="desteteTable" class="table table-striped table-bordered">
           <thead>
@@ -7260,19 +7005,19 @@ $result_destete = $conn->query($baseQuery_destete);
               <?php
               $sql = "SELECT * FROM vh_destete WHERE vh_destete_tagid = '$tagid' ORDER BY vh_destete_fecha DESC";
               $result = $conn->query($sql);
-              
-              
+
+
               if ($result_destete->num_rows > 0) {
-                  while($row = $result_destete->fetch_assoc()) {                      
+                  while($row = $result_destete->fetch_assoc()) {
                       echo "<tr>
                               	<td style='text-align: center;'>" . date('d/m/Y', strtotime($row['vh_destete_fecha'])) . "</td>
                               	<td style='text-align: center;'>" . number_format($row['vh_destete_peso'], 2) . "</td>
                               <td style='text-align: center;'>
                                   <div class='d-flex text-center justify-content-center gap-2'>
-                                      <button class='btn btn-sm btn-primary' onclick='openEditDesteteModal(" . 
-                                          $row['id'] . ", \"" . 
-                                          htmlspecialchars($row['vh_destete_tagid'], ENT_QUOTES) . "\", \"" .					  
-                                          htmlspecialchars($row['vh_destete_peso'], ENT_QUOTES) . "\", \"" .					  
+                                      <button class='btn btn-sm btn-success' onclick='openEditDesteteModal(" .
+                                          $row['id'] . ", \"" .
+                                          htmlspecialchars($row['vh_destete_tagid'], ENT_QUOTES) . "\", \"" .
+                                          htmlspecialchars($row['vh_destete_peso'], ENT_QUOTES) . "\", \"" .
                                           $row['vh_destete_fecha'] . "\")'>
                                           <i class='fas fa-edit'></i>
                                       </button>
@@ -7292,16 +7037,16 @@ $(document).ready(function() {
     $('#desteteTable').DataTable({
         // Set initial page length to 5
         pageLength: 5,
-        
+
         // Configure length menu options
         lengthMenu: [
             [5, 10, 25, 50, 100, -1],
             [5, 10, 25, 50, 100, "Todos"]
         ],
-        
+
         // Order by fecha (date) column descending
         order: [[0, 'desc']],
-        
+
         // Spanish language
         language: {
             url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json',
@@ -7318,16 +7063,45 @@ $(document).ready(function() {
                 previous: "Anterior"
             }
         },
-        
+
         // Enable responsive features
-        responsive: true,
-        
+        responsive: {
+            details: {
+                type: 'column',
+                renderer: function ( api, rowIdx, columns ) {
+                    var data = $.map( columns, function ( col, i ) {
+                        return col.hidden ?
+                            '<tr data-dt-row="'+col.rowIndex+'" data-dt-column="'+col.columnIndex+'">'+
+                                '<td>'+col.title+':'+'</td> '+
+                                '<td>'+col.data+'</td>'+
+                            '</tr>' :
+                            '';
+                    } ).join('');
+ 
+                    return data ?
+                        $('<table/>').append( data ) :
+                        false;
+                }
+            },
+            details: {
+                display: $.fn.dataTable.Responsive.display.modal( {
+                    header: function ( row ) {
+                        var data = row.data();
+                        return 'Details for '+data[0];
+                    }
+                } ),
+                renderer: $.fn.dataTable.Responsive.renderer.tableAll( {
+                    tableClass: 'table'
+                } )
+            }
+        },
+
         // Configure DOM layout and buttons
         dom: '<"row"<"col-sm-12 col-md-6"B><"col-sm-12 col-md-6"f>>' +
              '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"p>>' +
              '<"row"<"col-sm-12"tr>>' +
              '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
-        
+
         buttons: [
             {
                 extend: 'collection',
@@ -7341,7 +7115,7 @@ $(document).ready(function() {
                 ]
             }
         ],
-        
+
         // Column specific settings
         columnDefs: [
             {
@@ -7358,7 +7132,10 @@ $(document).ready(function() {
                 orderable: false,
                 searchable: false
             }
-        ]
+        ],
+
+        // Responsive priority settings
+        responsivePriority: [1, 2, 3]
     });
 });
 </script>
@@ -7372,7 +7149,7 @@ function openEditDesteteModal(id, tagid, peso, fecha) {
     document.getElementById('edit_destete_tagid').value = tagid;
     document.getElementById('edit_destete_peso').value = peso;
     document.getElementById('edit_destete_fecha').value = fecha;
-    
+
     var editModal = new bootstrap.Modal(document.getElementById('editDesteteModal'));
     editModal.show();
 }
@@ -7400,6 +7177,9 @@ function deleteDesteteEntry(id) {
 </script>
 
 <!-- Descarte Table Section -->
+<div class="container mt-4">
+    <h4 id="section-registros-concentrado" style="text-align: center;">REGISTROS DESCARTE</h4>
+</div>
 <!-- Descarte Table Section -->
 <?php
 // Build the base query for Descarte
@@ -7424,11 +7204,11 @@ $result_descarte = $conn->query($baseQuery_descarte);
                 <div class="modal-body">
                     <input type="hidden" name="action" value="update">
                     <input type="hidden" name="id" id="edit_descarte_id">
-                    <input type="hidden" name="tagid" id="edit_descarte_tagid">                    
+                    <input type="hidden" name="tagid" id="edit_descarte_tagid">
                     <div class="mb-3">
                         <label class="form-label">Peso</label>
                         <input type="number" step="0.01" class="form-control" name="peso" id="edit_descarte_peso" required>
-                    </div>			                 
+                    </div>
                     <div class="mb-3">
                         <label class="form-label">Fecha</label>
                         <input type="date" class="form-control" name="fecha" id="edit_descarte_fecha" required>
@@ -7436,7 +7216,7 @@ $result_descarte = $conn->query($baseQuery_descarte);
                 </div>
                 <div class="modal-footer d-flex justify-content-between">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    <button type="submit" class="btn btn-success">Guardar Cambios</button>
                 </div>
             </form>
         </div>
@@ -7445,10 +7225,10 @@ $result_descarte = $conn->query($baseQuery_descarte);
 
 <div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
     <h4 class="sub-section-title">Descartes</h4>
-    
+
     <!-- Add New Descarte Form -->
-    <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addDescarteForm">
-        <i class="fas fa-plus"></i> Registrar Descartes
+    <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addDescarteForm">
+        <i class="fas fa-plus"></i> Registrar
     </button>
     <div class="collapse mb-3" id="addDescarteForm">
     <div class="card card-body">
@@ -7464,14 +7244,14 @@ $result_descarte = $conn->query($baseQuery_descarte);
             }
             ?>
             <input type="hidden" name="tagid" value="<?php echo $tagid; ?>">
-            
+
             <!-- Debug output to verify tagid -->
             <?php if (empty($tagid)): ?>
                 <div class="alert alert-warning">
                     No se ha seleccionado ningún animal. Por favor, busque un animal primero.
                 </div>
             <?php endif; ?>
-            <div class="row g-3">                
+            <div class="row g-3">
                 <div class="col-md-4">
                     <label class="form-label">Peso</label>
                         <input type="number" step="0.01" class="form-control" name="peso" id="edit_descarte_peso" required>
@@ -7489,27 +7269,6 @@ $result_descarte = $conn->query($baseQuery_descarte);
         </form>
     </div>
 </div>
-    <!-- Table Controls -->
-    <div class="row mb-3">
-        <div class="col-md-6">
-            <div class="d-flex align-items-center">
-                <label class="me-2">Show entries:</label>
-                <select class="form-select form-select-sm w-auto" id="descarteEntriesLength">
-                    <option value="10">10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                </select>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="d-flex justify-content-end">
-                <input type="search" class="form-control form-control-sm w-auto" 
-                       placeholder="Filter results..." id="descarteTableFilter">
-            </div>
-        </div>
-    </div>
-
   <div class="table-responsive">
       <table id="descarteTable" class="table table-striped table-bordered">
           <thead>
@@ -7525,18 +7284,18 @@ $result_descarte = $conn->query($baseQuery_descarte);
               <?php
               $sql = "SELECT * FROM vh_descarte WHERE vh_descarte_tagid = '$tagid' ORDER BY vh_descarte_fecha DESC";
               $result = $conn->query($sql);
-              
+
               if ($result->num_rows > 0) {
-                  while($row = $result->fetch_assoc()) {                      
+                  while($row = $result->fetch_assoc()) {
                       echo "<tr>
                               	<td style='text-align: center;'>" . date('d/m/Y', strtotime($row['vh_descarte_fecha'])) . "</td>
                               	<td style='text-align: center;'>" . number_format($row['vh_descarte_peso'], 2) . "</td>
                               <td style='text-align: center;'>
                                   <div class='d-flex text-center justify-content-center gap-2'>
-                                      <button class='btn btn-sm btn-primary' onclick='openEditDescarteModal(" . 
-                                          $row['id'] . ", \"" . 
-                                          htmlspecialchars($row['vh_descarte_tagid'], ENT_QUOTES) . "\", \"" .					  
-                                          htmlspecialchars($row['vh_descarte_peso'], ENT_QUOTES) . "\", \"" .					  
+                                      <button class='btn btn-sm btn-success' onclick='openEditDescarteModal(" .
+                                          $row['id'] . ", \"" .
+                                          htmlspecialchars($row['vh_descarte_tagid'], ENT_QUOTES) . "\", \"" .
+                                          htmlspecialchars($row['vh_descarte_peso'], ENT_QUOTES) . "\", \"" .
                                           $row['vh_descarte_fecha'] . "\")'>
                                           <i class='fas fa-edit'></i>
                                       </button>
@@ -7556,16 +7315,16 @@ $(document).ready(function() {
     $('#descarteTable').DataTable({
         // Set initial page length to 5
         pageLength: 5,
-        
+
         // Configure length menu options
         lengthMenu: [
             [5, 10, 25, 50, 100, -1],
             [5, 10, 25, 50, 100, "Todos"]
         ],
-        
+
         // Order by fecha (date) column descending
         order: [[0, 'desc']],
-        
+
         // Spanish language
         language: {
             url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json',
@@ -7582,16 +7341,45 @@ $(document).ready(function() {
                 previous: "Anterior"
             }
         },
-        
+
         // Enable responsive features
-        responsive: true,
-        
+        responsive: {
+            details: {
+                type: 'column',
+                renderer: function ( api, rowIdx, columns ) {
+                    var data = $.map( columns, function ( col, i ) {
+                        return col.hidden ?
+                            '<tr data-dt-row="'+col.rowIndex+'" data-dt-column="'+col.columnIndex+'">'+
+                                '<td>'+col.title+':'+'</td> '+
+                                '<td>'+col.data+'</td>'+
+                            '</tr>' :
+                            '';
+                    } ).join('');
+ 
+                    return data ?
+                        $('<table/>').append( data ) :
+                        false;
+                }
+            },
+            details: {
+                display: $.fn.dataTable.Responsive.display.modal( {
+                    header: function ( row ) {
+                        var data = row.data();
+                        return 'Details for '+data[0];
+                    }
+                } ),
+                renderer: $.fn.dataTable.Responsive.renderer.tableAll( {
+                    tableClass: 'table'
+                } )
+            }
+        },
+
         // Configure DOM layout and buttons
         dom: '<"row"<"col-sm-12 col-md-6"B><"col-sm-12 col-md-6"f>>' +
              '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"p>>' +
              '<"row"<"col-sm-12"tr>>' +
              '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
-        
+
         buttons: [
             {
                 extend: 'collection',
@@ -7605,7 +7393,7 @@ $(document).ready(function() {
                 ]
             }
         ],
-        
+
         // Column specific settings
         columnDefs: [
             {
@@ -7622,7 +7410,10 @@ $(document).ready(function() {
                 orderable: false,
                 searchable: false
             }
-        ]
+        ],
+
+        // Responsive priority settings
+        responsivePriority: [1, 2, 3]
     });
 });
 </script>
@@ -7636,7 +7427,7 @@ function openEditDescarteModal(id, tagid, peso, fecha) {
     document.getElementById('edit_descarte_tagid').value = tagid;
     document.getElementById('edit_descarte_peso').value = peso;
     document.getElementById('edit_descarte_fecha').value = fecha;
-    
+
     var editModal = new bootstrap.Modal(document.getElementById('editDescarteModal'));
     editModal.show();
 }
@@ -7674,31 +7465,31 @@ $cumulativeRevenueData = [];
 if ($result_leche && $result_leche->num_rows > 0) {
     // Reset pointer to start of result set if needed
     $result_leche->data_seek(0);
-    
+
     // First, collect all revenue by month
     $monthlyData = [];
     while ($row = $result_leche->fetch_assoc()) {
         $date = new DateTime($row['vh_leche_fecha']);
         $monthKey = $date->format('Y-m');
-        
+
         if (!isset($monthlyData[$monthKey])) {
             $monthlyData[$monthKey] = [
                 'revenue' => 0,
                 'date' => $date->format('Y-m-d')
             ];
         }
-        
+
         // Calculate monthly production from sampling (peso * 365/12)
         $monthlyProduction = floatval($row['vh_leche_peso']) * (365/12);
-        
+
         // Calculate revenue for this entry (monthly production * precio)
         $revenue = $monthlyProduction * floatval($row['vh_leche_precio']);
         $monthlyData[$monthKey]['revenue'] += $revenue;
     }
-    
+
     // Sort by month
     ksort($monthlyData);
-    
+
     // Calculate cumulative sum
     $cumulativeSum = 0;
     foreach ($monthlyData as $monthKey => $data) {
@@ -7731,37 +7522,33 @@ if ($result_leche && $result_leche->num_rows > 0) {
 $conn->close();
 ?>
 
-<script>
-function scrollToSection(sectionId) {
-    // Find the section element
-    const section = document.getElementById(sectionId);
-    
-    if (section) {
-        // Get any fixed header height
-        const header = document.querySelector('header'); // Adjust selector if needed
-        const headerHeight = header ? header.offsetHeight : 0;
-        
-        // Get the element's position
-        const elementPosition = section.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.pageYOffset - headerHeight - 20; // 20px extra padding
-        
-        // Smooth scroll to the section
-        window.scrollTo({
-            top: offsetPosition,
-            behavior: "smooth"
-        });
-        
-        // Optional: Add highlight effect
-        section.style.backgroundColor = '#f0f9f0'; // Light green background
-        setTimeout(() => {
-            section.style.backgroundColor = 'transparent';
-            section.style.transition = 'background-color 0.5s ease';
-        }, 1000);
-    } else {
-        console.error(`Section with ID "${sectionId}" not found`);
-    }
-}
+<!-- Scroll to Section-->
 
+<script>
+// Add event listeners to all scroll buttons
+document.querySelectorAll('.scroll-Icons-container button').forEach(button => {
+    button.addEventListener('click', function() {
+        // Get the target section ID from data-target attribute
+        const targetId = this.getAttribute('data-target').substring(1); // Remove the # from the ID
+        const targetElement = document.getElementById(targetId);
+
+        if (targetElement) {
+            // Smooth scroll to the target section
+            targetElement.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+
+            // If using Bootstrap collapse, toggle it
+            const bsCollapse = new bootstrap.Collapse(targetElement, {
+                toggle: true
+            });
+        }
+    });
+});
+</script>
+
+<script>
 // Back to top functionality
 window.onscroll = function() {
     const backToTopButton = document.getElementById("backToTop");
@@ -7785,7 +7572,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (window.location.hash) {
         const header = document.querySelector('header');
         const headerHeight = header ? header.offsetHeight : 0;
-        
+
         setTimeout(function() {
             window.scrollTo({
                 top: window.pageYOffset - headerHeight - 20,
@@ -7800,58 +7587,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <button id="backToTop" class="back-to-top" onclick="scrollToTop()" title="Volver arriba">
     <div class="arrow-up"></div>
 </button>
-<style>
-.back-to-top {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 45px;
-    height: 45px;
-    background-color: #ffffff;
-    border: 2px solid #4caf50;
-    border-radius: 50%;
-    display: none;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    z-index: 9999;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-}
 
-.arrow-up {
-    width: 0;
-    height: 0;
-    border-left: 8px solid transparent;
-    border-right: 8px solid transparent;
-    border-bottom: 12px solid #4caf50;
-}
-
-.back-to-top:hover {
-    background-color: #4caf50;
-    transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-}
-
-.back-to-top:hover .arrow-up {
-    border-bottom-color: #ffffff;
-}
-
-@media (max-width: 768px) {
-    .back-to-top {
-        bottom: 20px;
-        right: 20px;
-        width: 40px;
-        height: 40px;
-    }
-    
-    .arrow-up {
-        border-left-width: 6px;
-        border-right-width: 6px;
-        border-bottom-width: 10px;
-    }
-}
-</style>
 
 <script>
 window.onscroll = function() {

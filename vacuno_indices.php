@@ -951,15 +951,33 @@ $averageDaysDifference = $count > 0 ? $totalDaysDifference / $count : 0;
     <!--Script de eCharts.js para los Indices-->
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
     <!-- Custom CSS-->
-    <link rel="stylesheet" href="https://ganagram.com/ganagram/css/ganagram.css" />
+    <link rel="stylesheet" href="./vacuno.css" />
     <style>
-      /* Indices de Produccion */
+:root { 
+--primary-color: #e0e8dc;
+--secondary-color: #4a5d23;
+--background-color: #f8f9fa;
+--card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
 
 body{
   font-family: sans-serif;      
 }
 
+.container h3{
+  width: 90%;
+  background-color: var(--secondary-color);
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  text-align: center;
+  margin: 0 auto;
+}
+
+
 .nav-icons-container {
+
     width: 100%;
     display: flex;
     justify-content: center;
@@ -1421,7 +1439,7 @@ body{
 
 /* Indices Otros */
 
-    </style>
+</style>
 </head>
 <body>
 <div class="container" id="nav-buttons">
@@ -1446,25 +1464,21 @@ body{
 </div>
 
 <!-- Scroll Icons Container -->
-<div class="container scroll-Icons-container">      
-    <button onclick="scrollToSection('section-indices-produccion-carne')" class="icon-button" data-tooltip="Producción">
-        <img src="./images/bascula-de-comestibles.png" alt="Producción" class="nav-icon">
+<div class="container scroll-Icons-container">
+    <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-target="#section-indices-produccion-leche-vacuno" data-tooltip="Produccion">
+        <img src="./images/bascula-de-comestibles.png" alt="Alimentacion" class="nav-icon">
     </button>
-    
-    <button onclick="scrollToSection('section-indices-alimentacion-concentrado')" class="icon-button" data-tooltip="Alimentación">
+
+    <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-target="#section-indices-alimentacion-vacuno" data-tooltip="Produccion">
         <img src="./images/bolso.png" alt="Alimentacion" class="nav-icon">
     </button>
-    
-    <button onclick="scrollToSection('section-indices-vacunacion')" class="icon-button" data-tooltip="Salud">
-        <img src="./images/vacunacion.png" alt="Vacunación" class="nav-icon">
+
+    <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-target="#section-indices-salud-vacuno" data-tooltip="Salud">
+        <img src="./images/vacunacion.png" alt="Salud" class="nav-icon">
     </button>
-    
-    <buttonon onclick="scrollToSection('section-indices-reproduccion-preñez')"  class="icon-button" data-tooltip="Reproducción">
-        <img src="./images/matriz.png" alt="Inseminación" class="nav-icon">
-    </buttonon>
-    
-    <button onclick="scrollToSection('Section-Otros')" class="icon-button" data-tooltip="Otros">
-        <img src="./images/compra.png" alt="Venta" class="nav-icon">
+       
+    <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-target="#section-indices-reproduccion-vacuno" data-tooltip="Salud">
+        <img src="./images/matriz.png" alt="Razas" class="nav-icon">
     </button>
 </div>
 
@@ -1476,48 +1490,53 @@ body{
 <div class="container d-flex justify-content-center flex-wrap">      
       <figure id="chart-leche"></figure>
 </div>
-<!-- Indices Produccion-->
-<div class="container" style="margin-top: 20px;width:90%;">
-  <h3 class="section-title">Indices Produccion Leche</h3>
-</div>
+<!-- Indices Produccion Leche-->
+<h3  class="container mt-4">
+PRODUCCION LECHE
+</h3>
+
+
 <div style="max-width: 1300px; margin: 40px auto;">
-    <h3 style="text-align: center;">Producción Promedio de Leche Mensual</h3>
+    <h2 style="text-align: center;">Producción Promedio de Leche Mensual</h2>
     <canvas id="avgLecheChart" width="600" height="400"></canvas>
 </div>
 <div style="text-align: center; margin: 20px;">
-    <button id="exportAvgLechePdf" class="btn btn-primary">Exportar a PDF</button>
+    <button id="exportAvgLechePdf" class="btn btn-success">Exportar a PDF</button>
 </div>
 <div style="max-width: 1300px; margin: 40px auto;">
-    <h3 style="text-align: center;">Ingresos Mensuales y Acumulativos por Leche</h3>
+    <h2 style="text-align: center;">Ingresos Mensuales y Acumulativos por Leche</h2>
     <canvas id="monthlyRevenueChart" width="600" height="400"></canvas>
 </div>
 <div style="text-align: center; margin: 20px;">
-    <button id="exportPdf" class="btn btn-primary">Exportar a PDF</button>
+    <button id="exportPdf" class="btn btn-success">Exportar a PDF</button>
 </div>
 <div class="container d-flex justify-content-center flex-wrap">      
       <figure id="chart-lactancia"></figure>
       <figure id="chart-enordeno"></figure>
 </div>
-<!-- Carne -->
-<div class="container" style="margin-top: 40px;width:90%;">
-    <h3 class="section-title" id="section-indices-produccion-carne">Indices Produccion Carne</h3>
-</div>
+
+<!-- Indices Produccion Carne-->
+<h3  class="container mt-4" id="section-indices-produccion-carne-vacuno">
+PRODUCCION CARNE
+</h3>
+
 <div style="max-width: 1300px; margin: 40px auto;">
-    <h3 style="text-align: center;">Peso Vacuno Promedio</h3>
+
+    <h2 style="text-align: center;">Peso Vacuno Promedio</h2>
     <canvas id="monthlyAverageWeightChart" width="600" height="400"></canvas>
 </div>
 
 <div style="text-align: center; margin: 20px;">
-    <button id="exportAvgWeightPdf" class="btn btn-primary">Exportar a PDF (Promedio Mensual de Peso)</button>
+    <button id="exportAvgWeightPdf" class="btn btn-success">Exportar a PDF (Promedio Mensual de Peso)</button>
 </div>
 
 <div style="max-width: 1300px; margin: 40px auto;">
-    <h3 style="text-align: center;">Ingreso Promedio Mensual</h3>
+    <h2 style="text-align: center;">Ingreso Promedio Mensual</h2>
     <canvas id="monthlyAverageRevenueChart" width="600" height="400"></canvas>
 </div>
 
 <div style="text-align: center; margin: 20px;">
-    <button id="exportAvgRevenuePdf" class="btn btn-primary">Exportar a PDF (Promedio Mensual de Ingresos)</button>
+    <button id="exportAvgRevenuePdf" class="btn btn-success">Exportar a PDF (Promedio Mensual de Ingresos)</button>
 </div>
 
 <div class="container d-flex justify-content-center flex-wrap">      
@@ -1526,30 +1545,33 @@ body{
 </div>
 
 <!-- Indices de Alimentacion -->
+<h3  class="container mt-4" id="section-indices-alimentacion-vacuno">
+ALIMENTACION
+</h3>
 
 <!-- Alimento Concentrado-->
 
-<div class="container" style="margin-top: 20px;width:90%;">
-  <h3 class="section-title" id="section-indices-alimentacion-concentrado">Concentrado</h3>
-</div>
-<div class="container d-flex justify-content-center flex-wrap">      
+<h2 class="container d-flex justify-content-center flex-wrap">Concentrado</h2>
+
+<div class="container d-flex justify-content-center flex-wrap">           
       <figure id="chart-becerros-concentrado"></figure>
+
       <figure id="chart-novillos-concentrado"></figure>
-      <figure id="chart-adultos-concentrado"></figure>
+   <figure id="chart-adultos-concentrado"></figure>
 </div>
 <!-- Sal-->
-<div class="container" style="margin-top: 20px;width:90%;">
-  <h3 class="section-title">Sal</h3>
-</div>
+
+<h2 class="container d-flex justify-content-center flex-wrap">Sal</h2>
+
 <div class="container d-flex justify-content-center flex-wrap">      
       <figure id="chart-becerros-sal"></figure>
       <figure id="chart-novillos-sal"></figure>
       <figure id="chart-adultos-sal"></figure>
 </div>
 <!-- Indices Melaza-->
-<div class="container" style="margin-top: 20px;width:90%;">
-  <h3 class="section-title">Melaza</h3>
-</div>
+
+<h2 class="container d-flex justify-content-center flex-wrap">Melaza</h2>
+
 <div class="container d-flex justify-content-center flex-wrap">      
       <figure id="chart-becerros-melaza"></figure>
       <figure id="chart-novillos-melaza"></figure>
@@ -1557,13 +1579,13 @@ body{
 </div>
 
 <!-- Indices de Salud -->
+<h3  class="container mt-4" id="section-indices-salud-vacuno">
+SALUD
+</h3>
 
-<!-- Indices Vacunacion-->
+<!-- Indices Vacunas-->
+<h2 class="container d-flex justify-content-center flex-wrap">Vacunas</h2>
 
-</div>
-<div class="container" style="margin-top: 20px;width:90%;">
-  <h3 class="section-title" id="section-indices-vacunacion">Vacunacion</h3>
-</div>
 <div class="container d-flex justify-content-center flex-wrap">
       <figure id="chart-aftosa"></figure>
       <figure id="chart-brucelosis"></figure>
@@ -1574,54 +1596,56 @@ body{
       <figure id="chart-carbunco"></figure>
 </div>
 <!-- Indices Baños-->
-<div class="container" style="margin-top: 20px;width:90%;">
-    <h3 class="section-title">Baños</h3>
-</div>
+
+<h2 class="container d-flex justify-content-center flex-wrap">Baños</h2>
+
 <div class="container d-flex justify-content-center flex-wrap">      
     <figure id="chart-parasitos"></figure>
     <figure id="chart-garrapatas"></figure>
 </div>
-<!-- Indices Parasitos-->
-<div class="container" style="margin-top: 20px;width:90%;">
-  <h3 class="section-title">TRATAMIENTOS</h3>
-</div>
+<!-- Indices Tratamientos-->
+
+<h2 class="container d-flex justify-content-center flex-wrap">Tratamientos</h2>
+
 <div class="container d-flex justify-content-center flex-wrap">
       <figure id="chart-mastitis"></figure>
 </div>
 
 <!-- Indices de Reproduccion -->
+<h3  class="container mt-4" id="section-indices-reproduccion-vacuno">
+REPRODUCCION
+</h3>
 
 <!-- Add back button before the header container -->
 <a href="./inventario_vacuno.php" class="back-btn">
     <i class="fas fa-arrow-left"></i>
 </a>
 <!-- Indices Preñez-->
-<div class="container" style="margin-top: 20px;width:90%;">
-  <h3 class="section-title" id="section-indices-reproduccion-preñez">PREÑEZ</h3>
-</div>
+<h2 class="container d-flex justify-content-center flex-wrap">Preñez</h2>
+
 <div class="container d-flex justify-content-center flex-wrap">      
       <figure id="chart-1er-celo"></figure>
       <figure id="chart-2do-celo"></figure>
       <figure id="chart-3er-celo"></figure>
 </div>
 <!-- Indices Gestacion-->
-<div class="container" style="margin-top: 20px;width:90%;">
-  <h3 class="section-title">GESTACION</h3>
-</div>
+
+<h2 class="container d-flex justify-content-center flex-wrap">Gestacion</h2>
+
 <div class="container d-flex justify-content-center flex-wrap">      
+
       <figure id="chart-dias-gestacion"></figure>
       <figure id="chart-dias-vacios"></figure>
+
 </div>
 <!-- Indices Paricion-->
-<div class="container" style="margin-top: 20px;width:90%;">
-  <h3 class="section-title">PARICION</h3>
-</div>
+
+<h2 class="container d-flex justify-content-center flex-wrap">Paricion</h2>
+
 <div class="container d-flex justify-content-center flex-wrap">      
       <figure id="chart-dias-entre-partos"></figure>
       <figure id="chart-partos-anuales"></figure>
 </div>
-
-<!-- Indices Otros -->
 
 <!-- Librerias -->
 <!-- Bootstrap  -->
@@ -4693,6 +4717,31 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('Available section titles:', Array.from(titles).map(t => ({id: t.id, text: t.textContent})));
         }
     };
+});
+</script>
+<!-- Scroll to Section-->
+
+<script>
+// Add event listeners to all scroll buttons
+document.querySelectorAll('.scroll-Icons-container button').forEach(button => {
+    button.addEventListener('click', function() {
+        // Get the target section ID from data-target attribute
+        const targetId = this.getAttribute('data-target').substring(1); // Remove the # from the ID
+        const targetElement = document.getElementById(targetId);
+        
+        if (targetElement) {
+            // Smooth scroll to the target section
+            targetElement.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+            
+            // If using Bootstrap collapse, toggle it
+            const bsCollapse = new bootstrap.Collapse(targetElement, {
+                toggle: true
+            });
+        }
+    });
 });
 </script>
 

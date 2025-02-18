@@ -16,7 +16,14 @@ require_once '../conexion.php';  // Go up one directory since inventario_vacuno.
     <link href="https://cdn.datatables.net/responsive/3.0.3/css/responsive.dataTables.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/fixedheader/4.0.1/css/fixedHeader.dataTables.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/responsive/3.0.3/css/responsive.dataTables.css"></link>
+    <link rel="stylesheet" href="./vacuno.css" />
 <style>
+    :root { 
+    --primary-color: #e0e8dc;
+    --secondary-color: #4a5d23;
+    --background-color: #f8f9fa;
+    --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
 .nav-icons-container {
     width: 100%;
     display: flex;
@@ -324,30 +331,30 @@ body {
 
 <!-- Scroll Icons Container -->
 <div class="container scroll-Icons-container">
-    <button onclick="scrollToSection('Section-configuracion-alimentacion')" class="icon-button" data-tooltip="Alimentación">
+    <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-target="#Section-configuracion-alimentacion-vacuno" data-tooltip="Alimentacion">
         <img src="./images/bolso.png" alt="Alimentacion" class="nav-icon">
     </button>
-    
-    <button onclick="scrollToSection('Section-configuracion-vacunas')" class="icon-button" data-tooltip="Salud">
-        <img src="./images/vacunacion.png" alt="Vacunación" class="nav-icon">
+
+    <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-target="#Section-configuracion-salud-vacuno" data-tooltip="Salud">
+        <img src="./images/vacunacion.png" alt="Salud" class="nav-icon">
     </button>
-    
-    <button onclick="scrollToSection('Section-configuracion-razas')" class="icon-button" data-tooltip="Reproducción">
-        <img src="./images/raza.png" alt="Reproduccion" class="nav-icon">
-    </button>
-    
-    <button onclick="scrollToSection('Section-configuracion-grupos')" class="icon-button" data-tooltip="Grupos">
-        <img src="./images/grupo.png" alt="Grupos" class="nav-icon">
+       
+    <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-target="#Section-configuracion-razas-vacuno" data-tooltip="Razas">
+        <img src="./images/raza.png" alt="Razas" class="nav-icon">
     </button>
 
-    <button onclick="scrollToSection('Section-configuracion-estatus')" class="icon-button" data-tooltip="Estatus">
+    <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-target="#Section-configuracion-grupos-vacuno" data-tooltip="Grupos">
+        <img src="./images/grupo.png" alt="Grupo" class="nav-icon">
+    </button>
+
+    <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-target="#Section-configuracion-estatus-vacuno" data-tooltip="Estatus">
         <img src="./images/estatus.png" alt="Estatus" class="nav-icon">
     </button>
 </div>
 
-<div class="container">
-    <h3 id="Section-configuracion-alimentacion" class="section-title text-center bg-success text-white">ALIMENTACION</h3>
-</div>
+<h3  class="container mt-4" class="collapse" id="Section-configuracion-alimentacion-vacuno">
+ALIMENTACION
+</h3>
 <!-- Add back button before the header container -->
 <a href="./inventario_vacuno.php" class="back-btn">
 
@@ -459,11 +466,11 @@ body {
     </div>
 </div>
 
-<!-- Vacunas -->
+<!-- Salud -->
+<h3  class="container mt-4" class="collapse" id="Section-configuracion-salud-vacuno">
+SALUD
+</h3>
 
-<div class="container" style="margin-top: 40px;">
-    <h3 id="Section-configuracion-vacunas" class="section-title text-center bg-success text-white">VACUNAS</h3>
-</div>
 <!-- Add back button before the header container --> 
 <!-- Button to Open the Modal -->
 <div class="container mt-3 text-center">
@@ -546,9 +553,13 @@ body {
 
 <!-- Razas -->
 
-<div class="container" style="margin-top: 40px;">
-    <h3 id="Section-configuracion-razas" class="section-title text-center bg-success text-white">RAZAS</h3>
-</div>
+<!-- Razas -->
+<h3  class="container mt-4" class="collapse" id="Section-configuracion-razas-vacuno">
+RAZAS
+</h3>
+
+
+
 <!-- Button to Open the Modal -->
 <div class="container mt-3 text-center">
 
@@ -618,9 +629,11 @@ body {
 </div>
 
 <!-- Grupos -->
-<div class="container">
-    <h3 id="Section-configuracion-grupos" class="section-title text-center bg-success text-white">Grupos</h3>
-</div> 
+<h3  class="container mt-4" class="collapse" id="Section-configuracion-grupos-vacuno">
+GRUPOS
+</h3>
+
+
 <!-- Button to Open the Modal -->
 <div class="container mt-3 text-center">
 
@@ -689,9 +702,12 @@ body {
 </div>
 
 <!-- Estatus -->
-<div class="container">
-    <h3 id="Section-configuracion-estatus" class="section-title text-center bg-success text-white">Estatus</h3>
-</div>
+<h3  class="container mt-4" class="collapse" id="Section-configuracion-estatus-vacuno">
+ESTATUS
+</h3>
+
+
+
 <!-- Button to Open the Modal -->
 <div class="container mt-3 text-center">
 
@@ -803,49 +819,29 @@ function deleteEntry(id) {
         element.innerHTML = isHidden ? '▼' : '▶'; // Change arrow direction
     }
 </script>
-
 <!-- Scroll to Section-->
 
 <script>
-function scrollToSection(sectionId) {
-    // Remove any spaces and convert to lowercase
-    const element = document.getElementById(sectionId);
-    
-    if (element) {
-        // Get the header height (including any fixed navigation)
-        const navContainer = document.querySelector('.nav-icons-container');
-        const scrollContainer = document.querySelector('.scroll-Icons-container');
-        const headerOffset = (navContainer ? navContainer.offsetHeight : 0) + 
-                           (scrollContainer ? scrollContainer.offsetHeight : 0) + 20;
-
-        // Calculate the element's position
-        const elementPosition = element.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
-        // Scroll to the element
-        window.scrollTo({
-            top: offsetPosition,
-            behavior: 'smooth'
-        });
-
-        // Add highlight effect
-        element.style.backgroundColor = '#f0f9f0';
-        setTimeout(() => {
-            element.style.backgroundColor = '';
-            element.style.transition = 'background-color 0.5s ease';
-        }, 1000);
-    } else {
-        console.error('Section not found:', sectionId);
-    }
-}
-
-// Add event listener for when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-    // Fix buttonon typo in HTML
-    const buttonon = document.querySelector('buttonon');
-    if (buttonon) {
-        buttonon.outerHTML = buttonon.outerHTML.replace('buttonon', 'button');
-    }
+// Add event listeners to all scroll buttons
+document.querySelectorAll('.scroll-Icons-container button').forEach(button => {
+    button.addEventListener('click', function() {
+        // Get the target section ID from data-target attribute
+        const targetId = this.getAttribute('data-target').substring(1); // Remove the # from the ID
+        const targetElement = document.getElementById(targetId);
+        
+        if (targetElement) {
+            // Smooth scroll to the target section
+            targetElement.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+            
+            // If using Bootstrap collapse, toggle it
+            const bsCollapse = new bootstrap.Collapse(targetElement, {
+                toggle: true
+            });
+        }
+    });
 });
 </script>
 

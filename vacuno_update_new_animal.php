@@ -37,6 +37,7 @@ $genero = isset($_POST['genero']) ? sanitize_input($_POST['genero'], $conn) : ''
 $estatus = isset($_POST['estatus']) ? sanitize_input($_POST['estatus'], $conn) : '';
 $tagid = isset($_POST['tagid']) ? sanitize_input($_POST['tagid'], $conn) : '';
 $raza = isset($_POST['raza']) ? sanitize_input($_POST['raza'], $conn) : '';
+$etapa = isset($_POST['etapa']) ? sanitize_input($_POST['etapa'], $conn) : '';
 $grupo = isset($_POST['grupo']) ? sanitize_input($_POST['grupo'], $conn) : '';
 $nacimiento = isset($_POST['fecha_nacimiento']) ? sanitize_input($_POST['fecha_nacimiento'], $conn) : '';
 $compra = isset($_POST['fecha_compra']) ? sanitize_input($_POST['fecha_compra'], $conn) : '';
@@ -134,7 +135,7 @@ if (!empty($errors)) {
 }
 
 // Prepare the INSERT statement using prepared statements to prevent SQL injection
-$stmt = $conn->prepare("INSERT INTO vacuno (nombre, genero, estatus, tagid, raza, grupo, fecha_nacimiento, fecha_compra, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+$stmt = $conn->prepare("INSERT INTO vacuno (nombre, genero, estatus, tagid, raza, etapa, grupo, fecha_nacimiento, fecha_compra, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
 // Check if the statement was prepared successfully
 if (!$stmt) {
@@ -147,7 +148,7 @@ if (!$stmt) {
 }
 
 // Bind the parameters to the statement
-$stmt->bind_param("sssssssss", $nombre, $genero, $estatus, $tagid, $raza, $grupo, $nacimiento, $compra, $imagen_path);
+$stmt->bind_param("ssssssssss", $nombre, $genero, $estatus, $tagid, $raza, $etapa, $grupo, $nacimiento, $compra, $imagen_path);
 
 // Execute the statement
 if ($stmt->execute()) {
