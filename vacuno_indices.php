@@ -912,534 +912,83 @@ $averageDaysDifference = $count > 0 ? $totalDaysDifference / $count : 0;
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Indices Produccion</title>
-  <link rel="icon" type="image/x-icon" href="/images/Ganagram_ico.ico">
-    <!-- Jquery -->
-    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-     <!-- Font Awesome  -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <!-- DataTable JS -->
-    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-    <!-- Responsive dataTables Js -->
-    <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
-    <script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
-    <!-- Responsive dataTables Css -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
-   <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css">
-   <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap5.css">
-   <!-- Fixed Header for Column Search -->
-   <link rel="" href="https://cdn.datatables.net/fixedheader/3.1.6/css/fixedHeader.dataTables.min.css">
-   <!-- HighCharts CSS CDN -->
-    <link rel="stylesheet" type="text/css" href="https://code.highcharts.com/css/highcharts.css"></link>
-    <!-- HighCharts JS CDN -->
-    <script src="https://code.highcharts.com/highcharts.js"></script>
-    <script src="https://code.highcharts.com/modules/data.js"></script>
-    <script src="https://code.highcharts.com/modules/drilldown.js"></script>
-    <script src="https://code.highcharts.com/modules/exporting.js"></script>
-    <script src="https://code.highcharts.com/modules/export-data.js"></script>
-    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
-    <script src="https://code.highcharts.com/modules/series-label.js"></script>
-    <script src="https://code.highcharts.com/modules/xrange.js"></script>
-    <!-- HighCharts CSS CDN -->
-    <link rel="stylesheet" type="text/css" href="https://code.highcharts.com/css/highcharts.css"></link>
-    <!--Script de eCharts.js para los Indices-->
-    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
-    <!-- Custom CSS-->
-    <link rel="stylesheet" href="./vacuno.css" />
-    <style>
-:root { 
---primary-color: #e0e8dc;
---secondary-color: #4a5d23;
---background-color: #f8f9fa;
---card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-body{
-  font-family: sans-serif;      
-}
-
-.container h3{
-  width: 90%;
-  background-color: var(--secondary-color);
-  color: white;
-  padding: 10px;
-  border-radius: 5px;
-  font-weight: bold;
-  text-align: center;
-  margin: 0 auto;
-}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inventario Vacuno</title>
+<!-- Link to the Favicon -->
+<link rel="icon" href="images/Ganagram_icono.ico" type="image/x-icon">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<!--Bootstrap 5 Css -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+<link rel="stylesheet" href="./vacuno.css">
 
 
-.nav-icons-container {
+<!-- Include Chart.js and Chart.js DataLabels Plugin -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
 
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px 0;
-    gap: 50px;
-    flex-wrap: wrap;
-    background-color: #f8f9fa;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
-    margin: 10px 0;
-}
-.scroll-Icons-container{
-  width: 90%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px 0;
-  gap: 10px;
-  flex-wrap: wrap;
-}
+<!-- Add these in the <head> section, after your existing CSS/JS links -->
 
-@media (max-width: 768px) {
-    .icon-nav-container {
-        gap: 15px;
-    }
-}
+<!-- Place these in the <head> section in this exact order -->
 
-.icon-nav-container {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin: 0px;
-    padding-top: 0px;
-    margin-top: 0px;
-    padding-bottom: 0px;
-    margin-bottom: 0px;
-    padding-left: 0px;
-    margin-left: 0px;
-    padding-right: 0px;
-    margin-right: 0px;
-}
+<!-- jQuery Core (main library) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-.icon-button {
-    background: white;
-    border: 1px solid #ccc;
-    border-radius: 50%;
-    width: 45px;
-    height: 45px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
-    padding: 0;
-}
+<!-- DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.min.css">
 
-.nav-icon {
-    width: 24px;
-    height: 24px;
-    transition: all 0.3s ease;
-}
+<!-- DataTables JavaScript -->
+<script type="text/javascript" src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.min.js"></script>
 
-.icon-button:hover .nav-icon {
-    transform: scale(1.2);
-}
+<!-- DataTables Buttons CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
 
-.icon-button:hover {
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
+<!-- DataTables Buttons JS -->
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
 
-/* Tooltip Styles */
-.icon-button::before {
-    content: attr(data-tooltip);
-    position: absolute;
-    bottom: -30px;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 4px 8px;
-    background-color: rgba(0, 0, 0, 0.8);
-    color: white;
-    font-size: 12px;
-    border-radius: 4px;
-    white-space: nowrap;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
-}
+<!-- Bootstrap 5 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-.icon-button:hover::before {
-    opacity: 1;
-    visibility: visible;
-}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.min.css">
+<script type="text/javascript" src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.min.js"></script>
 
-@media (max-width: 768px) {
-    .icon-nav-container {
-        flex-wrap: wrap;
-        gap: 15px;
-    }
-    
-    .icon-button {
-        width: 40px;
-        height: 40px;
-    }
-    
-    .nav-icon {
-        width: 20px;
-        height: 20px;
-    }
-}
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
 
-.filtros-graficos
-{
-  background-color:rgb(230, 234, 225,.7);
-  backdrop-filter: blur(7px);
-  box-shadow: 0 .4rem .8rem #0005;
-  border:1px solid #ccc;
-  border-radius:3%;
-  margin-top:0.3rem;
-}  
-  .section-title {
-  background-color: #83956e;
-  color: white;
-  padding: 10px;
-  margin-bottom: 20px;
-  border-radius: 5px;
-  font-weight: bold;
-  text-align: center;
-}
-.back-btn {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    font-size: 64px;
-    color: #83956e;
-    text-decoration: none;
-    transition: color 0.3s;
-    z-index: 10000;
-}
+<!-- DataTables -->
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
 
-.back-btn:hover {
-    color: #689260;
-}
+<!-- DataTables CSS -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
 
-@media screen and (max-width: 768px) {
-    .back-btn {
-        font-size: 56px;
-        left: 15px;
-        top: 15px;
-    }
-}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-@media screen and (max-width: 480px) {
-    .back-btn {
-        font-size: 48px;
-        left: 10px;
-        top: 10px;
-    }
-}
-@media screen and (max-width: 768px) {
-    .back-btn {
-        font-size: 56px;
-        left: 15px;
-        top: 15px;
-    }
-}
+<!-- Add these in the <head> section, after your existing DataTables CSS/JS -->
+<!-- DataTables Buttons CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
 
-@media screen and (max-width: 480px) {
-    .back-btn {
-        font-size: 48px;
-        left: 10px;
-        top: 10px;
-    }
-}
-#chart-lactancia,
-#chart-enordeno,
-#chart-aumento-mensual-peso,
-#chart-Carne-Alimento
-{
-width:20rem;
-height:20rem;
-margin-top:1rem;
-margin-right:1rem;
-background-color:rgb(230, 234, 225,.70);
-backdrop-filter: blur(7px);
-box-shadow: 0 .4rem .8rem #0005;
-border:1px solid #ccc;
-border-radius:3%;
-}
-        
-/* Indices de Alimentacion */
+<!-- DataTables Buttons JS -->
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
 
-body{
-font-family: sans-serif;      
-}
-.filtros-graficos
-{
-background-color:rgb(230, 234, 225,.7);
-backdrop-filter: blur(7px);
-box-shadow: 0 .4rem .8rem #0005;
-border:1px solid #ccc;
-border-radius:3%;
-margin-top:0.3rem;
-}
-#chart-becerros-concentrado,
-#chart-novillos-concentrado,
-#chart-adultos-concentrado,
-#chart-becerros-sal,
-#chart-novillos-sal,
-#chart-adultos-sal,
-#chart-becerros-melaza,
-#chart-novillos-melaza,
-#chart-adultos-melaza
-
-{
-width:20rem;
-height:20rem;
-margin-top:1rem;
-margin-right:1rem;
-background-color:rgb(230, 234, 225,.70);
-backdrop-filter: blur(7px);
-box-shadow: 0 .4rem .8rem #0005;
-border:1px solid #ccc;
-border-radius:3%;
-}
-.section-title {
-background-color: #83956e;
-color: white;
-padding: 10px;
-margin-bottom: 20px;
-border-radius: 5px;
-font-weight: bold;
-text-align: center;
-}
-.back-btn {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    font-size: 64px;
-    color: #83956e;
-    text-decoration: none;
-    transition: color 0.3s;
-    z-index: 10000;
-}
-
-.back-btn:hover {
-    color: #689260;
-}
-
-@media screen and (max-width: 768px) {
-    .back-btn {
-        font-size: 56px;
-        left: 15px;
-        top: 15px;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .back-btn {
-        font-size: 48px;
-        left: 10px;
-        top: 10px;
-    }
-}
-@media screen and (max-width: 768px) {
-    .back-btn {
-        font-size: 56px;
-        left: 15px;
-        top: 15px;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .back-btn {
-        font-size: 48px;
-        left: 10px;
-        top: 10px;
-    }
-}
-        
-/* Indices de Salud */
-body{
-  font-family: sans-serif;      
-}
-.filtros-graficos
-{
-  background-color:rgb(230, 234, 225,.7);
-  backdrop-filter: blur(7px);
-  box-shadow: 0 .4rem .8rem #0005;
-  border:1px solid #ccc;
-  border-radius:3%;
-  margin-top:0.3rem;
-}
-  #chart-lactancia,
-  #chart-enordeno,
-  #chart-aftosa,
-  #chart-brucelosis,
-  #chart-ibr,
-  #chart-cbr,
-  #chart-carbunco,
-  #chart-garrapatas,
-  #chart-parasitos,
-  #chart-mastitis
-  
-{
-  width:20rem;
-  height:20rem;
-  margin-top:1rem;
-  margin-right:1rem;
-  background-color:rgb(230, 234, 225,.70);
-  backdrop-filter: blur(7px);
-  box-shadow: 0 .4rem .8rem #0005;
-  border:1px solid #ccc;
-  border-radius:3%;
-}
-.section-title {
-  background-color: #83956e;
-  color: white;
-  padding: 10px;
-  margin-bottom: 20px;
-  border-radius: 5px;
-  font-weight: bold;
-  text-align: center;
-}
-.back-btn {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    font-size: 64px;
-    color: #83956e;
-    text-decoration: none;
-    transition: color 0.3s;
-    z-index: 10000;
-}
-
-.back-btn:hover {
-    color: #689260;
-}
-
-@media screen and (max-width: 768px) {
-    .back-btn {
-        font-size: 56px;
-        left: 15px;
-        top: 15px;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .back-btn {
-        font-size: 48px;
-        left: 10px;
-        top: 10px;
-    }
-}
-@media screen and (max-width: 768px) {
-    .back-btn {
-        font-size: 56px;
-        left: 15px;
-        top: 15px;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .back-btn {
-        font-size: 48px;
-        left: 10px;
-        top: 10px;
-    }
-}
-      
-/* Indices de Reproduccion */ 
-
-body{
-  font-family: sans-serif;      
-}
-.filtros-graficos
-{
-  background-color:rgb(230, 234, 225,.7);
-  backdrop-filter: blur(7px);
-  box-shadow: 0 .4rem .8rem #0005;
-  border:1px solid #ccc;
-  border-radius:3%;
-  margin-top:0.3rem;
-}
-  #chart-1er-celo,
-  #chart-2do-celo,
-  #chart-3er-celo,
-  #chart-enordeno,
-  #chart-dias-gestacion,
-  #chart-dias-vacios,
-  #chart-dias-entre-partos,
-  #chart-partos-anuales
-{
-  width:20rem;
-  height:20rem;
-  margin-top:1rem;
-  margin-right:1rem;
-  background-color:rgb(230, 234, 225,.70);
-  backdrop-filter: blur(7px);
-  box-shadow: 0 .4rem .8rem #0005;
-  border:1px solid #ccc;
-  border-radius:3%;
-}
-.section-title {
-  background-color: #83956e;
-  color: white;
-  padding: 10px;
-  margin-bottom: 20px;
-  border-radius: 5px;
-  font-weight: bold;
-  text-align: center;
-}
-.back-btn {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    font-size: 64px;
-    color: #83956e;
-    text-decoration: none;
-    transition: color 0.3s;
-    z-index: 10000;
-}
-
-.back-btn:hover {
-    color: #689260;
-}
-
-@media screen and (max-width: 768px) {
-    .back-btn {
-        font-size: 56px;
-        left: 15px;
-        top: 15px;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .back-btn {
-        font-size: 48px;
-        left: 10px;
-        top: 10px;
-    }
-}
-@media screen and (max-width: 768px) {
-    .back-btn {
-        font-size: 56px;
-        left: 15px;
-        top: 15px;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .back-btn {
-        font-size: 48px;
-        left: 10px;
-        top: 10px;
-    }
-}
-
-/* Indices Otros */
-
-</style>
 </head>
 <body>
 <div class="container" id="nav-buttons">
@@ -1717,60 +1266,8 @@ function scrollToSection(sectionTitle) {
 
 <!-- Back to top button -->
 <button id="backToTop" class="back-to-top" onclick="scrollToTop()" title="Volver arriba">
-    <div class="arrow-up"></div>
+    <div class="arrow-up"><i class="fa-solid fa-arrow-up"></i></div>
 </button>
-<style>
-.back-to-top {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 45px;
-    height: 45px;
-    background-color: #ffffff;
-    border: 2px solid #4caf50;
-    border-radius: 50%;
-    display: none;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    z-index: 9999;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-}
-
-.arrow-up {
-    width: 0;
-    height: 0;
-    border-left: 8px solid transparent;
-    border-right: 8px solid transparent;
-    border-bottom: 12px solid #4caf50;
-}
-
-.back-to-top:hover {
-    background-color: #4caf50;
-    transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-}
-
-.back-to-top:hover .arrow-up {
-    border-bottom-color: #ffffff;
-}
-
-@media (max-width: 768px) {
-    .back-to-top {
-        bottom: 20px;
-        right: 20px;
-        width: 40px;
-        height: 40px;
-    }
-    
-    .arrow-up {
-        border-left-width: 6px;
-        border-right-width: 6px;
-        border-bottom-width: 10px;
-    }
-}
-</style>
 
 <script>
 window.onscroll = function() {

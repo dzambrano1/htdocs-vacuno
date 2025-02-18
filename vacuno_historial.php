@@ -18,45 +18,83 @@ if ($conn->connect_error) {
 <!DOCTYPE html>
 <html>
 <head>
-<title>Historial Vacuno</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inventario Vacuno</title>
 <!-- Link to the Favicon -->
-<link rel="icon" href="images/ganagram_ico.ico" type="image/x-icon">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" rel="stylesheet">
-<link href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<link rel="icon" href="images/Ganagram_icono.ico" type="image/x-icon">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<!--Bootstrap 5 Css -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+<link rel="stylesheet" href="./vacuno.css">
+
+
+<!-- Include Chart.js and Chart.js DataLabels Plugin -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+
+<!-- Add these in the <head> section, after your existing CSS/JS links -->
+
+<!-- Place these in the <head> section in this exact order -->
+
+<!-- jQuery Core (main library) -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
 
-<!-- Bootstrap CSS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<!-- Bootstrap JS Bundle with Popper -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-
-<!-- In your <head> section -->
 <!-- DataTables CSS -->
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
-<link rel="stylesheet" type="text/css" href="./vacuno.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.min.css">
 
-<!-- jQuery and DataTables JS -->
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+<!-- DataTables JavaScript -->
+<script type="text/javascript" src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.min.js"></script>
 
-<!-- For PDF export -->
+<!-- DataTables Buttons CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
+
+<!-- DataTables Buttons JS -->
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
 
-<!-- For Excel/CSV export -->
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<!-- Bootstrap 5 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.min.css">
+<script type="text/javascript" src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.min.js"></script>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+
+<!-- DataTables -->
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+
+<!-- DataTables CSS -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- Add these in the <head> section, after your existing DataTables CSS/JS -->
+<!-- DataTables Buttons CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
+
+<!-- DataTables Buttons JS -->
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+
 </head>
 <body>
 
@@ -78,9 +116,8 @@ if ($conn->connect_error) {
         }
     }
     ?>
-<div class="container" id="nav-buttons">
-  <!-- Icon Navigation Buttons -->
-  <div class="container nav-icons-container">
+<!-- Icon Navigation Buttons -->    
+<div class="container nav-icons-container" id="nav-buttons">
     <button onclick="window.location.href='../inicio.php'" class="icon-button" data-tooltip="Inicio">
         <img src="./images/Ganagram_New_Logo-png.png" alt="Inicio" class="nav-icon">
     </button>
@@ -96,29 +133,28 @@ if ($conn->connect_error) {
     <button onclick="window.location.href='./vacuno_configuracion.php'" class="icon-button" data-tooltip="Configurar Tablas">
         <img src="./images/configuracion.png" alt="Inicio" class="nav-icon">
     </button>
-  </div>
 </div>
 
 <!-- Scroll Icons Container -->
 <div class="container scroll-Icons-container">
     <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-target="#section-historial-produccion-vacuno" data-tooltip="Produccion">
-        <img src="./images/bascula-de-comestibles.png" alt="Alimentacion" class="nav-icon">
+        <img src="./images/bascula-de-comestibles.png" alt="Alimentacion" class="scroll-icon">
     </button>
 
     <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-target="#section-historial-alimentacion-vacuno" data-tooltip="Alimentacion">
-        <img src="./images/bolso.png" alt="Alimentacion" class="nav-icon">
+        <img src="./images/bolso.png" alt="Alimentacion" class="scroll-icon">
     </button>
 
     <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-target="#section-historial-salud-vacuno" data-tooltip="Salud">
-        <img src="./images/vacunacion.png" alt="Salud" class="nav-icon">
+        <img src="./images/vacunacion.png" alt="Salud" class="scroll-icon">
     </button>
 
     <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-target="#section-historial-reproduccion-vacuno" data-tooltip="reproduccion">
-        <img src="./images/matriz.png" alt="Razas" class="nav-icon">
+        <img src="./images/matriz.png" alt="Razas" class="scroll-icon">
     </button>
 
     <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-target="#section-historial-otros-vacuno" data-tooltip="Otros">
-        <img src="./images/compra.png" alt="Razas" class="nav-icon">
+        <img src="./images/compra.png" alt="Razas" class="scroll-icon">
     </button>
 </div>
 
@@ -595,16 +631,13 @@ REGISTROS DE PRODUCCION
 
 <!-- Registros de Peso -->
 <div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
-    <h4 class="sub-section-title text-center">REGISTROS PRODUCCION CARNE</h4>
+    <h4 class="container text-center">REGISTROS PRODUCCION CARNE</h4>
 
 <!-- Peso: Nuevo Registro Form -->
 <div class="container table-section" style="display: block;">
 
-    <h4 class="sub-section-title">Control de Peso</h4>
-    <!-- Add New Peso Form -->
-    <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addPesoForm">
-        <i class="fas fa-plus"></i> Registrar
-    </button>
+    <h4 class="container">Control de Peso</h4>
+
 
     <!-- NEW PESO FORM -->
 
@@ -638,9 +671,12 @@ REGISTROS DE PRODUCCION
     <!-- PESO DataTable -->
 
     <div class="table-responsive">
+        <!-- Add New Peso Form -->
+        <button class="btn btn-success mb-3 text-center" type="button" data-bs-toggle="collapse" data-bs-target="#addPesoForm">
+        <i class="fas fa-plus"></i> Registrar
+        </button>
         <table id="pesosTable" class="table table-striped table-bordered">
             <thead>
-
                 <tr>
                     <th>Tag ID</th>
                     <th>Nombre</th>
@@ -923,7 +959,7 @@ $result_leche = $conn->query($baseQuery_leche);
 <!-- Leche: Nuevo Registro Form -->
 <div class="container table-section" style="display: block;">
 
-    <h4 class="sub-section-title">Control de Leche</h4>
+    <h4 class="container">Control de Leche</h4>
     <!-- Add New Leche Form -->
     <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addLecheForm">
         <i class="fas fa-plus"></i> Registrar
@@ -1355,7 +1391,7 @@ $result_concentrado = $conn->query($baseQuery_concentrado);
 <!-- concentrado Table -->
 
 <div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
-    <h4 class="sub-section-title">Control de concentrado</h4>
+    <h4 class="container">Control de concentrado</h4>
 
 <!-- Add New concentrado Form -->
 <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addconcentradoForm">
@@ -1655,7 +1691,7 @@ $result_melaza = $conn->query($baseQuery_melaza);
     <h4 id="section-registros-concentrado" style="text-align: center;">REGISTROS MELAZA</h4>
 </div>
 <div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
-    <h4 class="sub-section-title">Control de Melaza</h4>
+    <h4 class="container">Control de Melaza</h4>
     <!-- Add New Melaza Form -->
     <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addMelazaForm">
         <i class="fas fa-plus"></i> Registrar
@@ -1955,7 +1991,7 @@ $result_sal = $conn->query($baseQuery_sal);
 </div>
 
 <div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
-    <h4 class="sub-section-title">Control de Sal</h4>
+    <h4 class="container">Control de Sal</h4>
 
     <!-- Add New Sal Form -->
     <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addSalForm">
@@ -2287,12 +2323,12 @@ $result_aftosa = $conn->query($baseQuery_aftosa);
 ?>
 <!-- Registros de Aftosa -->
 <div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
-    <h4 class="sub-section-title text-center">REGISTROS VACUNACION AFTOSA</h4>
+    <h4 class="container text-center">REGISTROS VACUNACION AFTOSA</h4>
 </div>
 <!-- Aftosa: Nuevo Registro Form -->
 <div class="container table-section" style="display: block;">
 
-    <h4 class="sub-section-title">Control de Vacunacion Aftosa</h4>
+    <h4 class="container">Control de Vacunacion Aftosa</h4>
     <!-- Add New Aftosa Form -->
     <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addAftosaForm">
         <i class="fas fa-plus"></i> Registrar
@@ -2625,12 +2661,12 @@ $result_ibr = $conn->query($baseQuery_ibr);
 ?>
 <!-- Registros de IBR -->
 <div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
-    <h4 class="sub-section-title text-center">REGISTROS VACUNACION IBR</h4>
+    <h4 class="container text-center">REGISTROS VACUNACION IBR</h4>
 </div>
 <!-- Ibr: Nuevo Registro Form -->
 <div class="container table-section" style="display: block;">
 
-    <h4 class="sub-section-title">Control de Vacunacion IBR</h4>
+    <h4 class="container">Control de Vacunacion IBR</h4>
     <!-- Add New Ibr Form -->
     <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addAftosaForm">
         <i class="fas fa-plus"></i> Registrar
@@ -2962,12 +2998,12 @@ $result_cbr = $conn->query($baseQuery_cbr);
 ?>
 <!-- Registros de CBR -->
 <div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
-    <h4 class="sub-section-title text-center">REGISTROS VACUNACION CBR</h4>
+    <h4 class="container text-center">REGISTROS VACUNACION CBR</h4>
 </div>
 <!-- CBR: Nuevo Registro Form -->
 <div class="container table-section" style="display: block;">
 
-    <h4 class="sub-section-title">Control de Vacunacion CBR</h4>
+    <h4 class="container">Control de Vacunacion CBR</h4>
     <!-- Add New CBR Form -->
     <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addCbrForm">
         <i class="fas fa-plus"></i> Registrar
@@ -3300,12 +3336,12 @@ $result_brucelosis = $conn->query($baseQuery_brucelosis);
 ?>
 <!-- Registros de BRUCELOSIS -->
 <div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
-    <h4 class="sub-section-title text-center">REGISTROS VACUNACION BRUCELOSIS</h4>
+    <h4 class="container text-center">REGISTROS VACUNACION BRUCELOSIS</h4>
 </div>
 <!-- BRUCELOSIS: Nuevo Registro Form -->
 <div class="container table-section" style="display: block;">
 
-    <h4 class="sub-section-title">Control de Vacunacion BRUCELOSIS</h4>
+    <h4 class="container">Control de Vacunacion BRUCELOSIS</h4>
     <!-- Add New BRUCELOSIS Form -->
     <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addBrucelosisForm">
         <i class="fas fa-plus"></i> Registrar
@@ -3637,12 +3673,12 @@ $result_carbunco = $conn->query($baseQuery_carbunco);
 ?>
 <!-- Registros de CARBUNCO -->
 <div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
-    <h4 class="sub-section-title text-center">REGISTROS VACUNACION CARBUNCO</h4>
+    <h4 class="container text-center">REGISTROS VACUNACION CARBUNCO</h4>
 </div>
 <!-- CARBUNCO: Nuevo Registro Form -->
 <div class="container table-section" style="display: block;">
 
-    <h4 class="sub-section-title">Control de Vacunacion Carbunco</h4>
+    <h4 class="container">Control de Vacunacion Carbunco</h4>
     <!-- Add New Carbunco Form -->
     <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addCarbuncoForm">
         <i class="fas fa-plus"></i> Registrar
@@ -3974,12 +4010,12 @@ $result_garrapatas = $conn->query($baseQuery_garrapatas);
 ?>
 <!-- Registros de Garrapatas -->
 <div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
-    <h4 class="sub-section-title text-center">REGISTROS VACUNACION GARRAPATAS</h4>
+    <h4 class="container text-center">REGISTROS VACUNACION GARRAPATAS</h4>
 </div>
 <!-- Garrapatas: Nuevo Registro Form -->
 <div class="container table-section" style="display: block;">
 
-    <h4 class="sub-section-title">Control de Vacunacion Garrapatas</h4>
+    <h4 class="container">Control de Vacunacion Garrapatas</h4>
     <!-- Add New Garrapatas Form -->
     <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addGarrapatasForm">
         <i class="fas fa-plus"></i> Registrar
@@ -4312,12 +4348,12 @@ $result_mastitis = $conn->query($baseQuery_mastitis);
 ?>
 <!-- Registros de Mastitis -->
 <div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
-    <h4 class="sub-section-title text-center">REGISTROS VACUNACION GARRAPATAS</h4>
+    <h4 class="container text-center">REGISTROS VACUNACION GARRAPATAS</h4>
 </div>
 <!-- Mastitis: Nuevo Registro Form -->
 <div class="container table-section" style="display: block;">
 
-    <h4 class="sub-section-title">Control de Vacunacion Mastitis</h4>
+    <h4 class="container">Control de Vacunacion Mastitis</h4>
     <!-- Add New Mastitis Form -->
     <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addMastitisForm">
         <i class="fas fa-plus"></i> Registrar
@@ -4648,12 +4684,12 @@ $result_lombrices = $conn->query($baseQuery_lombrices);
 ?>
 <!-- Registros de Lombrices -->
 <div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
-    <h4 class="sub-section-title text-center">REGISTROS VACUNACION LOMBRICES</h4>
+    <h4 class="container text-center">REGISTROS VACUNACION LOMBRICES</h4>
 </div>
 <!-- Lombrices: Nuevo Registro Form -->
 <div class="container table-section" style="display: block;">
 
-    <h4 class="sub-section-title">Control de Vacunacion Lombrices</h4>
+    <h4 class="container">Control de Vacunacion Lombrices</h4>
     <!-- Add New Lombrices Form -->
     <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addLombricesForm">
         <i class="fas fa-plus"></i> Registrar
@@ -5541,7 +5577,7 @@ $result_inseminacion = $conn->query($baseQuery_inseminacion);
 </div>
 
 <div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
-    <h4 class="sub-section-title">Inseminaciones</h4>
+    <h4 class="container">Inseminaciones</h4>
 
     <!-- Add New Inseminacion Form -->
     <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addInseminacionForm">
@@ -5833,7 +5869,7 @@ $result_gestacion = $conn->query($baseQuery_gestacion);
 </div>
 
 <div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
-    <h4 class="sub-section-title">Gestaciones</h4>
+    <h4 class="container">Gestaciones</h4>
 
     <!-- Add New Gestacion Form -->
     <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addGestacionForm">
@@ -6102,7 +6138,7 @@ $result_parto = $conn->query($baseQuery_parto);
 </div>
 
 <div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
-    <h4 class="sub-section-title">Partos</h4>
+    <h4 class="container">Partos</h4>
 
     <!-- Add New Parto Form -->
     <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addPartoForm">
@@ -6378,7 +6414,7 @@ $result_aborto = $conn->query($baseQuery_aborto);
 </div>
 
 <div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
-    <h4 class="sub-section-title">Abortos</h4>
+    <h4 class="container">Abortos</h4>
 
     <!-- Add New Aborto Form -->
     <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addAbortoForm">
@@ -6661,7 +6697,7 @@ $result_venta = $conn->query($baseQuery_venta);
 </div>
 
 <div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
-    <h4 class="sub-section-title">Ventas</h4>
+    <h4 class="container">Ventas</h4>
 
     <!-- Add New Venta Form -->
     <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addVentaForm">
@@ -6947,7 +6983,7 @@ $result_destete = $conn->query($baseQuery_destete);
 </div>
 
 <div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
-    <h4 class="sub-section-title">Destetes</h4>
+    <h4 class="container">Destetes</h4>
 
     <!-- Add New Destete Form -->
     <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addDesteteForm">
@@ -7224,7 +7260,7 @@ $result_descarte = $conn->query($baseQuery_descarte);
 </div>
 
 <div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
-    <h4 class="sub-section-title">Descartes</h4>
+    <h4 class="container">Descartes</h4>
 
     <!-- Add New Descarte Form -->
     <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addDescarteForm">
@@ -7585,7 +7621,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <!-- Back to top button -->
 <button id="backToTop" class="back-to-top" onclick="scrollToTop()" title="Volver arriba">
-    <div class="arrow-up"></div>
+    <div class="arrow-up"><i class="fa-solid fa-arrow-up"></i></div>
 </button>
 
 

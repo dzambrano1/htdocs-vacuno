@@ -6,310 +6,89 @@ require_once '../conexion.php';  // Go up one directory since inventario_vacuno.
 
 <!DOCTYPE html>
 <html lang="en">
-<link>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Configuracion</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.css">
-    <link href="https://cdn.datatables.net/responsive/3.0.3/css/responsive.dataTables.css" rel="stylesheet">
-    <link href="https://cdn.datatables.net/fixedheader/4.0.1/css/fixedHeader.dataTables.css" rel="stylesheet">
-    <link href="https://cdn.datatables.net/responsive/3.0.3/css/responsive.dataTables.css"></link>
-    <link rel="stylesheet" href="./vacuno.css" />
-<style>
-    :root { 
-    --primary-color: #e0e8dc;
-    --secondary-color: #4a5d23;
-    --background-color: #f8f9fa;
-    --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-.nav-icons-container {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px 0;
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inventario Vacuno</title>
+<!-- Link to the Favicon -->
+<link rel="icon" href="images/Ganagram_icono.ico" type="image/x-icon">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<!--Bootstrap 5 Css -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+<link rel="stylesheet" href="./vacuno.css">
 
-    gap: 50px;
-    flex-wrap: wrap;
-    background-color: #f8f9fa;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
-    margin: 10px 0;
-}
-.scroll-Icons-container{
-  width: 90%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px 0;
-  gap: 10px;
-  flex-wrap: wrap;
-}
 
-@media (max-width: 768px) {
-    .icon-nav-container {
-        gap: 15px;
-    }
-}
+<!-- Include Chart.js and Chart.js DataLabels Plugin -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
 
-.icon-nav-container {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin: 0px;
-    padding-top: 0px;
-    margin-top: 0px;
-    padding-bottom: 0px;
-    margin-bottom: 0px;
-    padding-left: 0px;
-    margin-left: 0px;
-    padding-right: 0px;
-    margin-right: 0px;
-}
+<!-- Add these in the <head> section, after your existing CSS/JS links -->
 
-.icon-button {
-    background: white;
-    border: 1px solid #ccc;
-    border-radius: 50%;
-    width: 45px;
-    height: 45px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
-    padding: 0;
-}
+<!-- Place these in the <head> section in this exact order -->
 
-.nav-icon {
-    width: 24px;
-    height: 24px;
-    transition: all 0.3s ease;
-}
+<!-- jQuery Core (main library) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-.icon-button:hover .nav-icon {
-    transform: scale(1.2);
-}
+<!-- DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.min.css">
 
-.icon-button:hover {
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
+<!-- DataTables JavaScript -->
+<script type="text/javascript" src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.min.js"></script>
 
-/* Tooltip Styles */
-.icon-button::before {
-    content: attr(data-tooltip);
-    position: absolute;
-    bottom: -30px;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 4px 8px;
-    background-color: rgba(0, 0, 0, 0.8);
-    color: white;
-    font-size: 12px;
-    border-radius: 4px;
-    white-space: nowrap;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
-}
+<!-- DataTables Buttons CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
 
-.icon-button:hover::before {
-    opacity: 1;
-    visibility: visible;
-}
+<!-- DataTables Buttons JS -->
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
 
-@media (max-width: 768px) {
-    .icon-nav-container {
-        flex-wrap: wrap;
-        gap: 15px;
-    }
-    
-    .icon-button {
-        width: 40px;
-        height: 40px;
-    }
-    
-    .nav-icon {
-        width: 20px;
-        height: 20px;
-    }
-}
-body {
-    font-family: Arial, sans-serif;
-    background-color:rgba(220, 241, 202, 0);
-    margin: 0;
-    padding: 0;
-}
-.section-title {
-    padding: 10px;
-    border-radius: 5px;
-}
-.modal-header {
-    background-color:rgb(157, 179, 108);
-    color: white;
-}
-.btn-success {
-    background-color: #28a745;
-    border-color: #28a745;
-}
-.btn-success:hover {
-    background-color: #218838;
-    border-color: #1e7e34;
-}
-.btn-primary {
-    background-color:rgb(90, 151, 111);
-    border-color:rgb(220, 233, 195);
-}
-.btn-primary:hover {
-    background-color:rgb(77, 105, 59);
-    border-color:rgb(41, 41, 41);
-}
-#alimentacionTable {
-    width: 100%;
-    margin-top: 20px;
-    border-collapse: collapse;
-}
-#alimentacionTable thead {
-    background-color:rgb(126, 146, 81);
-    color: white;
-    border-radius: 10px;
-}
-#alimentacionTable th, #alimentacionTable td {
-    padding: 10px;
-    text-align: center;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-}
-#alimentacionTable tbody tr:nth-child(even) {
-    background-color:rgb(234, 250, 219);
-    border-radius: 10px;
-}
-#alimentacionTable tbody tr:hover {
-    background-color: rgb(219, 243, 205);
-}
-.back-btn {
-    position: fixed;
-    top: 40px;
-    left: 50px;
-    font-size: 80px;
-    color: #83956e;
-    text-decoration: none;
-    transition: color 0.3s;
-    z-index: 10000;
-}
+<!-- Bootstrap 5 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-.back-btn:hover {
-    color: #689260;
-}
-@media screen and (max-width: 768px) {
-    .back-btn {
-        font-size: 40px;
-        left: 20px;
-        top: 80px;
-    }
-}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.min.css">
+<script type="text/javascript" src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.min.js"></script>
 
-@media screen and (max-width: 480px) {
-    .back-btn {
-        font-size: 48px;
-        left: 10px;
-        top: 10px;
-    }
-}
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
 
-/* Responsive Table Styles */
-@media (max-width: 768px) {
-    .table-responsive {
-        overflow-x: auto; /* Enable horizontal scrolling */
-    }
+<!-- DataTables -->
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
 
-    .table {
-        width: 100%; /* Full width for the table */
-        display: block; /* Make the table block-level */
-        overflow-x: auto; /* Enable horizontal scrolling */
-        white-space: nowrap; /* Prevent text wrapping */
-    }
+<!-- DataTables CSS -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
 
-    th, td {
-        text-align: left; /* Align text to the left */
-        padding: 8px; /* Add padding for better spacing */
-    }
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    /* Style for toggle arrows */
-    .toggle-arrow {
-        color: black; /* Change arrow color to black */
-        font-size: 0.75em; /* Make the arrow 50% smaller */
-        cursor: pointer; /* Change cursor to pointer */
-        padding: 5px; /* Add padding for better click area */
-        background-color: rgba(255, 255, 255, 0.8); /* Light background for visibility */
-        border-radius: 5px; /* Rounded corners */
-        margin-left: 5px; /* Space between button and arrow */
-        display: inline-block; /* Ensure it behaves like a block for padding */
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Add shadow for depth */
-    }
+<!-- Add these in the <head> section, after your existing DataTables CSS/JS -->
+<!-- DataTables Buttons CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
 
-    /* Initially hide extra columns */
-    .extra-column {
-        display: none; /* Hide extra columns by default */
-    }
+<!-- DataTables Buttons JS -->
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
 
-    /* Style for delete icon */
-    .delete-icon {
-        color: red; /* Red color for the delete icon */
-        cursor: pointer; /* Change cursor to pointer */
-        font-size: 1.5em; /* Size of the icon */
-    }
-}
-
-/* Ensure toggle arrows are styled consistently on larger screens */
-@media (min-width: 769px) {
-    .toggle-arrow {
-        font-size: 0.75em; /* Maintain size on larger screens */
-        color: black; /* Maintain color on larger screens */
-    }
-
-    /* Ensure delete icon remains red on larger screens */
-    .delete-icon {
-        color: red; /* Red color for the delete icon */
-    }
-}
-
-/* Center all table content including Acciones column */
-.table td, .table th {
-    text-align: center !important;
-    vertical-align: middle !important;
-}
-
-/* Specific styling for the Acciones column and delete icon */
-.delete-icon {
-    color: red;
-    cursor: pointer;
-    font-size: 1.2em;
-    display: inline-block; /* Ensures the icon stays centered */
-}
-
-/* Center the content of the last column (Acciones) */
-.table td:last-child {
-    text-align: center !important;
-    width: 100px; /* Fixed width for consistency */
-}
-
-/* Ensure the trash icon container is centered */
-.table td:last-child i {
-    display: block;
-    margin: 0 auto;
-    width: fit-content;
-}
-</style>
 </head>
 <body>
+<!-- Icon Navigation Buttons -->
+<div class="container nav-icons-container" id="nav-buttons">
 
-<div class="container" id="nav-buttons">
-  <!-- Icon Navigation Buttons -->
-  <div class="container nav-icons-container">
     <button onclick="window.location.href='../inicio.php'" class="icon-button" data-tooltip="Inicio">
         <img src="./images/Ganagram_New_Logo-png.png" alt="Inicio" class="nav-icon">
     </button>
@@ -326,7 +105,6 @@ body {
         <img src="./images/fondo-indexado.png" alt="Inicio" class="nav-icon">
     </button>
 
-  </div>
 </div>
 
 <!-- Scroll Icons Container -->
@@ -357,7 +135,6 @@ ALIMENTACION
 </h3>
 <!-- Add back button before the header container -->
 <a href="./inventario_vacuno.php" class="back-btn">
-
     <i class="fas fa-arrow-left"></i>
 </a> 
 <!-- Button to Open the Modal -->
@@ -847,60 +624,8 @@ document.querySelectorAll('.scroll-Icons-container button').forEach(button => {
 
 <!-- Back to top button -->
 <button id="backToTop" class="back-to-top" onclick="scrollToTop()" title="Volver arriba">
-    <div class="arrow-up"></div>
+    <div class="arrow-up"><i class="fa-solid fa-arrow-up"></i></div>
 </button>
-<style>
-.back-to-top {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 45px;
-    height: 45px;
-    background-color: #ffffff;
-    border: 2px solid #4caf50;
-    border-radius: 50%;
-    display: none;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    z-index: 9999;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-}
-
-.arrow-up {
-    width: 0;
-    height: 0;
-    border-left: 8px solid transparent;
-    border-right: 8px solid transparent;
-    border-bottom: 12px solid #4caf50;
-}
-
-.back-to-top:hover {
-    background-color: #4caf50;
-    transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-}
-
-.back-to-top:hover .arrow-up {
-    border-bottom-color: #ffffff;
-}
-
-@media (max-width: 768px) {
-    .back-to-top {
-        bottom: 20px;
-        right: 20px;
-        width: 40px;
-        height: 40px;
-    }
-    
-    .arrow-up {
-        border-left-width: 6px;
-        border-right-width: 6px;
-        border-bottom-width: 10px;
-    }
-}
-</style>
 
 <script>
 window.onscroll = function() {

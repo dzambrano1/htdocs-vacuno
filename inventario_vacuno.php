@@ -498,7 +498,7 @@ $partoDatasetsJson = json_encode($datasets);
 <!-- Icon Navigation Buttons -->
 <div class="container nav-icons-container" id="nav-buttons">
     <button onclick="window.location.href='../inicio.php'" class="icon-button" data-tooltip="Inicio">
-        <img src="./images/Ganagram_New_Logo-png-removebg-preview (1).png" alt="Inicio" class="nav-icon">
+        <img src="./images/Ganagram_New_Logo-png.png" alt="Inicio" class="nav-icon">
     </button>
     
     <button onclick="window.location.href='./vacuno_historial.php'" class="icon-button" data-tooltip="Registrar Ganado">
