@@ -108,29 +108,29 @@ require_once '../conexion.php';  // Go up one directory since inventario_vacuno.
 </div>
 
 <!-- Scroll Icons Container -->
-<div class="container scroll-Icons-container">
-    <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-target="#Section-configuracion-alimentacion-vacuno" data-tooltip="Alimentacion">
+<div class="container scroll-icons-container">
+    <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#Section-configuracion-alimentacion-vacuno" data-tooltip="Alimentacion">
         <img src="./images/bolso.png" alt="Alimentacion" class="nav-icon">
     </button>
 
-    <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-target="#Section-configuracion-salud-vacuno" data-tooltip="Salud">
+    <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#Section-configuracion-salud-vacuno" data-tooltip="Salud">
         <img src="./images/vacunacion.png" alt="Salud" class="nav-icon">
     </button>
        
-    <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-target="#Section-configuracion-razas-vacuno" data-tooltip="Razas">
+    <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#Section-configuracion-razas-vacuno" data-tooltip="Razas">
         <img src="./images/raza.png" alt="Razas" class="nav-icon">
     </button>
 
-    <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-target="#Section-configuracion-grupos-vacuno" data-tooltip="Grupos">
+    <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#Section-configuracion-grupos-vacuno" data-tooltip="Grupos">
         <img src="./images/grupo.png" alt="Grupo" class="nav-icon">
     </button>
 
-    <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-target="#Section-configuracion-estatus-vacuno" data-tooltip="Estatus">
+    <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#Section-configuracion-estatus-vacuno" data-tooltip="Estatus">
         <img src="./images/estatus.png" alt="Estatus" class="nav-icon">
     </button>
 </div>
 
-<h3  class="container mt-4" class="collapse" id="Section-configuracion-alimentacion-vacuno">
+<h3 class="container mt-4 text-white" class="collapse" id="Section-configuracion-alimentacion-vacuno">
 ALIMENTACION
 </h3>
 <!-- Add back button before the header container -->
@@ -244,7 +244,7 @@ ALIMENTACION
 </div>
 
 <!-- Salud -->
-<h3  class="container mt-4" class="collapse" id="Section-configuracion-salud-vacuno">
+<h3 class="container mt-4 text-white" class="collapse" id="Section-configuracion-salud-vacuno">
 SALUD
 </h3>
 
@@ -331,11 +331,9 @@ SALUD
 <!-- Razas -->
 
 <!-- Razas -->
-<h3  class="container mt-4" class="collapse" id="Section-configuracion-razas-vacuno">
+<h3  class="container mt-4 text-white" class="collapse" id="Section-configuracion-razas-vacuno">
 RAZAS
 </h3>
-
-
 
 <!-- Button to Open the Modal -->
 <div class="container mt-3 text-center">
@@ -406,7 +404,7 @@ RAZAS
 </div>
 
 <!-- Grupos -->
-<h3  class="container mt-4" class="collapse" id="Section-configuracion-grupos-vacuno">
+<h3 class="container mt-4 text-white" class="collapse" id="Section-configuracion-grupos-vacuno">
 GRUPOS
 </h3>
 
@@ -479,11 +477,9 @@ GRUPOS
 </div>
 
 <!-- Estatus -->
-<h3  class="container mt-4" class="collapse" id="Section-configuracion-estatus-vacuno">
+<h3 class="container mt-4 text-white" class="collapse" id="Section-configuracion-estatus-vacuno">
 ESTATUS
 </h3>
-
-
 
 <!-- Button to Open the Modal -->
 <div class="container mt-3 text-center">
@@ -599,12 +595,11 @@ function deleteEntry(id) {
 <!-- Scroll to Section-->
 
 <script>
-// Add event listeners to all scroll buttons
-document.querySelectorAll('.scroll-Icons-container button').forEach(button => {
+document.querySelectorAll('.scroll-icons-container button').forEach(button => {
     button.addEventListener('click', function() {
-        // Get the target section ID from data-target attribute
-        const targetId = this.getAttribute('data-target').substring(1); // Remove the # from the ID
-        const targetElement = document.getElementById(targetId);
+        // Get the target section ID from data-bs-target attribute
+        const targetId = this.getAttribute('data-bs-target');
+        const targetElement = document.getElementById(targetId.substring(1)); // Remove the # from the ID
         
         if (targetElement) {
             // Smooth scroll to the target section

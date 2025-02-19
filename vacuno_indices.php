@@ -168,10 +168,10 @@ if ($monthlyRevenueResult && $monthlyRevenueResult->num_rows > 0) {
 // Fetch monthly average weight data
 $monthlyAverageWeightQuery = "
     SELECT 
-        DATE_FORMAT(ah_peso_fecha, '%Y-%m') AS weight_month, 
-        AVG(ah_peso_animal) AS average_weight
+        DATE_FORMAT(vh_peso_fecha, '%Y-%m') AS weight_month, 
+        AVG(vh_peso_animal) AS average_weight
     FROM 
-        ah_peso
+        vh_peso
     GROUP BY 
         weight_month
     ORDER BY 
@@ -196,10 +196,10 @@ if ($monthlyAverageWeightResult && $monthlyAverageWeightResult->num_rows > 0) {
 // Fetch monthly average revenue data
 $monthlyAverageRevenueQuery = "
     SELECT 
-        DATE_FORMAT(ah_peso_fecha, '%Y-%m') AS revenue_month, 
-        AVG(ah_peso_animal * ah_peso_precio) AS average_revenue
+        DATE_FORMAT(vh_peso_fecha, '%Y-%m') AS revenue_month, 
+        AVG(vh_peso_animal * vh_peso_precio) AS average_revenue
     FROM 
-        ah_peso
+        vh_peso
     GROUP BY 
         revenue_month
     ORDER BY 
@@ -914,7 +914,7 @@ $averageDaysDifference = $count > 0 ? $totalDaysDifference / $count : 0;
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Inventario Vacuno</title>
+<title>Indices Vacuno</title>
 <!-- Link to the Favicon -->
 <link rel="icon" href="images/Ganagram_icono.ico" type="image/x-icon">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -989,6 +989,9 @@ $averageDaysDifference = $count > 0 ? $totalDaysDifference / $count : 0;
 <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
 
+<!-- ECharts -->
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+
 </head>
 <body>
 <div class="container" id="nav-buttons">
@@ -1013,20 +1016,20 @@ $averageDaysDifference = $count > 0 ? $totalDaysDifference / $count : 0;
 </div>
 
 <!-- Scroll Icons Container -->
-<div class="container scroll-Icons-container">
-    <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-target="#section-indices-produccion-leche-vacuno" data-tooltip="Produccion">
+<div class="container scroll-icons-container">
+    <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#section-indices-produccion-leche-vacuno" data-tooltip="Produccion">
         <img src="./images/bascula-de-comestibles.png" alt="Alimentacion" class="nav-icon">
     </button>
 
-    <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-target="#section-indices-alimentacion-vacuno" data-tooltip="Produccion">
+    <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#section-indices-alimentacion-vacuno" data-tooltip="Produccion">
         <img src="./images/bolso.png" alt="Alimentacion" class="nav-icon">
     </button>
 
-    <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-target="#section-indices-salud-vacuno" data-tooltip="Salud">
+    <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#section-indices-salud-vacuno" data-tooltip="Salud">
         <img src="./images/vacunacion.png" alt="Salud" class="nav-icon">
     </button>
        
-    <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-target="#section-indices-reproduccion-vacuno" data-tooltip="Salud">
+    <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#section-indices-reproduccion-vacuno" data-tooltip="Salud">
         <img src="./images/matriz.png" alt="Razas" class="nav-icon">
     </button>
 </div>
@@ -1036,11 +1039,9 @@ $averageDaysDifference = $count > 0 ? $totalDaysDifference / $count : 0;
 <a href="./inventario_vacuno.php" class="back-btn">
     <i class="fas fa-arrow-left"></i>
 </a>
-<div class="container d-flex justify-content-center flex-wrap">      
-      <figure id="chart-leche"></figure>
-</div>
+
 <!-- Indices Produccion Leche-->
-<h3  class="container mt-4">
+<h3  class="container mt-4 text-white" id="section-indices-produccion-leche-vacuno">
 PRODUCCION LECHE
 </h3>
 
@@ -1065,7 +1066,7 @@ PRODUCCION LECHE
 </div>
 
 <!-- Indices Produccion Carne-->
-<h3  class="container mt-4" id="section-indices-produccion-carne-vacuno">
+<h3  class="container mt-4 text-white" id="section-indices-produccion-carne-vacuno">
 PRODUCCION CARNE
 </h3>
 
@@ -1094,7 +1095,7 @@ PRODUCCION CARNE
 </div>
 
 <!-- Indices de Alimentacion -->
-<h3  class="container mt-4" id="section-indices-alimentacion-vacuno">
+<h3  class="container mt-4 text-white" id="section-indices-alimentacion-vacuno">
 ALIMENTACION
 </h3>
 
@@ -1103,10 +1104,9 @@ ALIMENTACION
 <h2 class="container d-flex justify-content-center flex-wrap">Concentrado</h2>
 
 <div class="container d-flex justify-content-center flex-wrap">           
-      <figure id="chart-becerros-concentrado"></figure>
-
-      <figure id="chart-novillos-concentrado"></figure>
-   <figure id="chart-adultos-concentrado"></figure>
+  <figure id="chart-becerros-concentrado"></figure>
+  <figure id="chart-novillos-concentrado"></figure>
+  <figure id="chart-adultos-concentrado"></figure>
 </div>
 <!-- Sal-->
 
@@ -1128,7 +1128,7 @@ ALIMENTACION
 </div>
 
 <!-- Indices de Salud -->
-<h3  class="container mt-4" id="section-indices-salud-vacuno">
+<h3  class="container mt-4 text-white" id="section-indices-salud-vacuno">
 SALUD
 </h3>
 
@@ -1161,7 +1161,7 @@ SALUD
 </div>
 
 <!-- Indices de Reproduccion -->
-<h3  class="container mt-4" id="section-indices-reproduccion-vacuno">
+<h3  class="container mt-4 text-white" id="section-indices-reproduccion-vacuno">
 REPRODUCCION
 </h3>
 
@@ -1225,43 +1225,27 @@ REPRODUCCION
 <!-- Scroll to Section-->
 
 <script>
-function scrollToSection(sectionTitle) {
-    // Find all h3 elements
-    const headers = document.querySelectorAll('h3');
-    let targetHeader = null;
-    
-    // Loop through headers to find matching text
-    headers.forEach(header => {
-        console.log('Checking header:', header.textContent.trim());
-        if (header.textContent.trim().includes('Historial')) {
-            if (header.textContent.trim().includes(sectionTitle)) {
-                targetHeader = header;
-                console.log('Found matching header:', header.textContent.trim());
-            }
+// Add event listeners to all scroll buttons
+document.querySelectorAll('.scroll-icons-container button').forEach(button => {
+    button.addEventListener('click', function() {
+        // Get the target section ID from data-bs-target attribute
+        const targetId = this.getAttribute('data-bs-target');
+        const targetElement = document.getElementById(targetId.substring(1)); // Remove the # from the ID
+
+        if (targetElement) {
+            // Smooth scroll to the target section
+            targetElement.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+
+            // If using Bootstrap collapse, toggle it
+            const bsCollapse = new bootstrap.Collapse(targetElement, {
+                toggle: true
+            });
         }
     });
-
-    if (targetHeader) {
-        // Get the element's position relative to the viewport
-        const elementRect = targetHeader.getBoundingClientRect();
-        const absoluteElementTop = elementRect.top + window.pageYOffset;
-        
-        // Scroll to element
-        window.scrollTo({
-            top: absoluteElementTop - 100, // 100px offset from top
-            behavior: 'smooth'
-        });
-
-        // Visual feedback
-        targetHeader.style.backgroundColor = '#fff3cd';
-        setTimeout(() => {
-            targetHeader.style.backgroundColor = 'transparent';
-            targetHeader.style.transition = 'background-color 1s ease';
-        }, 1000);
-    } else {
-        console.log('Target section not found:', sectionTitle);
-    }
-}
+});
 </script>
 
 <!-- Back to top button -->
@@ -4220,12 +4204,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <script>
 // Add event listeners to all scroll buttons
-document.querySelectorAll('.scroll-Icons-container button').forEach(button => {
+document.querySelectorAll('.scroll-icons-container button').forEach(button => {
     button.addEventListener('click', function() {
-        // Get the target section ID from data-target attribute
-        const targetId = this.getAttribute('data-target').substring(1); // Remove the # from the ID
-        const targetElement = document.getElementById(targetId);
-        
+        // Get the target section ID from data-bs-target attribute
+        const targetId = this.getAttribute('data-bs-target');
+        const targetElement = document.getElementById(targetId.substring(1)); // Remove the # from the ID
+
         if (targetElement) {
             // Smooth scroll to the target section
             targetElement.scrollIntoView({

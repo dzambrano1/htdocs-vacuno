@@ -136,25 +136,25 @@ if ($conn->connect_error) {
 </div>
 
 <!-- Scroll Icons Container -->
-<div class="container scroll-Icons-container">
+<div class="container scroll-icons-container">
     <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-target="#section-historial-produccion-vacuno" data-tooltip="Produccion">
-        <img src="./images/bascula-de-comestibles.png" alt="Alimentacion" class="scroll-icon">
+        <img src="./images/bascula-de-comestibles.png" alt="Alimentacion" class="nav-icon">
     </button>
 
     <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-target="#section-historial-alimentacion-vacuno" data-tooltip="Alimentacion">
-        <img src="./images/bolso.png" alt="Alimentacion" class="scroll-icon">
+        <img src="./images/bolso.png" alt="Alimentacion" class="nav-icon">
     </button>
 
     <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-target="#section-historial-salud-vacuno" data-tooltip="Salud">
-        <img src="./images/vacunacion.png" alt="Salud" class="scroll-icon">
+        <img src="./images/vacunacion.png" alt="Salud" class="nav-icon">
     </button>
 
     <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-target="#section-historial-reproduccion-vacuno" data-tooltip="reproduccion">
-        <img src="./images/matriz.png" alt="Razas" class="scroll-icon">
+        <img src="./images/matriz.png" alt="Razas" class="nav-icon">
     </button>
 
     <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-target="#section-historial-otros-vacuno" data-tooltip="Otros">
-        <img src="./images/compra.png" alt="Razas" class="scroll-icon">
+        <img src="./images/compra.png" alt="Razas" class="nav-icon">
     </button>
 </div>
 
@@ -625,19 +625,16 @@ $result_peso = $conn->query($baseQuery_peso);
     </form>
 </div>
 
-<h3  class="container mt-4" class="collapse" id="section-historial-produccion-vacuno">
+<h3  class="container mt-4 text-white" class="collapse" id="section-historial-produccion-vacuno">
 REGISTROS DE PRODUCCION
 </h3>
 
 <!-- Registros de Peso -->
 <div class="container mb-4" style="display:block; justify-content: center; align-items: center;">
-    <h4 class="container text-center">REGISTROS PRODUCCION CARNE</h4>
+    <h4 class="container text-center">PESAJE ANIMAL</h4>
 
 <!-- Peso: Nuevo Registro Form -->
 <div class="container table-section" style="display: block;">
-
-    <h5 class="container">Control Pesaje Animal</h5>
-
 
     <!-- NEW PESO FORM -->
 
@@ -766,7 +763,7 @@ $(document).ready(function() {
 
         // Configure DOM layout and buttons
         dom: '<"row"<"col-sm-12 col-md-6"B><"col-sm-12 col-md-6"f>>' +
-             '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"p>>' +
+             '<"row"<"col-sm-12 col-md-6"l>>' +
              '<"row"<"col-sm-12"tr>>' +
              '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
 
@@ -957,9 +954,8 @@ $result_leche = $conn->query($baseQuery_leche);
 <!-- Registros de leche -->
 
 <!-- Leche: Nuevo Registro Form -->
-<div class="container table-section" style="display: block;">
-
-    <h5 class="container">Control Pesaje Leche</h5>
+<div class="container">
+    <h5>Control Pesaje Leche</h5>
     <!-- Add New Leche Form -->
     <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addLecheForm">
         <i class="fas fa-plus"></i> Registrar
@@ -993,62 +989,62 @@ $result_leche = $conn->query($baseQuery_leche);
             </form>
         </div>
     </div>
+</div>
 
-    <!-- Leche DataTable -->
+<!-- Leche DataTable -->
 
-    <div class="table-responsive">
-        <table id="lecheTable" class="table table-striped table-bordered">
-            <thead>
+<div class="container table-responsive">
+    <table id="lecheTable" class="table table-striped table-bordered">
+        <thead>
 
-                <tr>
-                    <th style="text-align: center;">Tag ID</th>
-                    <th style="text-align: center;">Nombre</th>
-                    <th style="text-align: center;">Leche (kg)</th>
-                    <th style="text-align: center;">Precio</th>
-                    <th style="text-align: center;">Total ($)</th>
-                    <th style="text-align: center;">Fecha</th>
-                    <th style="text-align: center;">Acciones</th>
+            <tr>
+                <th style="text-align: center;">Tag ID</th>
+                <th style="text-align: center;">Nombre</th>
+                <th style="text-align: center;">Leche (kg)</th>
+                <th style="text-align: center;">Precio</th>
+                <th style="text-align: center;">Total ($)</th>
+                <th style="text-align: center;">Fecha</th>
+                <th style="text-align: center;">Acciones</th>
 
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                if ($result_leche->num_rows > 0) {
-                    while($row = $result_leche->fetch_assoc()) {
-                        $valor_total = floatval($row['vh_leche_peso']) * floatval($row['vh_leche_precio']);
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            if ($result_leche->num_rows > 0) {
+                while($row = $result_leche->fetch_assoc()) {
+                    $valor_total = floatval($row['vh_leche_peso']) * floatval($row['vh_leche_precio']);
 
-                        echo "<tr>";
-                        echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_leche_tagid']) . "</td>";
-                        echo "<td style='text-align: center;'>" . htmlspecialchars($row['nombre'] ?? 'N/A') . "</td>";
-                        echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_leche_peso']) . "</td>";
-                        echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_leche_precio']) . "</td>";
-                        echo "<td style='text-align: center;'>" . number_format($valor_total, 2) . "</td>";
-                        echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_leche_fecha']) . "</td>";
-                        echo "<td style='text-align: center;'>
-                                <div class='btn-group' role='group'>
-                                    <button class='btn btn-success text-center btn-sm edit-Leche'
-                                            data-bs-toggle='modal'
-                                            data-bs-target='#editLecheModal'
-                                            data-id='" . htmlspecialchars($row['id']) . "'
-                                            data-tagid='" . htmlspecialchars($row['vh_leche_tagid']) . "'
-                                            data-Leche='" . htmlspecialchars($row['vh_leche_peso']) . "'
-                                            data-precio='" . htmlspecialchars($row['vh_leche_precio']) . "'
-                                            data-fecha='" . htmlspecialchars($row['vh_leche_fecha']) . "'>
-                                        <i class='fas fa-edit'></i>
-                                    </button>
-                                    <button class='btn btn-danger btn-sm delete-Leche'
-                                            data-id='" . htmlspecialchars($row['id']) . "'>
-                                        <i class='fas fa-trash'></i>
-                                    </button>
-                                </div>
-                            </td>";
-                        echo "</tr>";
-                    }
+                    echo "<tr>";
+                    echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_leche_tagid']) . "</td>";
+                    echo "<td style='text-align: center;'>" . htmlspecialchars($row['nombre'] ?? 'N/A') . "</td>";
+                    echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_leche_peso']) . "</td>";
+                    echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_leche_precio']) . "</td>";
+                    echo "<td style='text-align: center;'>" . number_format($valor_total, 2) . "</td>";
+                    echo "<td style='text-align: center;'>" . htmlspecialchars($row['vh_leche_fecha']) . "</td>";
+                    echo "<td style='text-align: center;'>
+                            <div class='btn-group' role='group'>
+                                <button class='btn btn-success text-center btn-sm edit-Leche'
+                                        data-bs-toggle='modal'
+                                        data-bs-target='#editLecheModal'
+                                        data-id='" . htmlspecialchars($row['id']) . "'
+                                        data-tagid='" . htmlspecialchars($row['vh_leche_tagid']) . "'
+                                        data-Leche='" . htmlspecialchars($row['vh_leche_peso']) . "'
+                                        data-precio='" . htmlspecialchars($row['vh_leche_precio']) . "'
+                                        data-fecha='" . htmlspecialchars($row['vh_leche_fecha']) . "'>
+                                    <i class='fas fa-edit'></i>
+                                </button>
+                                <button class='btn btn-danger btn-sm delete-Leche'
+                                        data-id='" . htmlspecialchars($row['id']) . "'>
+                                    <i class='fas fa-trash'></i>
+                                </button>
+                            </div>
+                        </td>";
+                    echo "</tr>";
                 }
-                ?>
-            </tbody>
-        </table>
-    </div>
+            }
+            ?>
+        </tbody>
+    </table>
 </div>
 
 <!--  Leche Inicializacion DataTable -->
@@ -1089,7 +1085,7 @@ $(document).ready(function() {
 
         // Configure DOM layout and buttons
         dom: '<"row"<"col-sm-12 col-md-6"B><"col-sm-12 col-md-6"f>>' +
-             '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"p>>' +
+             '<"row"<"col-sm-12 col-md-6"l>>' +
              '<"row"<"col-sm-12"tr>>' +
              '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
 
@@ -1341,7 +1337,7 @@ $(document).ready(function() {
     <canvas id="lecheRevenueChart"></canvas>
 </div>
 
-<h3  class="container mt-4" class="collapse" id="section-historial-alimentacion-vacuno">
+<h3  class="container mt-4 text-white" class="collapse" id="section-historial-alimentacion-vacuno">
 REGISTROS DE ALIMENTACION
 </h3>
 
@@ -1527,7 +1523,7 @@ $result_concentrado = $conn->query($baseQuery_concentrado);
 
         // DOM and button configuration
         dom: '<"row"<"col-sm-12 col-md-6"B><"col-sm-12 col-md-6"f>>' +
-             '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"p>>' +
+             '<"row"<"col-sm-12 col-md-6"l>>' +
              '<"row"<"col-sm-12"tr>>' +
              '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
 
@@ -1824,7 +1820,7 @@ $(document).ready(function() {
 
         // DOM and button configuration
         dom: '<"row"<"col-sm-12 col-md-6"B><"col-sm-12 col-md-6"f>>' +
-             '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"p>>' +
+             '<"row"<"col-sm-12 col-md-6"l>>' +
              '<"row"<"col-sm-12"tr>>' +
              '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
 
@@ -2140,7 +2136,7 @@ $(document).ready(function() {
 
         // Configure DOM layout and buttons
         dom: '<"row"<"col-sm-12 col-md-6"B><"col-sm-12 col-md-6"f>>' +
-             '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"p>>' +
+             '<"row"<"col-sm-12 col-md-6"l>>' +
              '<"row"<"col-sm-12"tr>>' +
              '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
 
@@ -2293,16 +2289,16 @@ function deleteSalEntry(id) {
     }
 }
 </script>
-<div style="max-width: 1300px; margin: 40px auto;">
+<div class="container" style="max-width: 1300px; margin: 40px auto;">
     <h4>Inversion Acumulada Sal Mineral</h4>
     <canvas id="sal-acumulado-mensual"></canvas>
 </div>
-<div style="max-width: 800px; margin: 40px auto;">
+<div class="container" style="max-width: 800px; margin: 40px auto;">
     <h4>Distribución de Inversión en Alimentación</h4>
     <canvas id="investment-distribution-pie"></canvas>
 </div>
 
-<h3  class="container mt-4" class="collapse" id="section-historial-salud-vacuno">
+<h3  class="container mt-4 text-white" class="collapse" id="section-historial-salud-vacuno">
 REGISTROS DE SALUD
 </h3>
 <!-- Aftosa Table Section -->
@@ -2458,7 +2454,7 @@ $(document).ready(function() {
 
         // Configure DOM layout and buttons
         dom: '<"row"<"col-sm-12 col-md-6"B><"col-sm-12 col-md-6"f>>' +
-             '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"p>>' +
+             '<"row"<"col-sm-12 col-md-6"l>>' +
              '<"row"<"col-sm-12"tr>>' +
              '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
 
@@ -2796,7 +2792,7 @@ $(document).ready(function() {
 
         // Configure DOM layout and buttons
         dom: '<"row"<"col-sm-12 col-md-6"B><"col-sm-12 col-md-6"f>>' +
-             '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"p>>' +
+             '<"row"<"col-sm-12 col-md-6"l>>' +
              '<"row"<"col-sm-12"tr>>' +
              '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
 
@@ -3133,7 +3129,7 @@ $(document).ready(function() {
 
         // Configure DOM layout and buttons
         dom: '<"row"<"col-sm-12 col-md-6"B><"col-sm-12 col-md-6"f>>' +
-             '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"p>>' +
+             '<"row"<"col-sm-12 col-md-6"l>>' +
              '<"row"<"col-sm-12"tr>>' +
              '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
 
@@ -3471,7 +3467,7 @@ $(document).ready(function() {
 
         // Configure DOM layout and buttons
         dom: '<"row"<"col-sm-12 col-md-6"B><"col-sm-12 col-md-6"f>>' +
-             '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"p>>' +
+             '<"row"<"col-sm-12 col-md-6"l>>' +
              '<"row"<"col-sm-12"tr>>' +
              '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
 
@@ -3808,7 +3804,7 @@ $(document).ready(function() {
 
         // Configure DOM layout and buttons
         dom: '<"row"<"col-sm-12 col-md-6"B><"col-sm-12 col-md-6"f>>' +
-             '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"p>>' +
+             '<"row"<"col-sm-12 col-md-6"l>>' +
              '<"row"<"col-sm-12"tr>>' +
              '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
 
@@ -4145,7 +4141,7 @@ $(document).ready(function() {
 
         // Configure DOM layout and buttons
         dom: '<"row"<"col-sm-12 col-md-6"B><"col-sm-12 col-md-6"f>>' +
-             '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"p>>' +
+             '<"row"<"col-sm-12 col-md-6"l>>' +
              '<"row"<"col-sm-12"tr>>' +
              '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
 
@@ -4483,7 +4479,7 @@ $(document).ready(function() {
 
         // Configure DOM layout and buttons
         dom: '<"row"<"col-sm-12 col-md-6"B><"col-sm-12 col-md-6"f>>' +
-             '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"p>>' +
+             '<"row"<"col-sm-12 col-md-6"l>>' +
              '<"row"<"col-sm-12"tr>>' +
              '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
 
@@ -4819,7 +4815,7 @@ $(document).ready(function() {
 
         // Configure DOM layout and buttons
         dom: '<"row"<"col-sm-12 col-md-6"B><"col-sm-12 col-md-6"f>>' +
-             '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"p>>' +
+             '<"row"<"col-sm-12 col-md-6"l>>' +
              '<"row"<"col-sm-12"tr>>' +
              '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
 
@@ -5521,7 +5517,7 @@ function editLombricesEntry(id) {
     });
 </script>
 
-<h3  class="container mt-4" class="collapse" id="section-historial-reproduccion-vacuno">
+<h3  class="container mt-4 text-white" class="collapse" id="section-historial-reproduccion-vacuno">
 REGISTROS DE REPRODUCCION
 </h3>
 
@@ -5740,7 +5736,7 @@ $(document).ready(function() {
 
         // Configure DOM layout and buttons
         dom: '<"row"<"col-sm-12 col-md-6"B><"col-sm-12 col-md-6"f>>' +
-             '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"p>>' +
+             '<"row"<"col-sm-12 col-md-6"l>>' +
              '<"row"<"col-sm-12"tr>>' +
              '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
 
@@ -6021,7 +6017,7 @@ $(document).ready(function() {
 
         // Configure DOM layout and buttons
         dom: '<"row"<"col-sm-12 col-md-6"B><"col-sm-12 col-md-6"f>>' +
-             '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"p>>' +
+             '<"row"<"col-sm-12 col-md-6"l>>' +
              '<"row"<"col-sm-12"tr>>' +
              '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
 
@@ -6289,7 +6285,7 @@ $(document).ready(function() {
 
         // Configure DOM layout and buttons
         dom: '<"row"<"col-sm-12 col-md-6"B><"col-sm-12 col-md-6"f>>' +
-             '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"p>>' +
+             '<"row"<"col-sm-12 col-md-6"l>>' +
              '<"row"<"col-sm-12"tr>>' +
              '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
 
@@ -6565,7 +6561,7 @@ $(document).ready(function() {
 
         // Configure DOM layout and buttons
         dom: '<"row"<"col-sm-12 col-md-6"B><"col-sm-12 col-md-6"f>>' +
-             '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"p>>' +
+             '<"row"<"col-sm-12 col-md-6"l>>' +
              '<"row"<"col-sm-12"tr>>' +
              '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
 
@@ -6643,7 +6639,7 @@ function deleteAbortoEntry(id) {
 }
 </script>
 
-<h3  class="container mt-4" class="collapse" id="section-historial-otros-vacuno">
+<h3  class="container mt-4 text-white" class="collapse" id="section-historial-otros-vacuno">
 OTROS REGISTROS
 </h3>
 
@@ -6856,7 +6852,7 @@ $(document).ready(function() {
 
         // Configure DOM layout and buttons
         dom: '<"row"<"col-sm-12 col-md-6"B><"col-sm-12 col-md-6"f>>' +
-             '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"p>>' +
+             '<"row"<"col-sm-12 col-md-6"l>>' +
              '<"row"<"col-sm-12"tr>>' +
              '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
 
@@ -7134,7 +7130,7 @@ $(document).ready(function() {
 
         // Configure DOM layout and buttons
         dom: '<"row"<"col-sm-12 col-md-6"B><"col-sm-12 col-md-6"f>>' +
-             '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"p>>' +
+             '<"row"<"col-sm-12 col-md-6"l>>' +
              '<"row"<"col-sm-12"tr>>' +
              '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
 
@@ -7412,7 +7408,7 @@ $(document).ready(function() {
 
         // Configure DOM layout and buttons
         dom: '<"row"<"col-sm-12 col-md-6"B><"col-sm-12 col-md-6"f>>' +
-             '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"p>>' +
+             '<"row"<"col-sm-12 col-md-6"l>>' +
              '<"row"<"col-sm-12"tr>>' +
              '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
 

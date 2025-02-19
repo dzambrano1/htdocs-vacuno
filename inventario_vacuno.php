@@ -426,8 +426,9 @@ $partoDatasetsJson = json_encode($datasets);
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 <!-- Bootstrap Icons -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-<link rel="stylesheet" href="./vacuno.css">
 
+<!-- Custom css -->
+<link rel="stylesheet" href="./vacuno.css">
 
 <!-- Include Chart.js and Chart.js DataLabels Plugin -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -517,9 +518,13 @@ $partoDatasetsJson = json_encode($datasets);
 </div>
 
 <!-- Scroll Icons Container -->
-<div class="container scroll-Icons-container">
-    <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-target="#section-inventario-poblacion-vacuno" data-tooltip="Produccion">
+<div class="container scroll-icons-container">
+    <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-target="#section-inventario-poblacion-vacuno" data-tooltip="Poblacion">
         <img src="./images/vaca.png" alt="Alimentacion" class="nav-icon">
+    </button>
+
+    <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-target="#section-inventario-produccion-vacuno" data-tooltip="Produccion">
+        <img src="./images/Bascula.png" alt="Produccion" class="nav-icon">
     </button>
 
     <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-target="#section-inventario-alimentacion-vacuno" data-tooltip="Alimentacion">
@@ -530,11 +535,11 @@ $partoDatasetsJson = json_encode($datasets);
         <img src="./images/vacunacion.png" alt="Salud" class="nav-icon">
     </button>
        
-    <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-target="#section-inventario-reproduccion-vacuno" data-tooltip="reproduccion">
+    <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-target="#section-inventario-reproduccion-vacuno" data-tooltip="Reproducion">
         <img src="./images/matriz.png" alt="Razas" class="nav-icon">
     </button>
 
-    <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-target="#section-inventario-otros-vacuno" data-tooltip="reproduccion">
+    <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-target="#section-inventario-otros-vacuno" data-tooltip="Otros">
         <img src="./images/compra.png" alt="Razas" class="nav-icon">
     </button>
 </div>
@@ -714,8 +719,7 @@ if ($result->num_rows > 0) {
                          background-color: #ffffff;
                          box-shadow: 0 1px 3px rgba(0,0,0,0.1);
                          border-radius: 8px;
-                         overflow: hidden;
-                         font-family: Arial, sans-serif;">
+                         overflow: hidden;">
                 <tbody>
                     <tr style="background-color: #f8f9fa;">
                         <td style="text-align: left; padding: 8px 15px; font-size: 0.8rem; border-bottom: 1px solid #e9ecef;">
@@ -955,7 +959,7 @@ function previewImage(event) {
     reader.readAsDataURL(event.target.files[0]); // Read the uploaded file
 }
 </script>
-<h3  class="container mt-3" id="section-inventario-poblacion-vacuno">
+<h3  class="container mt-4 text-white" id="section-inventario-poblacion-vacuno">
 POBLACION
 </h3>
 
@@ -2033,7 +2037,7 @@ document.getElementById('updateModal').addEventListener('shown.bs.modal', functi
 });
 </script>
 
-<h3  class="container mt-4" id="Section-inventario-produccion-carnica">
+<h3  class="container mt-4 text-white" id="section-inventario-produccion-vacuno">
 PRODUCCION
 </h3>
 
@@ -2324,7 +2328,7 @@ var avgLecheChart = new Chart(ctxAvgLeche, {
 });
 </script>
 
-<h3  class="container mt-4" id="section-inventario-alimentacion-vacuno">
+<h3  class="container mt-4 text-white" id="section-inventario-alimentacion-vacuno">
 ALIMENTACION
 </h3>
 
@@ -2691,7 +2695,7 @@ $(document).ready(function() {
     });
 </script>
 
-<h3  class="container mt-4" id="section-inventario-salud-vacuno">
+<h3  class="container mt-4 text-white" id="section-inventario-salud-vacuno">
 SALUD
 </h3>
 
@@ -3361,7 +3365,7 @@ $(document).ready(function() {
     });
 });
 </script>
-<h3  class="container mt-4" id="section-inventario-reproduccion-vacuno">
+<h3  class="container mt-4 text-white" id="section-inventario-reproduccion-vacuno">
 REPRODUCCION
 </h3>
 
@@ -3652,7 +3656,7 @@ $(document).ready(function() {
     });
 });
 </script>
-<h3  class="container mt-4" id="section-inventario-otros-vacuno">
+<h3  class="container mt-4 text-white" id="section-inventario-otros-vacuno">
 OTROS
 </h3>
 

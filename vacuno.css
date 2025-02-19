@@ -1,7 +1,16 @@
 :root {
+    --primary-color: #3b4d30;
+    --secondary-color: #83956e;
+    --terciary-color: #F4EBBE;
+    --quaternary-color: #8BA6A9;
+    --quinary-color: #A7CECB;
+    --senary-color: #4a5d23;
+    --septinary-color: #75704E;
+    --title-font-color: #f8f9fa;
+    --background-color: #f8f9fa;
+    --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     font-size: 12px;
 }
-
 
 /* Icon Navigation Buttons */
 .icon-nav-container {
@@ -70,7 +79,7 @@
     opacity: 1;
     visibility: visible;
 }
-.scroll-Icons-container{
+.scroll-icons-container{
     width: 90%;
     display: flex;
     justify-content: center;
@@ -369,17 +378,21 @@ h6:hover{
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     opacity: 1;
 }
+.container h3 {
+    color: white;
+}
+
 h3 {
     font-size: 1.5rem;
     font-weight: 600;
     margin: 0;
     padding: 0;
-    text-align: center;
-    color: #000000;
+    text-align: center;    
     margin-top: 10px;
     margin-bottom: 10px;
     font-family: 'Poppins', sans-serif;
-    background-color: #9db08e86;
+    background-color: var(--primary-color);
+    color: white;
     padding: 10px;
     border-radius: 10px;
 }
@@ -766,3 +779,43 @@ table.dataTable tbody tr.focus td {
     box-shadow: inset 0 0 0 2px #4a6741;
 }
 
+#chart-leche,
+#chart-lactancia,
+#chart-enordeno,
+#chart-aumento-mensual-peso,
+#chart-Carne-Alimento,
+#chart-becerros-concentrado,
+#chart-novillos-concentrado,
+#chart-adultos-concentrado,
+#chart-becerros-sal,
+#chart-novillos-sal,
+#chart-adultos-sal,
+#chart-becerros-melaza,
+#chart-novillos-melaza,
+#chart-adultos-melaza,
+#chart-aftosa,
+#chart-brucelosis,
+#chart-ibr,
+#chart-cbr,
+#chart-carbunco,
+#chart-parasitos,
+#chart-garrapatas,
+#chart-mastitis,
+#chart-1er-celo,
+#chart-2do-celo,
+#chart-3er-celo,
+#chart-dias-gestacion,
+#chart-dias-vacios,
+#chart-dias-entre-partos,
+#chart-partos-anuales
+{
+width:20rem;
+height:20rem;
+margin-top:1rem;
+margin-right:1rem;
+background-color:rgb(230, 234, 225,.70);
+backdrop-filter: blur(7px);
+box-shadow: 0 .4rem .8rem #0005;
+border:1px solid #ccc;
+border-radius:3%;
+}
